@@ -12,6 +12,7 @@ const LoginOptions = () => {
           title='Login'
           onPress={() => navigation.navigate('login')}
         />
+        <Text>Hello</Text>
         <Button
           title='Register'
           onPress={() => navigation.navigate('register')}
