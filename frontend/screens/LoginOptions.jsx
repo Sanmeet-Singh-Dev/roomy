@@ -16,6 +16,7 @@ const LoginOptions = () => {
           title='Register'
           onPress={() => navigation.navigate('register')}
         />
+        <Text>Hello</Text>
       </SafeAreaView>
     </View>
   )
