@@ -44,5 +44,6 @@ export default function App() {
       </stack.Navigator>
 
       </NavigationContainer>
+      </UserContext>
   );
 }

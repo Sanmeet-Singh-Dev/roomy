@@ -15,7 +15,6 @@
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.5.1",
     "expo": "~49.0.13",
-    "expo-image-picker": "~14.3.2",
     "expo-status-bar": "~1.6.0",
     "firebase": "^10.4.0",
     "expo-image-picker": "~14.3.2",
