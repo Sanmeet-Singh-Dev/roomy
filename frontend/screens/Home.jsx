@@ -43,7 +43,7 @@ const Home = () => {
   return (
     <View>
         <SafeAreaView>
-        <Text>Hello There, {userName}</Text>
+        <Text>Hello, {userName}</Text>
 
         <Button
             title="Test Logout"
