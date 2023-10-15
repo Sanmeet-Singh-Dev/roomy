@@ -1,18 +1,37 @@
 import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
+import jwt_decode from "jwt-decode";
+import { Ionicons } from '@expo/vector-icons';
+import { UserType } from '../UserContext';
+
 
 const Home = () => {
     const route = useRoute();
     const userName = route.params?.userName;
     const navigation = useNavigation();
     
+    console.log('user type is', UserType)
+    const { userId, setUserId } = useContext(UserType);
+    useEffect(() => {
+      const fetchUsers = async () => {
+          const token = await AsyncStorage.getItem("jwt");
+          console.log(token)
+          const decodedToken = jwt_decode(token);
+          const userId = decodedToken.userId;
+          console.log(userId)
+          setUserId(userId);
+      };
+
+      fetchUsers();
+  }, []);
+    
     const handleLogout = async () => {
         // Send a request to the logout endpoint on your server
         try {
-          const response = await fetch('http://192.168.1.76:6000/api/users/logout', {
+          const response = await fetch('http://localhost:6000/api/users/logout', {
             method: 'POST', // Use the appropriate HTTP method
             headers: {
               'Content-Type': 'application/json',
@@ -44,6 +63,11 @@ const Home = () => {
     <View>
         <SafeAreaView>
         <Text>Hello, {userName}</Text>
+
+        <Ionicons 
+          onPress={() => navigation.navigate("Chats")}
+          name="chatbox-ellipses-outline" size={24} color="black" />
+
 
         <Button
             title="Test Logout"

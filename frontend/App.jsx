@@ -8,11 +8,16 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import Home from './screens/Home';
 import Details from './screens/Details';
+import ChatsScreen from './screens/ChatsScreen';
+import { UserContext } from './UserContext';
+
 
 const stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+
+    <UserContext>
       <NavigationContainer>
 
       <stack.Navigator initialRouteName='loginOptions'>
@@ -21,9 +26,11 @@ export default function App() {
         <stack.Screen name='register' component={Register} options={{ headerShown: false }} />
         <stack.Screen name='home' component={Home} options={{ headerShown: false }} />
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
+        <stack.Screen name="Chats" component={ChatsScreen}/>
 
       </stack.Navigator>
 
       </NavigationContainer>
+      </UserContext>
   );
 }

@@ -13,7 +13,7 @@ const Register = () => {
 
     const handleRegister = async () => {
         try {
-            const response = await fetch('http://192.168.1.76:6000/api/users' , {
+            const response = await fetch('http://localhost:6000/api/users' , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
