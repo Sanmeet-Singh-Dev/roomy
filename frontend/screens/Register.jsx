@@ -1,5 +1,7 @@
 import { View, Text, SafeAreaView, Platform, StatusBar, Button, TextInput } from 'react-native'
 import React, {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native'
 
 const Register = () => {
 
@@ -7,10 +9,11 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const navigation = useNavigation();
+
     const handleRegister = async () => {
         try {
-            console.log('in try')
-            const response = await fetch('http://192.168.1.94:6000/api/users' , {
+            const response = await fetch('http://192.168.1.76:6000/api/users' , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,15 +26,20 @@ const Register = () => {
             });
     
             if (response.ok) { 
-                console.log('register successful!')
+                const data = await response.json();
+                const token = data.token;
+
+                await AsyncStorage.setItem('jwt', token);
+                
+                navigation.navigate('details');
             } else {
-            const data = await response.json();
-            setError(data.message || 'Login failed. Please check your credentials.');
-            console.log('Login failed. Please check your credentials.')
+                const data = await response.json();
+                console.log(data.message || 'Registration failed. Please check your credentials.');
+                console.error('Registration failed.');
             }
         } catch (error) {
             console.error('Fetch error:', error);
-            setError('An error occurred. Please  try again later.');
+            
         }
     };
 
