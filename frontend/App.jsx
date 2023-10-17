@@ -9,6 +9,7 @@ import Home from './screens/Home';
 import Details from './screens/Details';
 import ChatsScreen from './screens/ChatsScreen';
 import { UserContext } from './UserContext';
+import { Camera } from './Camera/Camera';
 
 
 const stack = createNativeStackNavigator();
@@ -31,6 +32,7 @@ export default function App() {
 
 
       </stack.Navigator>
+      <Camera />
 
     </NavigationContainer>
     </UserContext>
