@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Alert, Button, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginOptions from './screens/LoginOptions';
@@ -16,16 +15,6 @@ const stack = createNativeStackNavigator();
 
 export default function App() {
 
-  //permission check
-  if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
-    return (
-      <View style={styles.container}>
-        <Text>Permission Not Granted {permission?.status}</Text>
-        <StatusBar style="auto" />
-        <Button title="Request Camera Permission" onPress={requestPermission}></Button>
-      </View>
-    )
-  }
 
   return (
 
@@ -43,7 +32,8 @@ export default function App() {
 
       </stack.Navigator>
 
-      </NavigationContainer>
-      </UserContext>
+    </NavigationContainer>
+    </UserContext>
+
   );
 }
