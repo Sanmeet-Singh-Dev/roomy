@@ -1,6 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginOptions from './screens/LoginOptions';
@@ -10,14 +9,18 @@ import Home from './screens/Home';
 import Details from './screens/Details';
 import ChatsScreen from './screens/ChatsScreen';
 import { UserContext } from './UserContext';
+import { Camera } from './Camera/Camera';
+
 
 
 const stack = createNativeStackNavigator();
 
 export default function App() {
+
+
   return (
 
-    <UserContext>
+    <UserContext >
       <NavigationContainer>
 
       <stack.Navigator initialRouteName='loginOptions'>
@@ -27,10 +30,12 @@ export default function App() {
         <stack.Screen name='home' component={Home} options={{ headerShown: false }} />
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
-
       </stack.Navigator>
+      
+      <Camera />
 
-      </NavigationContainer>
-      </UserContext>
+    </NavigationContainer>
+    </UserContext>
+
   );
 }
