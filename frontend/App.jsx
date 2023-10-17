@@ -30,10 +30,8 @@ export default function App() {
         <stack.Screen name='home' component={Home} options={{ headerShown: false }} />
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
-
-
-
       </stack.Navigator>
+      
       <Camera />
 
     </NavigationContainer>
