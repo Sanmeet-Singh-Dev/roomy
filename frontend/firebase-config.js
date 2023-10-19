@@ -34,8 +34,8 @@ return listResponse.items
  * @param {*} name 
  */
 
-const uploadToFirebase = async (uri, name, onProgress) => {
-
+const uploadToFirebase = async (uri, name , userId) => {
+  // onProgress
   const fetchResponse = await fetch(uri)
   const theBlob = await fetchResponse.blob();
 
@@ -46,14 +46,15 @@ const uploadToFirebase = async (uri, name, onProgress) => {
   };
 
   // Upload file and metadata to the object 'images/mountains.jpg'
-  const imageRef = ref(getStorage(), `images/${name}`);
+  // const imageRef = ref(getStorage(), `images/${name}`);
+  const imageRef = ref(getStorage(), `images/${userId}/${name}`);
   const uploadTask = uploadBytesResumable(imageRef, theBlob, metadata);
 
   return new Promise((resolve, reject) => {
     uploadTask.on('state_changed',
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        onProgress && onProgress(progress);
+        // onProgress && onProgress(progress);
       },
       (error) => {
         reject(error)

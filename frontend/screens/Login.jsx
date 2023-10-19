@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, TextInput, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
+import { IPADDRESS } from "@env"
 
 const Login = () => {
 
@@ -10,11 +11,13 @@ const Login = () => {
     const [error, setError] = useState('');
 
     const navigation = useNavigation();
+    let ipAdress = IPADDRESS;
+    console.log(ipAdress);
 
     const handleLogin = async () => {
     try {
         console.log('handleLogin');
-        const response = await fetch('http://192.168.1.151:6000/api/users/auth' , {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/auth` , {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

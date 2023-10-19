@@ -2,6 +2,7 @@ import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpaci
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
+import { IPADDRESS } from '@env';
 
 const ImageAndBio = () => {
 
@@ -14,7 +15,7 @@ const ImageAndBio = () => {
         setWork(work);
         console.log(work);
     };
-
+    let ipAdress = IPADDRESS;
 
     const handleSaveProfile = async () => {
         console.log('handleSaveProfile run');
@@ -29,7 +30,7 @@ const ImageAndBio = () => {
               return;
             }
         
-            const response = await fetch('http://192.168.1.151:6000/api/users/bio', {
+            const response = await fetch(`http://${ipAdress}:6000/api/users/bio`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',

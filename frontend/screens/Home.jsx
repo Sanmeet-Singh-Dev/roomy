@@ -6,12 +6,15 @@ import { useNavigation } from '@react-navigation/native'
 import jwt_decode from "jwt-decode";
 import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
+import { IPADDRESS } from "@env"
+
 
 
 const Home = () => {
     const route = useRoute();
     const userName = route.params?.userName;
     const navigation = useNavigation();
+    let ipAdress = IPADDRESS;
     
     console.log('user type is', UserType)
     const { userId, setUserId } = useContext(UserType);
@@ -31,7 +34,7 @@ const Home = () => {
     const handleLogout = async () => {
         // Send a request to the logout endpoint on your server
         try {
-          const response = await fetch('http://192.168.1.151:6000/api/users/logout', {
+          const response = await fetch(`http://${ipAdress}:6000/api/users/logout`, {
             method: 'POST', // Use the appropriate HTTP method
             headers: {
               'Content-Type': 'application/json',
@@ -59,6 +62,11 @@ const Home = () => {
         }
     };
 
+    const handleListMySpace = () => {
+      console.log("List my Space Clicked")
+      navigation.navigate('listMySpace');
+    }
+
   return (
     <View>
         <SafeAreaView>
@@ -70,9 +78,15 @@ const Home = () => {
 
 
         <Button
-            title="Test Logout"
+            title="Logout"
             onPress={handleLogout}
         />
+
+        <Button
+            title="List My Space"
+            onPress={handleListMySpace}
+        />
+    
 
         </SafeAreaView>
     </View>
