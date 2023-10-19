@@ -10,6 +10,8 @@ import Details from './screens/Details';
 import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
 import ChatsScreen from './screens/ChatsScreen';
+import NewChatScreen from './screens/NewChatScreen'
+import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import { UserContext } from './UserContext';
 
 import ListMySpace from './screens/ListMySpace';
@@ -38,7 +40,8 @@ export default function App() {
         <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
-        <stack.Screen name="listMySpace" component={ListMySpace}/>
+        <stack.Screen name="newChat" component={NewChatScreen} />
+        <stack.Screen name="Messages" component={ChatMessagesScreen} />        <stack.Screen name="listMySpace" component={ListMySpace}/>
       </stack.Navigator>
       
       

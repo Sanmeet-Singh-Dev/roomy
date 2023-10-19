@@ -10,7 +10,8 @@ const UserChat = ({ item }) => {
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/messages/${userId}/${item._id}`)
+            
+            const response = await fetch(`http://localhost:6000/api/users/messages/${userId}/${item._id}`)
             const data = await response.json();
             if (response.ok) {
                 setMessages(data);
@@ -19,6 +20,7 @@ const UserChat = ({ item }) => {
                 console.log("error showing messages", response.status.message);
             }
         }
+        
         catch (error) {
             console.log("Error fetching messages", error)
         }
@@ -36,7 +38,6 @@ const UserChat = ({ item }) => {
     };
 
     const lastMessage = getLastMessage();
-    // console.log(lastMessage);
 
     const formatTime = (time) => {
         const options = { hour: "numeric", minute: "numeric" };
@@ -45,6 +46,7 @@ const UserChat = ({ item }) => {
 
     
     return (
+        lastMessage ? 
         <Pressable
             onPress={() => navigation.navigate("Messages", {
                 recepientId: item._id
@@ -65,7 +67,7 @@ const UserChat = ({ item }) => {
                     {lastMessage && formatTime(lastMessage?.timeStamp)}
                 </Text>
             </View>
-        </Pressable>
+        </Pressable> : <></>
     )
 }
 
