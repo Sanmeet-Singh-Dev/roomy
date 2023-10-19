@@ -12,11 +12,11 @@ const Login = () => {
 
     const navigation = useNavigation();
     let ipAdress = IPADDRESS;
-    console.log(ipAdress);
 
     const handleLogin = async () => {
     try {
         console.log('handleLogin');
+        console.log(ipAdress)
         const response = await fetch(`http://${ipAdress}:6000/api/users/auth` , {
         method: 'POST',
         headers: {

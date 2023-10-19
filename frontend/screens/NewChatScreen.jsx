@@ -2,8 +2,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
-// import UserChat from '../components/UserChat';
-import { Entypo } from '@expo/vector-icons';
+import NewChat from '../components/NewChat';
 
 const ChatsScreen = () => {
 
@@ -30,20 +29,13 @@ const ChatsScreen = () => {
     },[])
 
   return (
-    <View>
     <ScrollView showsVerticalScrollIndicator={false}>
         <Pressable>
             {acceptedFriends.map((item,index)=> (
-                <UserChat key={index} item={item}/>
+                <NewChat key={index} item={item}/>
             ))}
         </Pressable>
     </ScrollView>
-    <Pressable
-    onPress={() => navigation.navigate("newChat")} 
-        style={{ position:"absolute" , right:0,top:550, padding:50, marginBottom:"20%" }}>
-        <Entypo name="new-message" size={24} color="black" />
-    </Pressable>
-    </View>
   )
 }
 

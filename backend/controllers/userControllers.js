@@ -141,9 +141,25 @@ const getUserProfile = asyncHandler (async (req, res) => {
 //       }
 // });
 
+const getAcceptedFriends = asyncHandler (async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId).populate("friends", "name email image")
+
+        const acceptedFriends = user.friends;
+        res.json(acceptedFriends);
+    }
+    catch (error) {
+        console.log("Error", error);
+        res.status(500).json({ message: "Internal server error." })
+    }
+});
+
+
 export {
     authUser,
     registerUser,
     logoutUser,
     getUserProfile,
+    getAcceptedFriends
 };

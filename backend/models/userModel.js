@@ -95,6 +95,28 @@ const userSchema = mongoose.Schema({
             ],
         },
     ],
+    image: {
+        type: String,
+        // required: true
+    },
+    friendRequests: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    friends: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    sentFriendRequests: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ]
 }, {
     timestamps: true
 });
