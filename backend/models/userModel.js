@@ -17,16 +17,16 @@ const userSchema = mongoose.Schema({
     },
     fullName: {
         type: String,
-        required: true,
+        required: false,
     },
     gender: {
         type: String,
         enum: ['Male', 'Female', 'Other'], // Enum for gender options
-        required: true,
+        required: false,
     },
     dateOfBirth: {
         type: Date,
-        required: true,
+        required: false,
     },
     location: {
         type: {
@@ -39,32 +39,40 @@ const userSchema = mongoose.Schema({
             default: [0, 0], // Default coordinates
         },
     },
-    smokingHabit: {
+    work: {
+        type: String,
+        enum: ['Working Professional', 'Unemployed', 'Student', 'Business', 'Other'],
+        required: false,
+    },
+    bio: {
+        type: String,
+        required: false,
+    },
+    
+    smoking: {
         type: String,
         enum: ['Daily', 'Never', 'Occasionally'],
-        required: true,
+        required: false,
     },
-    guestsHabit: {
+    guests: {
         type: String,
         enum: ['Daily', 'Never', 'Occasionally'],
-        required: true,
+        required: false,
     },
-    drinkingHabit: {
+    drinking: {
         type: String,
         enum: ['Daily', 'Never', 'Occasionally'],
-        required: true,
+        required: false,
     },
-    petsHabit: {
+    pets: {
         type: String,
         enum: ['Daily', 'Never', 'Occasionally'],
-        required: true,
+        required: false,
     },
-    foodChoices: [
-        {
-            type: String,
-            enum: ['Vegan', 'Vegetarian', 'Kosher', 'None'],
-        },
-    ],
+    food: {
+        type: String,
+        enum: ['Vegan', 'Vegetarian', 'Kosher', 'None'],
+    },
     interests: [
         {
             type: String,
