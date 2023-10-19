@@ -2,6 +2,7 @@ import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpaci
 import React, { useState } from 'react'
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IPADDRESS } from '@env'
 
 const Livinghabits = () => {
 
@@ -12,6 +13,7 @@ const Livinghabits = () => {
     const [food, setFood] = useState('');
 
     const handleSaveHabits = async () => {
+        let ipAdress = IPADDRESS;
         console.log('handleSaveHabits run');
           try {
             // Get the authentication token from AsyncStorage
@@ -24,7 +26,7 @@ const Livinghabits = () => {
               return;
             }
         
-            const response = await fetch('http://192.168.1.151:6000/api/users/habits', {
+            const response = await fetch(`http://${ipAdress}:6000/api/users/habits`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
