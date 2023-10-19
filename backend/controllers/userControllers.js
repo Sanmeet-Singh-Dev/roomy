@@ -47,7 +47,7 @@ const authUser = asyncHandler (async (req, res) => {
     console.log('Received a login request:', { email, password });
 
     const user = await User.findOne({email});
-    
+
     if(user && await user.matchPassword(password)) {
         console.log('User logged in successfully:', user._id.toString());
         const token = generateToken(req,user._id.toString());
@@ -145,9 +145,25 @@ const getUserProfile = asyncHandler (async (req, res) => {
 //       }
 // });
 
+const getAcceptedFriends = asyncHandler (async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId).populate("friends", "name email image")
+
+        const acceptedFriends = user.friends;
+        res.json(acceptedFriends);
+    }
+    catch (error) {
+        console.log("Error", error);
+        res.status(500).json({ message: "Internal server error." })
+    }
+});
+
+
 export {
     authUser,
     registerUser,
     logoutUser,
     getUserProfile,
+    getAcceptedFriends
 };

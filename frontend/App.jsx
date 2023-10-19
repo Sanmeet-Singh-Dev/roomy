@@ -9,6 +9,8 @@ import Register from './screens/Register';
 import Home from './screens/Home';
 import Details from './screens/Details';
 import ChatsScreen from './screens/ChatsScreen';
+import NewChatScreen from './screens/NewChatScreen'
+import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import { UserContext } from './UserContext';
 
 
@@ -27,7 +29,8 @@ export default function App() {
         <stack.Screen name='home' component={Home} options={{ headerShown: false }} />
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
-
+        <stack.Screen name="newChat" component={NewChatScreen} />
+        <stack.Screen name="Messages" component={ChatMessagesScreen} />
       </stack.Navigator>
 
       </NavigationContainer>

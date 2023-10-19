@@ -13,15 +13,12 @@ const Home = () => {
     const userName = route.params?.userName;
     const navigation = useNavigation();
     
-    console.log('user type is', UserType)
     const { userId, setUserId } = useContext(UserType);
     useEffect(() => {
       const fetchUsers = async () => {
           const token = await AsyncStorage.getItem("jwt");
-          console.log(token)
           const decodedToken = jwt_decode(token);
           const userId = decodedToken.userId;
-          console.log(userId)
           setUserId(userId);
       };
 
