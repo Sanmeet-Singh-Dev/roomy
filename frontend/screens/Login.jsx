@@ -14,7 +14,7 @@ const Login = () => {
     const handleLogin = async () => {
     try {
         console.log('handleLogin');
-        const response = await fetch('http://192.168.1.76:6000/api/users/auth' , {
+        const response = await fetch('http://192.168.1.151:6000/api/users/auth' , {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -25,11 +25,11 @@ const Login = () => {
         }),
         });
 
-        console.log(response);
-
         if (response.ok) { 
             const data = await response.json();
+            console.log(data);
             const token = data.token;
+            console.log(token);
 
             const userName = data.name;
             console.log(userName);

@@ -8,6 +8,8 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import Home from './screens/Home';
 import Details from './screens/Details';
+import ImageAndBio from './screens/ImageAndBio';
+import Livinghabits from './screens/Livinghabits';
 
 const stack = createNativeStackNavigator();
 
@@ -22,6 +24,8 @@ export default function App() {
         <stack.Screen name='register' component={Register} options={{ headerShown: false }} />
         <stack.Screen name='home' component={Home} options={{ headerShown: false }} />
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
+        <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
+        <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
 
       </stack.Navigator>
 

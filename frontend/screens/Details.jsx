@@ -1,11 +1,18 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native'
 
 const Details = () => {
     const [fullName, setFullName] = useState('');
     const [gender, setGender] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
+
+    const navigation = useNavigation();
+
+    const handleGenderSelection = (gender) => {
+      setGender(gender);
+    };
   
     const handleSaveProfile = async () => {
       console.log('handleSaveProfile run');
@@ -20,7 +27,7 @@ const Details = () => {
             return;
           }
       
-          const response = await fetch('http://192.168.1.94:6000/api/users/profile', {
+          const response = await fetch('http://192.168.1.151:6000/api/users/profile', {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -36,7 +43,7 @@ const Details = () => {
           if (response.ok) {
             // Handle a successful response
             const data = await response.json();
-            console.log('Profile updated:', data);
+            navigation.navigate('imageAndBio');
           } else {
             // Handle an unsuccessful response (e.g., show an error message)
             console.error('Error updating profile.');
@@ -58,18 +65,51 @@ const Details = () => {
           value={fullName}
           onChangeText={setFullName}
         />
-        <TextInput
-          placeholder="Gender"
-          value={gender}
-          onChangeText={setGender}
-        />
+
+        <Text>Gender:</Text>
+
+        <View style={styles.optionsContainer}>
+
+          <TouchableOpacity
+            style={[
+              styles.option,
+              gender === 'Male' && styles.selectedOption,
+            ]}
+            onPress={() => handleGenderSelection('Male')}
+          >
+            <Text style={styles.optionText}>Male</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.option,
+              gender === 'Female' && styles.selectedOption,
+            ]}
+            onPress={() => handleGenderSelection('Female')}
+          >
+            <Text style={styles.optionText}>Female</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.option,
+              gender === 'Other' && styles.selectedOption,
+            ]}
+            onPress={() => handleGenderSelection('Other')}
+          >
+            <Text style={styles.optionText}>Other</Text>
+          </TouchableOpacity>
+
+      </View>
+
         <TextInput
           placeholder="Date of Birth"
           value={dateOfBirth}
           onChangeText={setDateOfBirth}
         />
-        {/* Add input fields for other profile details here */}
+        
         <Button title="Save Profile" onPress={handleSaveProfile} />
+
         </SafeAreaView>
       </View>
     );
@@ -78,4 +118,28 @@ const Details = () => {
 
 export default Details
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  option: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 5,
+  },
+  selectedOption: {
+    backgroundColor: 'blue', // Change to your desired highlight color
+    borderColor: 'blue', // Change to your desired highlight color
+  },
+  optionText: {
+    color: 'black', // Change to your desired text color
+    textAlign: 'center',
+  },
+});
