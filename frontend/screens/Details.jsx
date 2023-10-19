@@ -1,12 +1,15 @@
 import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
+import { IPADDRESS } from "@env"
 
 const Details = () => {
     const [fullName, setFullName] = useState('');
     const [gender, setGender] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
+    let ipAdress = IPADDRESS;
+    console.log(ipAdress);
 
     const navigation = useNavigation();
 
@@ -27,7 +30,7 @@ const Details = () => {
             return;
           }
       
-          const response = await fetch('http://192.168.1.151:6000/api/users/profile', {
+          const response = await fetch(`http://${ipAdress}:6000/api/users/profile`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

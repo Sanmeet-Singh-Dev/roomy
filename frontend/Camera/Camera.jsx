@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 
 
 
-export const Camera = () => {
+export const Camera = ({ userId }) => {
     const [permission, requestPermission] = ImagePicker.useCameraPermissions();
     const [files, setFiles] = useState([])
   
@@ -17,8 +17,10 @@ export const Camera = () => {
           return { name : value.fullPath }
         })
         setFiles(files)
+        // console.log('Files in Firebase:', files);
       });
     }, [])
+
   
     console.log(files)
   
@@ -43,9 +45,8 @@ export const Camera = () => {
         if (!cameraResp.canceled) {
           const { uri } = cameraResp.assets[0];
           const fileName = uri.split('/').pop();
-          const uploadResponse = await uploadToFirebase(uri, fileName);
+          const uploadResponse = await uploadToFirebase(uri, fileName , userId);
           // console.log(uploadResponse);
-  
           listFiles().then((listResponse)=>{
   
             const files = listResponse.map((value) => {
@@ -73,8 +74,7 @@ export const Camera = () => {
     }
   
   return (
-    <View style={styles.container}>
-    <Text>Camera Component</Text>
+    <View>
     <StatusBar style="auto" />
     <Button title="Take Picture" onPress={takePhoto}></Button>
   </View>

@@ -2,22 +2,20 @@ import { View, Text, SafeAreaView, Platform, StatusBar, Button, TextInput } from
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
+import { IPADDRESS } from '@env'
 
 const Register = () => {
 
     const [name, setname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    let ipAdress = IPADDRESS;
 
     const navigation = useNavigation();
 
     const handleRegister = async () => {
         try {
-<<<<<<< HEAD
-            const response = await fetch('http://192.168.1.151:6000/api/users' , {
-=======
-            const response = await fetch('http://localhost:6000/api/users' , {
->>>>>>> dev
+            const response = await fetch(`http://${ipAdress}:6000/api/users` , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

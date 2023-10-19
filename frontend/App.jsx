@@ -11,7 +11,11 @@ import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
 import ChatsScreen from './screens/ChatsScreen';
 import { UserContext } from './UserContext';
+
+import ListMySpace from './screens/ListMySpace';
 import { Camera } from './Camera/Camera';
+
+
 
 
 
@@ -34,9 +38,10 @@ export default function App() {
         <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
+        <stack.Screen name="listMySpace" component={ListMySpace}/>
       </stack.Navigator>
       
-      <Camera />
+      
 
     </NavigationContainer>
     </UserContext>
