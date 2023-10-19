@@ -51,27 +51,27 @@ const userSchema = mongoose.Schema({
     
     smoking: {
         type: String,
-        enum: ['Daily', 'Never', 'Occasionally'],
+        enum: ['Daily', 'Never', 'Occasional'],
         required: false,
     },
     guests: {
         type: String,
-        enum: ['Daily', 'Never', 'Occasionally'],
+        enum: ['Daily', 'Never', 'Occasional'],
         required: false,
     },
     drinking: {
         type: String,
-        enum: ['Daily', 'Never', 'Occasionally'],
+        enum: ['Daily', 'Never', 'Occasional'],
         required: false,
     },
     pets: {
         type: String,
-        enum: ['Daily', 'Never', 'Occasionally'],
+        enum: ['Have', 'Dont Have', 'May Have', 'Never'],
         required: false,
     },
     food: {
         type: String,
-        enum: ['Vegan', 'Vegetarian', 'Kosher', 'None'],
+        enum: ['Vegan', 'Vegetarian', 'Non-Vegetarian'],
     },
     interests: [
         {

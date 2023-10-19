@@ -61,11 +61,11 @@ const updateUserBio = asyncHandler(async (req, res) => {
 const updateUserHabits = asyncHandler(async (req, res) => {
   const { smoking, guests, drinking, pets, food } = req.body;
   console.log("Here in update habits");
-  console.log(req.body);
+  // console.log(req.body);
   // Find the user's profile by their user ID
   const userProfile = await User.findOne({ _id: req.user._id.toString() });
 
-  console.log(userProfile);
+  // console.log(userProfile);
 
   if (userProfile) {
     // Update user profile fields
@@ -74,7 +74,7 @@ const updateUserHabits = asyncHandler(async (req, res) => {
     userProfile.drinking = drinking || userProfile.drinking;
     userProfile.pets = pets || userProfile.pets;
     userProfile.food = food || userProfile.food;
-
+    
     const updatedUserProfile = await userProfile.save();
   
     res.status(200).json(updatedUserProfile);
