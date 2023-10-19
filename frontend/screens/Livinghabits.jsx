@@ -38,6 +38,8 @@ const Livinghabits = () => {
                 food
               }),
             });
+
+            console.log(response);
         
             if (response.ok) {
               // Handle a successful response
