@@ -10,8 +10,6 @@ import Details from './screens/Details';
 import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
 import ChatsScreen from './screens/ChatsScreen';
-import NewChatScreen from './screens/NewChatScreen'
-import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import { UserContext } from './UserContext';
 
 import ListMySpace from './screens/ListMySpace';
