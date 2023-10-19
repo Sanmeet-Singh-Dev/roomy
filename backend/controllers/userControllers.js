@@ -20,9 +20,9 @@ const registerUser = asyncHandler (async (req, res) => {
         email,
         password,
     });
-
+    
     if(user) {
-        const token = generateToken(user._id);
+        const token = generateToken(user._id.toString());
         console.log('User created successfully:', token);
         res.status(201).json({
             _id: user._id,
@@ -40,17 +40,13 @@ const registerUser = asyncHandler (async (req, res) => {
 // route    POST /api/users/auth
 // @access  Public
 const authUser = asyncHandler (async (req, res) => {
-    console.log('here');
     const { email, password } = req.body;
-    console.log(req.body);
-
-    console.log('Received a login request:', { email, password });
 
     const user = await User.findOne({email});
+
     
     if(user && await user.matchPassword(password)) {
-        console.log('User logged in successfully:', user._id.toString());
-        const token = generateToken(req,user._id.toString());
+        const token = generateToken(user._id.toString());
         res.status(201).json({
             _id: user._id,
             name: user.name, 

@@ -31,7 +31,11 @@ const Home = () => {
     const handleLogout = async () => {
         // Send a request to the logout endpoint on your server
         try {
+<<<<<<< HEAD
+          const response = await fetch('http://192.168.1.151:6000/api/users/logout', {
+=======
           const response = await fetch('http://localhost:6000/api/users/logout', {
+>>>>>>> dev
             method: 'POST', // Use the appropriate HTTP method
             headers: {
               'Content-Type': 'application/json',
