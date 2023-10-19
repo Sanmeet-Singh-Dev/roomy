@@ -41,7 +41,8 @@ export default function App() {
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
         <stack.Screen name="newChat" component={NewChatScreen} />
-        <stack.Screen name="Messages" component={ChatMessagesScreen} />        <stack.Screen name="listMySpace" component={ListMySpace}/>
+        <stack.Screen name="Messages" component={ChatMessagesScreen} />       
+        <stack.Screen name="listMySpace" component={ListMySpace}/>
       </stack.Navigator>
       
       
