@@ -1,6 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginOptions from './screens/LoginOptions';
@@ -10,15 +9,23 @@ import Home from './screens/Home';
 import Details from './screens/Details';
 import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
+import ChatsScreen from './screens/ChatsScreen';
+import { UserContext } from './UserContext';
+import { Camera } from './Camera/Camera';
+
+
 
 const stack = createNativeStackNavigator();
 
 export default function App() {
+
+
   return (
+
+    <UserContext >
       <NavigationContainer>
 
       <stack.Navigator initialRouteName='loginOptions'>
-
         <stack.Screen name="loginOptions" component={LoginOptions} options={{headerShown: false}} />
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />
         <stack.Screen name='register' component={Register} options={{ headerShown: false }} />
@@ -26,9 +33,13 @@ export default function App() {
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
         <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
-
+        <stack.Screen name="Chats" component={ChatsScreen}/>
       </stack.Navigator>
+      
+      <Camera />
 
-      </NavigationContainer>
+    </NavigationContainer>
+    </UserContext>
+
   );
 }
