@@ -220,12 +220,13 @@ const getAcceptedFriends = asyncHandler (async (req, res) => {
 });
 
 const setLocation = asyncHandler(async (req, res) => {
-    const { userId, location } = req.body;
-    console.log(userId)
-    console.log(req.body)
+  const { location } = req.body;
+  const user = await User.findOne({ _id: req.user._id.toString() });
+
+    // console.log(userId)
+    // console.log(req.body)
   
     try {
-      const user = await User.findById(userId);
       if (!user) {
         res.status(404);
         throw new Error('User not found');

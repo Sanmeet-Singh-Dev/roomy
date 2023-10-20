@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { IPADDRESS } from '@env'
 import { UserType } from '../UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const CurrentLocation = () => {
@@ -59,20 +60,28 @@ const getCurrentLocation = async () => {
   const sendLocationDataToBackend = async (locationData) => {
     try {
         console.log(ipAdress);
+        const token = await AsyncStorage.getItem('jwt');
+        console.log(token);
+        if (!token) {
+          // Handle the case where the token is not available
+          console.error('No authentication token available.');
+          return;
+        }
+
       const response = await fetch(`http://${ipAdress}:6000/api/users/set-location`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           location: locationData,
-          userId
         }),
       });
 
       if (response.ok) {
         // Handle a successful response (e.g., navigate to the next screen)
-        navigation.navigate('home');
+        navigation.navigate('imageAndBio');
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
       console.error('Error saving location. Response:', response.status , response.statusText)
