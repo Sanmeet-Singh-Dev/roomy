@@ -10,7 +10,6 @@ import {
     saveListMySpaceData,
     getAllListsMySpace,
     setLocation,
-    getUserPreferences,
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -18,8 +17,6 @@ import {
     updateUserProfile,
     updateUserBio,
     updateUserHabits,
-    updateUserInterests,
-    updateUserTraits,
     updateUserInterests,
     updateUserTraits,
 } from '../controllers/profileController.js';
@@ -57,7 +54,7 @@ router.get('/:id/preferences', protect, getUserPreferences)
 
 router.post('/save-list-my-space', saveListMySpaceData);
 router.get('/list-spaces', getAllListsMySpace);
-router.post('/set-location', setLocation);
+router.post('/set-location', protect, setLocation);
 // router.put('/interests', protect, updateUserInterests)
 // router.put('/traits', protect, updateUserTraits)
 // router.get('/:id/preferences', protect, getUserPreferences)

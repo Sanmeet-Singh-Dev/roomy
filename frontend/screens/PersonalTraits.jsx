@@ -60,7 +60,8 @@ const PersonalTraits = () => {
       if (response.ok) {
         // Handle a successful response
         const data = await response.json();
-        navigation.navigate('home');
+        const userName = data.name;
+        navigation.navigate('home', { userName: userName });
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
         console.error('Error updating traits.');
