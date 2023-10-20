@@ -6,7 +6,6 @@ import {
     logoutUser,
     getUserProfile,
     getAcceptedFriends,
-    getAcceptedFriends,
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';

@@ -24,7 +24,7 @@ const allowedOrigins = ['http://192.168.1.78:3000']; // Replace with your iPhone
 //   },
 // };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

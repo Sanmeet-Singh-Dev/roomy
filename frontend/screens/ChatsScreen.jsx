@@ -2,11 +2,13 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
-// import UserChat from '../components/UserChat';
+import UserChat from '../components/UserChat';
 import { Entypo } from '@expo/vector-icons';
+import { IPADDRESS } from '@env'
 
 const ChatsScreen = () => {
 
+    const iPAdress = IPADDRESS;
     const [acceptedFriends , setAcceptedFriends ] = useState([]);
     const { userId, setUserId } = useContext(UserType);
 
@@ -15,7 +17,7 @@ const ChatsScreen = () => {
     useEffect(()=> {
         const acceptedFriendsList = async () => {
             try{
-                const response = await fetch(`http://localhost:6000/api/users/accepted-friends/${userId}`);
+                const response = await fetch(`http://${iPAdress}:6000/api/users/accepted-friends/${userId}`);
                 const data = await response.json();
                 if(response.ok){
                     setAcceptedFriends(data);
