@@ -249,6 +249,33 @@ const getAcceptedFriends = asyncHandler (async (req, res) => {
     }
 });
 
+const setLocation = asyncHandler(async (req, res) => {
+    const { userId, location } = req.body;
+    console.log(userId)
+    console.log(req.body)
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+      }
+
+      user.location = {
+        type: 'Point',
+        coordinates: [location.coordinates[1], location.coordinates[0]],
+      };
+
+  
+      await user.save();
+  
+      res.status(200).json({ message: 'Location set successfully' });
+    } catch (error) {
+      console.error('Error setting location:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
 
 export {
     authUser,
@@ -257,5 +284,6 @@ export {
     getUserProfile,
     getAcceptedFriends,
     saveListMySpaceData,
-    getAllListsMySpace
+    getAllListsMySpace,
+    setLocation
 };

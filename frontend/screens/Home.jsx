@@ -64,6 +64,11 @@ const Home = () => {
       navigation.navigate('listMySpace');
     }
 
+    const handleLocation = () => {
+      console.log("Location clicked")
+      navigation.navigate('location');
+    }
+
     const handleSpaces = () => {
       console.log("Spaces Clicked")
       navigation.navigate('Spaces');
@@ -82,6 +87,11 @@ const Home = () => {
         <Button
             title="Logout"
             onPress={handleLogout}
+        />
+
+<Button
+            title="Location"
+            onPress={handleLocation}
         />
 
         <Button

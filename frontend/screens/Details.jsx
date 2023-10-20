@@ -29,7 +29,7 @@ const Details = () => {
             console.error('No authentication token available.');
             return;
           }
-      
+          
           const response = await fetch(`http://${ipAdress}:6000/api/users/profile`, {
             method: 'PUT',
             headers: {

@@ -122,8 +122,22 @@ const userSchema = mongoose.Schema({
         title: String,
         description: String,
         budget: Number,
+        location: {
+            type: {
+                type: String,
+                enum: ['Point'], // GeoJSON point
+                default: 'Point',
+            },
+            coordinates: {
+                type: [Number], // [longitude, latitude]
+                default: [0, 0], // Default coordinates
+            }
       },
-}, {
+
+    },
+  }, 
+
+{
     timestamps: true
 });
 
