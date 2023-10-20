@@ -6,7 +6,9 @@ import {
     logoutUser,
     getUserProfile,
     getAcceptedFriends,
-    getAcceptedFriends,
+    saveListMySpaceData,
+    getAllListsMySpace,
+    setLocation,
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -43,4 +45,7 @@ router.get('/user/:userId', getUser);
 router.post('/deleteMessages' , deleteMessage);
 router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
+router.post('/save-list-my-space', saveListMySpaceData);
+router.get('/list-spaces', getAllListsMySpace);
+router.post('/set-location', setLocation);
 export default router;

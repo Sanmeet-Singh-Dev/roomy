@@ -116,8 +116,28 @@ const userSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
-    ]
-}, {
+    ],
+    listMySpace: {
+        images: [String],
+        title: String,
+        description: String,
+        budget: Number,
+        location: {
+            type: {
+                type: String,
+                enum: ['Point'], // GeoJSON point
+                default: 'Point',
+            },
+            coordinates: {
+                type: [Number], // [longitude, latitude]
+                default: [0, 0], // Default coordinates
+            }
+      },
+
+    },
+  }, 
+
+{
     timestamps: true
 });
 

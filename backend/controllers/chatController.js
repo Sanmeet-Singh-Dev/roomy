@@ -5,7 +5,7 @@ import multer from 'multer';
 
 const getMessages = asyncHandler (async (req, res) => {
     try {
-        console.log("Inside get message");
+        // console.log("Inside get message");
         const { senderId, recepientId } = req.params;
         const messages = await Message.find({
             $or: [
@@ -38,7 +38,7 @@ const upload = multer({ storage: storage });
 // Endpoint to post messages and store it in backend
 const setMessage = asyncHandler ( async (req, res) => {
    try {
-    console.log("Inside set message");
+    // console.log("Inside set message");
         const { senderId, recepientId, messageType, messageText } = req.body;
 
         console.log("req",req);

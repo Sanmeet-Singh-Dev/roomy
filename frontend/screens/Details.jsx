@@ -29,7 +29,7 @@ const Details = () => {
             console.error('No authentication token available.');
             return;
           }
-      
+          
           const response = await fetch(`http://${ipAdress}:6000/api/users/profile`, {
             method: 'PUT',
             headers: {
@@ -46,7 +46,7 @@ const Details = () => {
           if (response.ok) {
             // Handle a successful response
             const data = await response.json();
-            navigation.navigate('imageAndBio');
+            navigation.navigate('location');
           } else {
             // Handle an unsuccessful response (e.g., show an error message)
             console.error('Error updating profile.');

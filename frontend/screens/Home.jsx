@@ -64,6 +64,16 @@ const Home = () => {
       navigation.navigate('listMySpace');
     }
 
+    const handleLocation = () => {
+      console.log("Location clicked")
+      navigation.navigate('location');
+    }
+
+    const handleSpaces = () => {
+      console.log("Spaces Clicked")
+      navigation.navigate('Spaces');
+    }
+
   return (
     <View>
         <SafeAreaView>
@@ -79,9 +89,18 @@ const Home = () => {
             onPress={handleLogout}
         />
 
+<Button
+            title="Location"
+            onPress={handleLocation}
+        />
+
         <Button
             title="List My Space"
             onPress={handleListMySpace}
+        />
+         <Button
+            title="Spaces"
+            onPress={handleSpaces}
         />
     
 
