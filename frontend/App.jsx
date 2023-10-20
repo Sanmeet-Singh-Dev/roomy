@@ -18,9 +18,7 @@ import NewChatScreen from './screens/NewChatScreen';
 import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import Spaces from './screens/Spaces';
 import CurrentLocation from './screens/CurrentLocation';
-
-
-
+import PersonalTraits from './screens/PersonalTraits';
 
 const stack = createNativeStackNavigator();
 
@@ -42,6 +40,7 @@ export default function App() {
         <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
         <stack.Screen name='interests' component={Interests} options={{ headerShown: false }} />
+        <stack.Screen name='personalTraits' component={PersonalTraits} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
         <stack.Screen name="newChat" component={NewChatScreen} />
         <stack.Screen name="Messages" component={ChatMessagesScreen} />       

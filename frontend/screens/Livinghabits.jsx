@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
+import { useNavigation } from '@react-navigation/native'
 
 const Livinghabits = () => {
 
@@ -11,6 +12,8 @@ const Livinghabits = () => {
     const [drinking, setDrinking] = useState(''); 
     const [pets, setPets] = useState('');
     const [food, setFood] = useState('');
+
+    const navigation = useNavigation();
 
     const handleSaveHabits = async () => {
         let ipAdress = IPADDRESS;
@@ -40,13 +43,11 @@ const Livinghabits = () => {
                 food
               }),
             });
-
-            console.log(response);
         
             if (response.ok) {
               // Handle a successful response
               const data = await response.json();
-              console.log("habits updated");
+              navigation.navigate('interests');
             } else {
               // Handle an unsuccessful response (e.g., show an error message)
               console.error('Error updating profile.');
@@ -60,7 +61,7 @@ const Livinghabits = () => {
       };
 
   return (
-    <View>
+    <View style={styles.container}>
         <ScrollView>
         <SafeAreaView>
         <Text>Personal and Living Habits</Text>
@@ -222,6 +223,10 @@ const Livinghabits = () => {
 export default Livinghabits
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 30,
+    },
     option: {
       borderWidth: 1,
       borderColor: '#ccc',

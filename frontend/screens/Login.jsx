@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, Button } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TextInput, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
@@ -30,18 +30,16 @@ const Login = () => {
 
         if (response.ok) { 
             const data = await response.json();
-            console.log(data);
+            console.log('done');
             const token = data.token;
-            console.log(token);
 
             const userName = data.name;
-            console.log(userName);
             
             await AsyncStorage.setItem('jwt', token);
 
             navigation.navigate('home', { userName: userName });
         } else {
-            const data = await response.json();
+            
             setError(data.message || 'Login failed. Please check your credentials.');
             console.log('Login failed. Please check your credentials.')
         }
@@ -53,7 +51,7 @@ const Login = () => {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <SafeAreaView>
                 <Text>Welcome To Roomy</Text>
             </SafeAreaView>
@@ -79,3 +77,10 @@ const Login = () => {
 }
 
 export default Login
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 30,
+    },
+})
