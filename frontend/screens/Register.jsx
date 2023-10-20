@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Platform, StatusBar, Button, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Platform, StatusBar, Button, TextInput } from 'react-native'
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
@@ -47,7 +47,7 @@ const Register = () => {
 
 
     return (
-        <View>
+        <View style={styles.container}>
             <SafeAreaView>
                 <Text>Enter your details</Text>
             </SafeAreaView>
@@ -78,3 +78,10 @@ const Register = () => {
 }
 
 export default Register
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 30,
+    },
+})

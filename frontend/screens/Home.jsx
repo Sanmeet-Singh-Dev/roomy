@@ -46,6 +46,7 @@ const Home = () => {
                 await AsyncStorage.removeItem('jwt');
               } catch (error) {
                 console.error('Error clearing user token from AsyncStorage:', error);
+                console.log("here here in logout catch")
             }
 
             navigation.navigate('login');
@@ -75,7 +76,7 @@ const Home = () => {
     }
 
   return (
-    <View>
+    <View style={styles.container}>
         <SafeAreaView>
         <Text>Hello, {userName}</Text>
 
@@ -111,4 +112,9 @@ const Home = () => {
 
 export default Home
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 30,
+  },
+})

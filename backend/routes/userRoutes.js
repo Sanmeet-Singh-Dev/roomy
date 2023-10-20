@@ -5,6 +5,7 @@ import {
     registerUser,
     logoutUser,
     getUserProfile,
+    getUserPreferences,
     getAcceptedFriends,
     saveListMySpaceData,
     getAllListsMySpace,
@@ -15,7 +16,9 @@ import { getMessages , setMessage , getUser , deleteMessage } from '../controlle
 import { 
     updateUserProfile,
     updateUserBio,
-    updateUserHabits
+    updateUserHabits,
+    updateUserInterests,
+    updateUserTraits,
 } from '../controllers/profileController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
@@ -45,6 +48,10 @@ router.get('/user/:userId', getUser);
 router.post('/deleteMessages' , deleteMessage);
 router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
+router.put('/interests', protect, updateUserInterests)
+router.put('/traits', protect, updateUserTraits)
+router.get('/:id/preferences', protect, getUserPreferences)
+
 router.post('/save-list-my-space', saveListMySpaceData);
 router.get('/list-spaces', getAllListsMySpace);
 router.post('/set-location', setLocation);
