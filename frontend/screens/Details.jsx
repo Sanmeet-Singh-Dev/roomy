@@ -60,7 +60,7 @@ const Details = () => {
     };
   
     return (
-      <View>
+      <View style={styles.container}>
         <SafeAreaView>
         <Text>Profile Details</Text>
         <TextInput
@@ -122,6 +122,10 @@ const Details = () => {
 export default Details
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 30,
+  },
   label: {
     fontSize: 16,
     fontWeight: 'bold',

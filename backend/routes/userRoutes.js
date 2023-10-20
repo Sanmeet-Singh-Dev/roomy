@@ -5,11 +5,14 @@ import {
     registerUser,
     logoutUser,
     getUserProfile,
+    getUserPreferences,
 } from '..//controllers/userControllers.js';
 import { 
     updateUserProfile,
     updateUserBio,
-    updateUserHabits
+    updateUserHabits,
+    updateUserInterests,
+    updateUserTraits,
 } from '../controllers/profileController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -22,4 +25,8 @@ router.put('/profile', protect, updateUserProfile);
     // .put(protect, updateUserProfile);
 router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
+router.put('/interests', protect, updateUserInterests)
+router.put('/traits', protect, updateUserTraits)
+router.get('/:id/preferences', protect, getUserPreferences)
+
 export default router;

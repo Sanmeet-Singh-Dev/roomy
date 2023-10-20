@@ -23,7 +23,6 @@ const registerUser = asyncHandler (async (req, res) => {
     
     if(user) {
         const token = generateToken(user._id.toString());
-        console.log('User created successfully:', token);
         res.status(201).json({
             _id: user._id,
             name: user.name, 
@@ -44,7 +43,6 @@ const authUser = asyncHandler (async (req, res) => {
 
     const user = await User.findOne({email});
 
-    
     if(user && await user.matchPassword(password)) {
         const token = generateToken(user._id.toString());
         res.status(201).json({
@@ -85,65 +83,37 @@ const getUserProfile = asyncHandler (async (req, res) => {
     res.status(200).json(user)
 });
 
-// @desc    Update user profile
-// route    PUT /api/users/profile
-// @access  Private
-// const updateUserProfile = asyncHandler (async (req, res) => {
-//     const user = await User.findById(req.user._id);
-
-//     if(user) {
-//         user.name = req.body.name || user.name;
-//         user.email = req.body.email || user.email;
-
-//         if(req.body.password) {
-//             user.password = req.body.password;
-//         }
-//         const updatedUser = await user.save();
-
-//         res.status(201).json({
-//             _id: updatedUser._id,
-//             name: updatedUser.name, 
-//             email: updatedUser.email
-//         });
-//     } else {
-//         res.status(404);
-//         throw new Error('User not found');
-//     }       
-
-//     res.status(200).json({message: 'Update user profile'})
-// });
-
-// @desc    Update user profile
-// @route   PUT /api/users/profile
-// @access  Private
-// const updateUserProfile = asyncHandler(async (req, res) => {
-//     console.log("Here")
-//     console.log(req)
-//       const userProfile = await UserProfile.findOne({ user: req.body._id });
+const getUserPreferences = asyncHandler(async (req, res) => {
+    const userId = req.params.id;
   
-      
+    // Fetch the user's preferences based on their ID
+    const user = await User.findOne({ _id: req.user._id.toString() });
   
-//       console.log('Received a profile update request:', req.body);
-//       console.log('Received a profile update request profile:', userProfile);
-    
-//       if (userProfile) {
-//         // Update user profile fields
-//         userProfile.fullName = req.body.fullName || userProfile.fullName;
-//         userProfile.gender = req.body.gender || userProfile.gender;
-//         userProfile.dateOfBirth = req.body.dateOfBirth || userProfile.dateOfBirth;
-    
-//         const updatedUserProfile = await userProfile.save();
-    
-//         res.status(200).json(updatedUserProfile);
-//       } else {
-//         res.status(404);
-//         throw new Error('User profile not found');
-//       }
-// });
+    if (user) {
+      // Return the user's preferences
+      res.status(200).json({
+        preferences: {
+          smoking: user.smoking,
+          guests: user.guests,
+          drinking: user.drinking,
+          pets: user.pets,
+          food: user.food,
+          interests: user.interests,
+          traits: user.traits,
+          // Add more preferences here
+        },
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+});
+  
 
 export {
     authUser,
     registerUser,
     logoutUser,
     getUserProfile,
+    getUserPreferences,
 };

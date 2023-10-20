@@ -11,13 +11,10 @@ import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
 import ChatsScreen from './screens/ChatsScreen';
 import { UserContext } from './UserContext';
-
 import ListMySpace from './screens/ListMySpace';
 import { Camera } from './Camera/Camera';
 import Interests from './screens/Interests';
-
-
-
+import PersonalTraits from './screens/PersonalTraits';
 
 const stack = createNativeStackNavigator();
 
@@ -38,6 +35,7 @@ export default function App() {
         <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
         <stack.Screen name='interests' component={Interests} options={{ headerShown: false }} />
+        <stack.Screen name='personalTraits' component={PersonalTraits} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
         <stack.Screen name="listMySpace" component={ListMySpace}/>
       </stack.Navigator>

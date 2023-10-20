@@ -77,21 +77,30 @@ const userSchema = mongoose.Schema({
         {
             type: String,
             enum: [
-                'Interest 1',
-                'Interest 2',
-                'Interest 3',
-                // Add more interests here
+                'music', 'dance', 'travel', 'art',
+                'photography', 'running', 'cook',
+                'bake', 'basketball', 'yoga', 'tv',
+                'hiking','swimming','fashion',
+                'netflix', 'gym', 'films', 'tennis',
+                'design', 'ted', 'writing', 'party',
+                'soccer', 'draw', 'climbing',
+                'fitness', 'singing', 'video games',
+                'shopping', 'outing', 'sports'
             ],
         },
     ],
-    personalTraits: [
+    traits: [
         {
             type: String,
             enum: [
-                'Trait 1',
-                'Trait 2',
-                'Trait 3',
-                // Add more personal traits here
+                'calm', 'friendly', 'organized', 'social',
+                'caring', 'easy going', 'energetic',
+                'relaxed', 'flexible', 'creative', 'cheerful',
+                'tolerant','clean','serious',
+                'active', 'balanced', 'charismatic', 'fun',
+                'dramatic', 'generous', 'helpful', 'humble',
+                'innovative', 'mature', 'modest',
+                'reliable', 'responsible'
             ],
         },
     ],

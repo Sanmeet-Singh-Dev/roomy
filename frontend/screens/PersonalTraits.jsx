@@ -4,38 +4,37 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
 import { useNavigation } from '@react-navigation/native'
 
-const Interests = () => {
-  const [selectedInterests, setSelectedInterests] = useState([]);
+const PersonalTraits = () => {
+  const [selectedTraits, setSelectedTraits] = useState([]);
 
   const navigation = useNavigation();
 
-  const availableInterests = [
-    'music', 'dance', 'travel', 'art',
-    'photography', 'running', 'cook',
-    'bake', 'basketball', 'yoga', 'tv',
-    'hiking','swimming','fashion',
-    'netflix', 'gym', 'films', 'tennis',
-    'design', 'ted', 'writing', 'party',
-    'soccer', 'draw', 'climbing',
-    'fitness', 'singing', 'video games',
-    'shopping', 'outing', 'sports'
+  const availableTraits = [
+    'calm', 'friendly', 'organized', 'social',
+    'caring', 'easy going', 'energetic',
+    'relaxed', 'flexible', 'creative', 'cheerful',
+    'tolerant','clean','serious',
+    'active', 'balanced', 'charismatic', 'fun',
+    'dramatic', 'generous', 'helpful', 'humble',
+    'innovative', 'mature', 'modest',
+    'reliable', 'responsible'
   ];
 
-  const toggleInterest = (interest) => {
-    if (selectedInterests.includes(interest)) {
+  const toggleTraits = (trait) => {
+    if (selectedTraits.includes(trait)) {
       // If the interest is already selected, remove it
-      setSelectedInterests((prevInterests) =>
-        prevInterests.filter((item) => item !== interest)
+      setSelectedTraits((prevTraits) =>
+        prevTraits.filter((item) => item !== trait)
       );
     } else {
       // If the interest is not selected, add it
-      setSelectedInterests((prevInterests) => [...prevInterests, interest]);
+      setSelectedTraits((prevTraits) => [...prevTraits, trait]);
     }
   };
 
-  const handleSaveInterests = async () => {
+  const handleSaveTraits = async () => {
     let ipAddress = IPADDRESS;
-    console.log('handleSaveInterests run');
+    console.log('handleSaveTraits run');
     try {
       // Get the authentication token from AsyncStorage
       console.log('in try');
@@ -47,24 +46,24 @@ const Interests = () => {
         return;
       }
   
-      const response = await fetch(`http://${ipAddress}:6000/api/users/interests`, {
+      const response = await fetch(`http://${ipAddress}:6000/api/users/traits`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Include the token as a bearer token
         },
         body: JSON.stringify({
-          interests: selectedInterests, // Pass the selected interests array
+          traits: selectedTraits, // Pass the selected interests array
         }),
       });
   
       if (response.ok) {
         // Handle a successful response
         const data = await response.json();
-        navigation.navigate('personalTraits');
+        navigation.navigate('home');
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
-        console.error('Error updating interests.');
+        console.error('Error updating traits.');
         console.log("here 2");
       }
     } catch (error) {
@@ -78,26 +77,27 @@ const Interests = () => {
   return (
     <View style={styles.containerMain}>
       <ScrollView>
-      <Text>Select Your Interests:</Text>
-      
+      <Text>Select Your Personal Traits:</Text>
       <View style={styles.container}>
-        {availableInterests.map((interest) => (
+
+        {availableTraits.map((traits) => (
           <TouchableOpacity
-            key={interest}
+            key={traits}
             style={[
               styles.option,
-              selectedInterests.includes(interest) && styles.selectedOption,
+              selectedTraits.includes(traits) && styles.selectedOption,
             ]}
-            onPress={() => toggleInterest(interest)}
+            onPress={() => toggleTraits(traits)}
           >
-            <Text style={styles.optionText}>{interest}</Text>
+            <Text style={styles.optionText}>{traits}</Text>
           </TouchableOpacity>
         ))}
 
       </View>
+      
       <Button
         title="Next"
-        onPress={handleSaveInterests}
+        onPress={handleSaveTraits}
       />
 
     </ScrollView>
@@ -106,7 +106,7 @@ const Interests = () => {
   )
 }
 
-export default Interests
+export default PersonalTraits
 
 const styles = StyleSheet.create({
   containerMain: {
@@ -114,25 +114,24 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   container: {
-    flexDirection: 'row', // Set the flexDirection to 'row' for horizontal layout
-    flexWrap: 'wrap', // Allow elements to wrap to the next line
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'flex-start',
-     // Align elements to the left
   },
   option: {
     borderWidth: 1,
     borderColor: '#ccc',
-    paddingVertical: 5, // Adjust vertical padding
-    paddingHorizontal: 10, // Adjust horizontal padding
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 5,
-    margin: 5, // Add margin to separate the options
+    margin: 5,
   },
   selectedOption: {
-    backgroundColor: 'blue', // Change to your desired highlight color
-    borderColor: 'blue', // Change to your desired highlight color
+    backgroundColor: 'blue',
+    borderColor: 'blue',
   },
   optionText: {
-    color: 'black', // Change to your desired text color
+    color: 'black',
     textAlign: 'center',
   },
 });
