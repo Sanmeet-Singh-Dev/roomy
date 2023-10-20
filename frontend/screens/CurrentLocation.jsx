@@ -30,16 +30,6 @@ const CurrentLocation = () => {
     });
   };
 
-//   const getCurrentLocation = async () => {
-//     // Get the current location
-//     if (location) {
-//       // Send the current location to your backend
-//       sendLocationDataToBackend({
-//         type: 'Point',
-//         coordinates: [location.coords.longitude, location.coords.latitude],
-//       });
-//     }
-//   };
 
 const getCurrentLocation = async () => {
     if (location) {
