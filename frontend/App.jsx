@@ -11,13 +11,13 @@ import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
 import ChatsScreen from './screens/ChatsScreen';
 import { UserContext } from './UserContext';
+
 import ListMySpace from './screens/ListMySpace';
 import { Camera } from './Camera/Camera';
 import Interests from './screens/Interests';
 import CalendarScreen from './screens/CalendarScreen'
 import CreateMeeting from './screens/CreateMeeting';
 import useStore from '../frontend/store/store';
-
 
 import NewChatScreen from './screens/NewChatScreen';
 import ChatMessagesScreen from './screens/ChatMessagesScreen';
