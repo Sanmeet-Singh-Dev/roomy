@@ -2,16 +2,18 @@ import { Pressable, StyleSheet, Text, View, Image } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { UserType } from '../UserContext';
+import { IPADDRESS } from "@env"
 
 const UserChat = ({ item }) => {
     const navigation = useNavigation();
     const { userId, setUserId } = useContext(UserType);
     const [messages, setMessages] = useState([]);
+    let ipAdress = IPADDRESS;
 
     const fetchMessages = async () => {
         try {
             
-            const response = await fetch(`http://localhost:6000/api/users/messages/${userId}/${item._id}`)
+            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${item._id}`)
             const data = await response.json();
             if (response.ok) {
                 setMessages(data);

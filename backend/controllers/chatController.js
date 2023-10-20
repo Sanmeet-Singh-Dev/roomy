@@ -5,7 +5,7 @@ import multer from 'multer';
 
 const getMessages = asyncHandler (async (req, res) => {
     try {
-        console.log("Inside get message");
+        // console.log("Inside get message");
         const { senderId, recepientId } = req.params;
         const messages = await Message.find({
             $or: [
@@ -38,15 +38,8 @@ const upload = multer({ storage: storage });
 // Endpoint to post messages and store it in backend
 const setMessage = asyncHandler ( async (req, res) => {
    try {
-    console.log("Inside set message");
+    // console.log("Inside set message");
         const { senderId, recepientId, messageType, messageText } = req.body;
-
-        console.log("req",req);
-
-        console.log("Sender id",senderId)
-        console.log("Reciever id",recepientId)
-        console.log("Message type",messageType)
-        console.log("message text",messageText)
 
         const newMessage = new Message({
             senderId,
@@ -71,7 +64,7 @@ const setMessage = asyncHandler ( async (req, res) => {
 const getUser = asyncHandler (async (req, res) => {
     try {
 
-        console.log("Inside get User");
+        // console.log("Inside get User");
         const { userId } = req.params;
         const recepientId = await User.findById(userId);
         res.json(recepientId);
@@ -87,7 +80,7 @@ const getUser = asyncHandler (async (req, res) => {
 const deleteMessage = asyncHandler (async (req, res) => {
     try {
 
-        console.log("Inside delete message");
+        // console.log("Inside delete message");
         const { messages } = req.body;
 
         if (!Array.isArray(messages) || messages.length === 0) {
