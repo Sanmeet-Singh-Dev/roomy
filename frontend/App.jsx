@@ -17,6 +17,7 @@ import Interests from './screens/Interests';
 import NewChatScreen from './screens/NewChatScreen';
 import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import Spaces from './screens/Spaces';
+import Location from './screens/Location';
 
 
 
@@ -36,6 +37,7 @@ export default function App() {
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />
         <stack.Screen name='register' component={Register} options={{ headerShown: false }} />
         <stack.Screen name='home' component={Home} options={{ headerShown: false }} />
+        <stack.Screen name="location" component={Location}/>
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
         <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />

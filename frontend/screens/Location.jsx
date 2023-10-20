@@ -1,12 +1,27 @@
 import { Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import * as Location from 'expo-location'
 
 const Location = () => {
 
     const [location, setLocation] = useState('');
 
     const navigation = useNavigation();
+
+    useEffect(() => {
+      const getPermissions = async () => {
+        let { status } = await Location.requestForegroundPermissionAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+        return;
+        }
+
+        let currentLocation = await Location.get();
+      }
+
+    }, [])
+    
 
     const handleSaveLocation = async () => {
         try {
@@ -39,7 +54,7 @@ const Location = () => {
         
             <Text>Location:</Text>
             <TextInput
-                placeholder="Date of Birth"
+                placeholder="location"
                 value={location}
                 onChangeText={setLocation}
             />
