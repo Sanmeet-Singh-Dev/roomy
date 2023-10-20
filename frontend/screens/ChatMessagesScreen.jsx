@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from "expo-image-picker";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import { IPADDRESS } from '@env';
+import { IPADDRESS } from "@env"
 
 const ChatMessagesScreen = () => {
     const iPAdress = IPADDRESS;
@@ -23,6 +23,8 @@ const ChatMessagesScreen = () => {
     const { recepientId } = route.params;
 
     const scrollViewRef = useRef(null);
+
+    let ipAdress = IPADDRESS;
 
     useEffect(() => {
         scrollToBottom();
@@ -47,7 +49,7 @@ const ChatMessagesScreen = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://${iPAdress}:6000/api/users/messages/${userId}/${recepientId}`)
+            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${recepientId}`)
             // console.log("response message",response)
             const data = await response.json();
             // console.log("Data ",data);
@@ -70,7 +72,7 @@ const ChatMessagesScreen = () => {
     useEffect(() => {
         const fetchRecepientData = async () => {
             try {
-                const response = await fetch(`http://${iPAdress}:6000/api/users/user/${recepientId}`);
+                const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`);
                 // console.log("response ", response);
                 const data = await response.json();
                 // console.log("User data",data)
@@ -124,7 +126,7 @@ const ChatMessagesScreen = () => {
                 messageText: messageText,
               };
 
-            const response = await fetch(`http://${iPAdress}:6000/api/users/messages`, {
+            const response = await fetch(`http://${ipAdress}:6000/api/users/messages`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -177,13 +179,16 @@ const ChatMessagesScreen = () => {
                         onPress={() => deleteMessages(selectedMessages)}
                         name="delete" size={24} color="black" />
                 </View>
-            ) : null
+            ) : 
+            <FontAwesome 
+            onPress={() => navigation.navigate('Calendar')}
+            name="calendar" size={18} color="black" />    
         })
     }, [recepientData, selectedMessages]);
 
     const deleteMessages = async (messageIds) => {
         try {
-            const response = await fetch(`http://${iPAdress}:6000/api/users/deleteMessages`, {
+            const response = await fetch(`http://${ipAdress}:6000/api/users/deleteMessages`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -320,14 +325,9 @@ const ChatMessagesScreen = () => {
                         onPress={pickimage}
                         name="camera" size={24} color="gray" />
 
-                    {/* <FontAwesome 
-                    onPress={() =>
-                        navigation.navigate('CreateTask', {
-                          updateCurrentTask: updateCurrentTask,
-                          currentDate,
-                          createNewCalendar: createNewCalendar
-                        })}
-                    name="calendar-plus-o" size={24} color="black" /> */}
+<FontAwesome 
+            onPress={() => navigation.navigate('Calendar')}
+            name="calendar" size={18} color="black" />   
                     
                 </View>
                 <Pressable
