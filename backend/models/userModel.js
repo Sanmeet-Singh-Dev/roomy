@@ -116,7 +116,13 @@ const userSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
-    ]
+    ],
+    listMySpace: {
+        images: [String],
+        title: String,
+        description: String,
+        budget: Number,
+      },
 }, {
     timestamps: true
 });

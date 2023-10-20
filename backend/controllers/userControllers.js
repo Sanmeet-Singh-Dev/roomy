@@ -85,6 +85,100 @@ const getUserProfile = asyncHandler (async (req, res) => {
     res.status(200).json(user)
 });
 
+//@desc    Update user profile
+// route    POST /api/users/save-list-my-space
+// @access  Private
+
+// Controller function to save listMySpace data
+const saveListMySpaceData = asyncHandler(async (req, res) => {
+    const { userId, data } = req.body; // Assuming data is an object with title, description, budget, and image URLs
+  
+    try {
+      // Find the user document and update the 'listMySpace' field with the new data
+      const user = await User.findById(userId);
+      if (user) {
+        user.listMySpace = data;
+        await user.save();
+        res.status(201).json({ message: 'ListMySpace data saved successfully' });
+      } else {
+        res.status(404);
+        throw new Error('User not found');
+      }
+    } catch (error) {
+      res.status(500);
+      throw new Error('Error saving ListMySpace data: ' + error.message);
+    }
+  });
+
+//   const getAllListsMySpace = asyncHandler(async (req, res) => {
+//     try {
+//       // Find all users in the database
+//       const users = await User.find();
+  
+//       // Filter users who have a non-empty listMySpace object
+//       const usersWithListMySpace = users.filter((user) => user.listMySpace && Object.keys(user.listMySpace).length > 1);
+//         console.log(usersWithListMySpace)
+//       // Extract and combine listMySpace data from filtered users
+//       const allListsMySpace = usersWithListMySpace.map((user) => user.listMySpace);
+  
+//       res.json(allListsMySpace);
+//     } catch (error) {
+//       console.error('Error fetching all listMySpace data:', error);
+//       res.status(500).json({ message: 'Internal server error' });
+//     }
+//   });
+
+// const getAllListsMySpace = asyncHandler(async (req, res) => {
+//     try {
+//       // Find all users in the database
+//       const users = await User.find();
+  
+//       // Log the listMySpace field for each user
+//       users.forEach((user) => {
+//         console.log('User ID:', user._id);
+//         console.log('listMySpace:', user.listMySpace);
+//       });
+  
+//       // Filter users who have a non-empty listMySpace object
+//       const usersWithListMySpace = users.filter((user) => user.listMySpace && Object.keys(user.listMySpace).length > 0);
+  
+//       // Extract and combine listMySpace data from filtered users
+//       const allListsMySpace = usersWithListMySpace.map((user) => user.listMySpace);
+  
+//       res.json(allListsMySpace);
+//     } catch (error) {
+//       console.error('Error fetching all listMySpace data:', error);
+//       res.status(500).json({ message: 'Internal server error' });
+//     }
+//   });
+
+const getAllListsMySpace = asyncHandler(async (req, res) => {
+    try {
+      // Find all users in the database
+      const users = await User.find();
+  
+      // Filter users who have a non-empty listMySpace object
+      const usersWithListMySpace = users.filter((user) => {
+        const { listMySpace } = user;
+        return listMySpace && listMySpace.title && listMySpace.description && listMySpace.budget;
+      });
+  
+      // Extract and combine listMySpace data from filtered users
+      const allListsMySpace = usersWithListMySpace.map((user) => user.listMySpace);
+  
+      res.json(allListsMySpace);
+    } catch (error) {
+      console.error('Error fetching all listMySpace data:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
+  
+  
+  
+
+
+  
 // @desc    Update user profile
 // route    PUT /api/users/profile
 // @access  Private
@@ -161,5 +255,7 @@ export {
     registerUser,
     logoutUser,
     getUserProfile,
-    getAcceptedFriends
+    getAcceptedFriends,
+    saveListMySpaceData,
+    getAllListsMySpace
 };

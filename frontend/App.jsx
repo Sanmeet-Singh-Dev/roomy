@@ -16,6 +16,7 @@ import { Camera } from './Camera/Camera';
 import Interests from './screens/Interests';
 import NewChatScreen from './screens/NewChatScreen';
 import ChatMessagesScreen from './screens/ChatMessagesScreen';
+import Spaces from './screens/Spaces';
 
 
 
@@ -43,6 +44,7 @@ export default function App() {
         <stack.Screen name="newChat" component={NewChatScreen} />
         <stack.Screen name="Messages" component={ChatMessagesScreen} />       
         <stack.Screen name="listMySpace" component={ListMySpace}/>
+        <stack.Screen name="Spaces" component={Spaces}/>
       </stack.Navigator>
       
       
