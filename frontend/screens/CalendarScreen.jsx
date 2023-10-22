@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState , Component} from 'react';
+import React, { Fragment, useEffect, useState , useContext} from 'react';
 import {
   Alert,
   Dimensions,
@@ -22,7 +22,9 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import Task from '../components/Task';
 import useStore from '../store/store';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , useRoute} from '@react-navigation/native';
+import { IPADDRESS } from "@env"
+import { UserType } from '../UserContext';
 
 const styles = StyleSheet.create({
   taskListContent: {
@@ -156,11 +158,10 @@ const datesWhitelist = [
 const CalendarScreen = () => {
 
     const navigation = useNavigation();
+    const route = useRoute();
+    const { recepientId } = route.params;
 
-  const stateCheck = useStore(); // Access the entire state
-
-  // Log the state to the console
-//   console.log("Current State:", stateCheck);
+  const stateCheck = useStore();
 
   useEffect(() => {
     const init = async () => {
@@ -181,12 +182,9 @@ const CalendarScreen = () => {
       const calendars = await Calendar.getCalendarsAsync(
         Calendar.EntityTypes.EVENT
       );
-    //   console.log('Here are all your calendars:');
-    //   console.log({ calendars });
     }
     else {
          status = await Calendar.requestCalendarPermissionsAsync();
-        // console.log("Status in else ",status)
     }
   };
 
@@ -200,8 +198,6 @@ const CalendarScreen = () => {
       const calendars = await Calendar.getRemindersPermissionsAsync(
         Calendar.EntityTypes.REMINDER
       );
-    //   console.log('Here are all your calendars:');
-    //   console.log({ calendars });
     }
     else {
         status = await Calendar.requestRemindersPermissionsAsync();
@@ -209,14 +205,20 @@ const CalendarScreen = () => {
     }
   };
 
-  const { updateSelectedTask, deleteSelectedTask, todo } = useStore(
-    (state) => ({
-      updateSelectedTask: state.updateSelectedTask,
-      deleteSelectedTask: state.deleteSelectedTask,
-      todo: state.todo
-    })
-  );
+  const updateSelectedTask = async ({date, meetings}) => {
+    // UPDATE LOGIC HERE
+    // console.log("Meeting to update ", meetings);
+    // console.log("Date is ", date);
+  }
 
+  const deleteSelectedTask = async ({date, meetings}) => {
+    // DELETE LOGIC HERE
+    // console.log("Meeting to delete ", meetings);
+    // console.log("Date is ", date);
+  }
+
+  const { userId, setUserId } = useContext(UserType);
+  const [meetings, setMeetings] = useState([]);
   const [todoList, setTodoList] = useState([]);
   const [markedDate, setMarkedDate] = useState([]);
   const [currentDate, setCurrentDate] = useState(
@@ -227,11 +229,42 @@ const CalendarScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
+  let ipAdress = IPADDRESS;
+
+  const fetchMeetings = async () => {
+    try {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/meetings/${userId}/${recepientId}`)
+        
+        const data = await response.json();
+
+        const createTodoList = [];
+
+// Loop through the data array to extract creatTodo objects
+data.forEach((item) => {
+    if (item.creatTodo) {
+        createTodoList.push(item.creatTodo);
+    }
+});
+
+        if (response.ok) {
+            setMeetings(createTodoList);
+        }
+        else {
+            console.log("error showing meetings", response.status.meeting);
+        }
+    }
+    catch (error) {
+        console.log("Error fetching meetings", error)
+    }
+}
+
+useEffect(() => {
+    fetchMeetings();
+}, [meetings])
 
   useEffect(() => {
-    handleDeletePreviousDayTask(todo);
-    // console.log("To do",todo);
-  }, [todo, currentDate]);
+    handleDeletePreviousDayTask(meetings);
+  }, [meetings, currentDate]);
 
   const handleDeletePreviousDayTask = async (oldTodo) => {
     try {
@@ -279,9 +312,9 @@ const CalendarScreen = () => {
 
   const updateCurrentTask = async (currentDate) => {
     try {
-      if (todo !== [] && todo) {
-        const markDot = todo.map((item) => item.markedDot);
-        const todoLists = todo.filter((item) => {
+      if (meetings !== [] && meetings) {
+        const markDot = meetings.map((item) => item.markedDot);
+        const todoLists = meetings.filter((item) => {
           if (currentDate === item.date) {
             return true;
           }
@@ -411,7 +444,8 @@ const CalendarScreen = () => {
 
   return (
     <Fragment>
-      {selectedTask !== null && (
+      {
+      selectedTask !== null && (
         <Task {...{ setModalVisible, isModalVisible }}>
           <DateTimePicker
             isVisible={isDateTimePickerVisible}
@@ -563,7 +597,7 @@ const CalendarScreen = () => {
                   }
                   await updateSelectedTask({
                     date: currentDate,
-                    todo: selectedTask
+                    meetings: selectedTask
                   });
                   updateCurrentTask(currentDate);
                 }}
@@ -585,7 +619,7 @@ const CalendarScreen = () => {
                   deleteAlarm();
                   await deleteSelectedTask({
                     date: currentDate,
-                    todo: selectedTask
+                    meetings: selectedTask
                   });
                   updateCurrentTask(currentDate);
                 }}
@@ -662,7 +696,8 @@ const CalendarScreen = () => {
               navigation.navigate('CreateMeeting', {
                 updateCurrentTask: updateCurrentTask,
                 currentDate,
-                createNewCalendar: createNewCalendar
+                createNewCalendar: createNewCalendar,
+                recepientId: recepientId   
               })
           }
           style={styles.viewTask}

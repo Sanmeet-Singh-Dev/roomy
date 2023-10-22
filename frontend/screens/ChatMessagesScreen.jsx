@@ -181,7 +181,9 @@ const ChatMessagesScreen = () => {
                 </View>
             ) : 
             <FontAwesome 
-            onPress={() => navigation.navigate('Calendar')}
+            onPress={() => navigation.navigate('Calendar', {
+                recepientId: recepientId
+            })}
             name="calendar" size={18} color="black" />    
         })
     }, [recepientData, selectedMessages]);
@@ -326,7 +328,9 @@ const ChatMessagesScreen = () => {
                         name="camera" size={24} color="gray" />
 
 <FontAwesome 
-            onPress={() => navigation.navigate('Calendar')}
+            onPress={() => navigation.navigate('Calendar', {
+                recepientId: recepientId
+            })}
             name="calendar" size={18} color="black" />   
                     
                 </View>
