@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
 import UserChat from '../components/UserChat';
-import UserChat from '../components/UserChat';
 import { Entypo } from '@expo/vector-icons';
 import { IPADDRESS } from "@env"
 
