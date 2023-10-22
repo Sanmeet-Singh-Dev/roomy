@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,9 +11,14 @@ import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
 import ChatsScreen from './screens/ChatsScreen';
 import { UserContext } from './UserContext';
+
 import ListMySpace from './screens/ListMySpace';
 import { Camera } from './Camera/Camera';
 import Interests from './screens/Interests';
+import CalendarScreen from './screens/CalendarScreen'
+import CreateMeeting from './screens/CreateMeeting';
+import useStore from '../frontend/store/store';
+
 import NewChatScreen from './screens/NewChatScreen';
 import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import Spaces from './screens/Spaces';
@@ -24,6 +29,10 @@ const stack = createNativeStackNavigator();
 
 export default function App() {
 
+  const init = useStore((store) => store.init);
+  useEffect(() => {
+    init();
+  }, []);
 
   return (
 
@@ -45,11 +54,12 @@ export default function App() {
         <stack.Screen name="newChat" component={NewChatScreen} />
         <stack.Screen name="Messages" component={ChatMessagesScreen} />       
         <stack.Screen name="listMySpace" component={ListMySpace}/>
+        <stack.Screen name="Calendar" component={CalendarScreen} />
+        <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces}/>
       </stack.Navigator>
-      
-      
 
+      
     </NavigationContainer>
     </UserContext>
 

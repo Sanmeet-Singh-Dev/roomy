@@ -5,8 +5,8 @@ import {
     registerUser,
     logoutUser,
     getUserProfile,
-    getUserPreferences,
     getAcceptedFriends,
+    getUserPreferences,
     saveListMySpaceData,
     getAllListsMySpace,
     setLocation,
@@ -22,6 +22,7 @@ import {
 } from '../controllers/profileController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
+import { getMeetings, setMeeting } from '../controllers/meetingController.js';
 
 //Configure multer for handling file uploads 
 const storage = multer.diskStorage({
@@ -43,7 +44,9 @@ router.post('/logout', logoutUser);
 router.put('/profile', protect, updateUserProfile);
 router.get('/accepted-friends/:userId', getAcceptedFriends);
 router.get('/messages/:senderId/:recepientId', getMessages);
+router.get('/meetings/:senderId/:recepientId', getMeetings);
 router.post('/messages' , upload.single('imageFile'),setMessage);
+router.post('/meetings' , setMeeting);
 router.get('/user/:userId', getUser);
 router.post('/deleteMessages' , deleteMessage);
 router.put('/bio', protect, updateUserBio)

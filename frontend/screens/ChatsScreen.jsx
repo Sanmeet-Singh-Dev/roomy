@@ -4,7 +4,7 @@ import { UserType } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
 import UserChat from '../components/UserChat';
 import { Entypo } from '@expo/vector-icons';
-import { IPADDRESS } from '@env'
+import { IPADDRESS } from "@env"
 
 const ChatsScreen = () => {
 
@@ -13,11 +13,12 @@ const ChatsScreen = () => {
     const { userId, setUserId } = useContext(UserType);
 
     const navigation = useNavigation();
+    let ipAdress = IPADDRESS;
 
     useEffect(()=> {
         const acceptedFriendsList = async () => {
             try{
-                const response = await fetch(`http://${iPAdress}:6000/api/users/accepted-friends/${userId}`);
+                const response = await fetch(`http://${ipAdress}:6000/api/users/accepted-friends/${userId}`);
                 const data = await response.json();
                 if(response.ok){
                     setAcceptedFriends(data);
