@@ -3,13 +3,31 @@ import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from "@env"
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Details = () => {
     const [fullName, setFullName] = useState('');
     const [gender, setGender] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+      const currentDate = selectedDate || dateOfBirth; // Use the selected date or the current value of dateOfBirth
+      setShow(Platform.OS === 'ios');
+    
+      const formattedDate = currentDate.toLocaleDateString(); // Format the selected date
+    
+      setDateOfBirth(formattedDate); // Set the formatted date in your state
+    
+    };
+  
+    const showDatepicker = () => {
+      setShow(false);
+    };
+
     let ipAdress = IPADDRESS;
-    console.log(ipAdress);
+    console.log(dateOfBirth.valueOf());
 
     const navigation = useNavigation();
 
@@ -105,10 +123,21 @@ const Details = () => {
 
       </View>
 
-        <TextInput
+        {/* <TextInput
           placeholder="Date of Birth"
           value={dateOfBirth}
           onChangeText={setDateOfBirth}
+        /> */}
+
+        <Button onPress={showDatepicker} title="Show Date Spinner" />
+
+        <DateTimePicker
+        testID="dateTimePicker"
+        value={date}
+        mode="date" // Set to 'spinner' for spinner interface
+        // is24Hour={true}
+        display="default" // Set to 'spinner' to show spinner by default
+        onChange={onChange}
         />
         
         <Button title="Save Profile" onPress={handleSaveProfile} />

@@ -170,13 +170,7 @@ const getAllListsMySpace = asyncHandler(async (req, res) => {
       console.error('Error fetching all listMySpace data:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  });
-  
-  
-  
-  
-
-
+});
   
 const getUserPreferences = asyncHandler(async (req, res) => {
     const userId = req.params.id;

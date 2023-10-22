@@ -20,8 +20,17 @@ import {
     updateUserInterests,
     updateUserTraits,
 } from '../controllers/profileController.js';
+import {
+    // getUserPreferences,
+    calculateCompatibilityWithAllUsers,
+    getAllUsers,
+} from '../controllers/compatibilityController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
+
+// router.get('/:id/preferences', protect, getUserPreferences);
+// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
+// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
 
 //Configure multer for handling file uploads 
 const storage = multer.diskStorage({
@@ -55,8 +64,10 @@ router.get('/:id/preferences', protect, getUserPreferences)
 router.post('/save-list-my-space', saveListMySpaceData);
 router.get('/list-spaces', getAllListsMySpace);
 router.post('/set-location', protect, setLocation);
-// router.put('/interests', protect, updateUserInterests)
-// router.put('/traits', protect, updateUserTraits)
-// router.get('/:id/preferences', protect, getUserPreferences)
+
+router.get('/all', getAllUsers);
+
+// router.get('/preferences', protect, getUserPreferences);
+router.get('/compatibility', protect, calculateCompatibilityWithAllUsers);
 
 export default router;
