@@ -33,6 +33,10 @@ import { getMeetings, setMeeting } from '../controllers/meetingController.js';
 // router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
 // router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
 
+// router.get('/:id/preferences', protect, getUserPreferences);
+// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
+// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
+
 //Configure multer for handling file uploads 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
