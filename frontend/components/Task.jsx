@@ -50,6 +50,10 @@ export default class Task extends React.Component {
 
     // console.log("Here in task ");
     const { isModalVisible, children, setModalVisible } = this.props;
+
+    // console.log("Props", this.props);
+
+
     return (
       <Modal
         animationType="fade"

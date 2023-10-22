@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 import {
   Alert,
   Dimensions,
@@ -21,6 +21,8 @@ import useKeyboardHeight from '../hooks/useKeyboardHeight';
 import useStore from '../store/store';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { UserType } from '../UserContext';
+import { IPADDRESS } from "@env"
 
 const { width: vw } = Dimensions.get('window');
 // moment().format('YYYY/MM/DD')
@@ -155,6 +157,11 @@ const CreateMeeting = ({ route }) => {
   const [isAlarmSet, setAlarmSet] = useState(false);
   const [alarmTime, setAlarmTime] = useState(moment().format());
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
+  const [meetings, setMeetings] = useState([]);
+  const [recepientData, setRecepientData] = useState();
+    const recepientId = route.params?.recepientId;
+    const { userId, setUserId } = useContext(UserType);
+    let ipAdress = IPADDRESS;
 
   useEffect(() => {
     if (keyboardHeight > 0) {
@@ -163,6 +170,45 @@ const CreateMeeting = ({ route }) => {
       setVisibleHeight(Dimensions.get('window').height);
     }
   }, [keyboardHeight]);
+
+  const fetchMeetings = async () => {
+    try {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/meetings/${userId}/${recepientId}`)
+        // console.log("response message",response)
+        const data = await response.json();
+        // console.log("Data ",data);
+        if (response.ok) {
+            setMeetings(data);
+        }
+        else {
+            console.log("error showing messages", response.status.meeting);
+        }
+    }
+    catch (error) {
+        console.log("Error fetching messages", error)
+    }
+}
+
+useEffect(() => {
+    fetchMeetings();
+}, [meetings])
+
+useEffect(() => {
+    const fetchRecepientData = async () => {
+        try {
+            const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`);
+            // console.log("response ", response);
+            const data = await response.json();
+            // console.log("User data",data)
+            setRecepientData(data);
+        }
+        catch (error) {
+            console.log("Error retrieving details ", error);
+        }
+    }
+
+    fetchRecepientData();
+}, [])
 
   const handleAlarmSet = () => {
     setAlarmSet(!isAlarmSet);
@@ -225,6 +271,55 @@ const CreateMeeting = ({ route }) => {
   function generateUniqueId() {
     return (idCounter++).toString();
   }
+
+  const handleSend = async (creatTodo) => {
+
+    // console.log("Create to in start is", creatTodo);
+    const temp = recepientId;
+    const tempCreateTodo = creatTodo;
+    try {
+        const formData = new FormData();
+        formData.append("senderId", userId);
+        formData.append("recepientId", temp);
+        formData.append("creatTodo", tempCreateTodo);
+    
+
+          function getFormDataValue(formData, fieldName) {
+            for (const [key, value] of formData._parts) {
+              if (key === fieldName) {
+                return value;
+              }
+            }
+            return null;
+          }
+          const senderId = getFormDataValue(formData, "senderId");
+          const recepientId = getFormDataValue(formData, "recepientId");
+          const creatTodo = getFormDataValue(formData, "creatTodo");
+
+          const data = {
+            senderId: senderId,
+            recepientId: recepientId,
+            creatTodo: creatTodo
+          };
+
+        const response = await fetch(`http://${ipAdress}:6000/api/users/meetings`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (response.ok) {
+            // setMeetings("");
+console.log("Response OK");
+            // fetchMeetings();
+        }
+    }
+    catch (error) {
+        console.log("Error in sending meetings", error);
+    }
+}
   
   const handleCreateEventData = async (createEventId) => {
     // console.log("Creating the meeting ",createEventId);
@@ -262,6 +357,7 @@ const CreateMeeting = ({ route }) => {
       }
     };
 
+    await handleSend(creatTodo);
     // console.log("TO DO : ",creatTodo);
     navigation.goBack();
     await updateTodo(creatTodo);
