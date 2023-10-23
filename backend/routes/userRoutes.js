@@ -22,7 +22,7 @@ import {
 } from '../controllers/profileController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
-import { getMeetings, setMeeting } from '../controllers/meetingController.js';
+import { deleteMeeting, getMeetings, setMeeting, updateMeeting } from '../controllers/meetingController.js';
 
 //Configure multer for handling file uploads 
 const storage = multer.diskStorage({
@@ -49,6 +49,8 @@ router.post('/messages' , upload.single('imageFile'),setMessage);
 router.post('/meetings' , setMeeting);
 router.get('/user/:userId', getUser);
 router.post('/deleteMessages' , deleteMessage);
+router.post('/deleteMeetings', deleteMeeting);
+router.put('/updateMeetings', updateMeeting);
 router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
 router.put('/interests', protect, updateUserInterests)

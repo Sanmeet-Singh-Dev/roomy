@@ -17,7 +17,6 @@ import { Camera } from './Camera/Camera';
 import Interests from './screens/Interests';
 import CalendarScreen from './screens/CalendarScreen'
 import CreateMeeting from './screens/CreateMeeting';
-import useStore from '../frontend/store/store';
 
 import NewChatScreen from './screens/NewChatScreen';
 import ChatMessagesScreen from './screens/ChatMessagesScreen';
@@ -28,11 +27,6 @@ import PersonalTraits from './screens/PersonalTraits';
 const stack = createNativeStackNavigator();
 
 export default function App() {
-
-  const init = useStore((store) => store.init);
-  useEffect(() => {
-    init();
-  }, []);
 
   return (
 
