@@ -27,6 +27,40 @@ const Home = () => {
 
       fetchUsers();
   }, []);
+
+    const handleCompatibility = async () => {
+      try {
+        // Get the authentication token from AsyncStorage
+        const token = await AsyncStorage.getItem('jwt');
+        console.log(token);
+        if (!token) {
+          // Handle the case where the token is not available
+          console.error('No authentication token available.');
+          return;
+        }
+    
+        const response = await fetch(`http://${ipAdress}:6000/api/users/compatibility`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          },
+        });
+    
+        if (response.ok) {
+          // Handle a successful response
+          const data = await response.json();
+          // navigation.navigate('interests');
+          console.log("Response from compatibility data",data);
+        } else {
+          // Handle an unsuccessful response (e.g., show an error message)
+          console.error('Error fetching users.');
+        }
+      } catch (error) {
+        // Handle fetch or AsyncStorage errors
+        console.error('Error:', error);
+      }
+    }
     
     const handleLogout = async () => {
         // Send a request to the logout endpoint on your server
@@ -103,6 +137,11 @@ const Home = () => {
             title="Spaces"
             onPress={handleSpaces}
         />
+
+          <Button
+            title="Compatibility"
+            onPress={handleCompatibility}
+        />        
     
 
         </SafeAreaView>
