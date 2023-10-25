@@ -1,5 +1,5 @@
-import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
@@ -7,14 +7,15 @@ import jwt_decode from "jwt-decode";
 import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
-
-
+import UserCard from '../components/UserCard';
 
 const Home = () => {
     const route = useRoute();
     const userName = route.params?.userName;
     const navigation = useNavigation();
     let ipAdress = IPADDRESS;
+    const [compatibilityData, setCompatibilityData] = useState([]);
+    const userDataArray = [];
     
     const { userId, setUserId } = useContext(UserType);
     useEffect(() => {
@@ -25,43 +26,46 @@ const Home = () => {
           setUserId(userId);
       };
 
+      //fucntion to fetch all users and compatibility percentage
+      const fetchCompatibleUsers = async () => {
+        try {
+          // Get the authentication token from AsyncStorage
+          const token = await AsyncStorage.getItem('jwt');
+          
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+      
+          //sending request to API to get all users
+          const response = await fetch(`http://${ipAdress}:6000/api/users/compatibility`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+            },
+          });
+      
+          if (response.ok) {
+            // Handle a successful response
+            const data = await response.json();
+            setCompatibilityData(data);
+          } else {
+            // Handle an unsuccessful response (e.g., show an error message)
+            console.error('Error fetching users.');
+          }
+        } catch (error) {
+          // Handle fetch or AsyncStorage errors
+          console.error('Error:', error);
+        }
+      }
+
       fetchUsers();
+      fetchCompatibleUsers()
   }, []);
 
-    const handleCompatibility = async () => {
-      try {
-        // Get the authentication token from AsyncStorage
-        const token = await AsyncStorage.getItem('jwt');
-        console.log(token);
-        if (!token) {
-          // Handle the case where the token is not available
-          console.error('No authentication token available.');
-          return;
-        }
-    
-        const response = await fetch(`http://${ipAdress}:6000/api/users/compatibility`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
-          },
-        });
-    
-        if (response.ok) {
-          // Handle a successful response
-          const data = await response.json();
-          // navigation.navigate('interests');
-          console.log("Response from compatibility data",data);
-        } else {
-          // Handle an unsuccessful response (e.g., show an error message)
-          console.error('Error fetching users.');
-        }
-      } catch (error) {
-        // Handle fetch or AsyncStorage errors
-        console.error('Error:', error);
-      }
-    }
-    
+    //function to handle logout
     const handleLogout = async () => {
         // Send a request to the logout endpoint on your server
         try {
@@ -111,40 +115,46 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-        <SafeAreaView>
-        <Text>Hello, {userName}</Text>
+      <SafeAreaView>
+        <ScrollView>
 
-        <Ionicons 
-          onPress={() => navigation.navigate("Chats")}
-          name="chatbox-ellipses-outline" size={24} color="black" />
+          <Text>Hello, {userName}</Text>
 
+          <Ionicons 
+            onPress={() => navigation.navigate("Chats")}
+            name="chatbox-ellipses-outline" size={24} color="black" />
 
-        <Button
-            title="Logout"
-            onPress={handleLogout}
-        />
-
-<Button
-            title="Location"
-            onPress={handleLocation}
-        />
-
-        <Button
-            title="List My Space"
-            onPress={handleListMySpace}
-        />
-         <Button
-            title="Spaces"
-            onPress={handleSpaces}
-        />
 
           <Button
-            title="Compatibility"
-            onPress={handleCompatibility}
-        />        
-    
+              title="Logout"
+              onPress={handleLogout}
+          />
 
-        </SafeAreaView>
+          <Button
+              title="Location"
+              onPress={handleLocation}
+          />
+
+          <Button
+              title="List My Space"
+              onPress={handleListMySpace}
+          />
+          <Button
+              title="Spaces"
+              onPress={handleSpaces}
+          />
+
+          
+
+          <Text>Welcome to the Home Screen</Text>
+
+          //passing user data to UserCard component
+          {compatibilityData.map((userData, index) => (
+            <UserCard key={index} userData={userData} />
+          ))}
+      
+        </ScrollView>
+      </SafeAreaView>
     </View>
   )
 }
