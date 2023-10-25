@@ -27,15 +27,7 @@ import {
 } from '../controllers/compatibilityController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
-import { getMeetings, setMeeting } from '../controllers/meetingController.js';
-
-// router.get('/:id/preferences', protect, getUserPreferences);
-// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
-// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
-
-// router.get('/:id/preferences', protect, getUserPreferences);
-// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
-// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
+import { deleteMeeting, getMeetings, setMeeting, updateMeeting } from '../controllers/meetingController.js';
 
 //Configure multer for handling file uploads 
 const storage = multer.diskStorage({
@@ -62,6 +54,8 @@ router.post('/messages' , upload.single('imageFile'),setMessage);
 router.post('/meetings' , setMeeting);
 router.get('/user/:userId', getUser);
 router.post('/deleteMessages' , deleteMessage);
+router.post('/deleteMeetings', deleteMeeting);
+router.put('/updateMeetings', updateMeeting);
 router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
 router.put('/interests', protect, updateUserInterests)
