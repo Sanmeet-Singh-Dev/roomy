@@ -27,7 +27,6 @@ const Details = () => {
     };
 
     let ipAdress = IPADDRESS;
-    console.log(dateOfBirth.valueOf());
 
     const navigation = useNavigation();
 
@@ -36,12 +35,9 @@ const Details = () => {
     };
   
     const handleSaveProfile = async () => {
-      console.log('handleSaveProfile run');
         try {
           // Get the authentication token from AsyncStorage
-          console.log('in try');
           const token = await AsyncStorage.getItem('jwt');
-          console.log(token);
           if (!token) {
             // Handle the case where the token is not available
             console.error('No authentication token available.');
@@ -64,16 +60,15 @@ const Details = () => {
           if (response.ok) {
             // Handle a successful response
             const data = await response.json();
-            navigation.navigate('location');
+            const userId = data._id;
+            navigation.navigate('location' , {userId: userId} );
           } else {
             // Handle an unsuccessful response (e.g., show an error message)
             console.error('Error updating profile.');
-            console.log("here 2")
           }
         } catch (error) {
           // Handle fetch or AsyncStorage errors
           console.error('Error:', error);
-          console.log("here 3")
         }
     };
   

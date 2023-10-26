@@ -1,7 +1,7 @@
 import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation , useRoute} from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 import { uploadToFirebase } from '../firebase-config';
 import { UserType } from '../UserContext';
@@ -14,14 +14,13 @@ const ImageAndBio = () => {
   const [bio, setBio] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
   // const [selectedImageUri, setSelectedImageUri] = useState(null);
-  const { userId, setUserId } = useContext(UserType);
-  console.log('The User ID on Image and Bio is:', userId)
+  const route = useRoute();
+  const userId = route.params?.userId;
 
   const navigation = useNavigation();
 
   const handleGenderSelection = (work) => {
     setWork(work);
-    console.log(work);
   };
   let ipAdress = IPADDRESS;
   useEffect(() => {
@@ -56,12 +55,9 @@ const ImageAndBio = () => {
   };
 
   const handleSaveProfile = async () => {
-    console.log('handleSaveProfile run');
     try {
       // Get the authentication token from AsyncStorage
-      console.log('in try');
       const token = await AsyncStorage.getItem('jwt');
-      console.log(token);
       if (!token) {
         // Handle the case where the token is not available
         console.error('No authentication token available.');
@@ -77,7 +73,7 @@ const ImageAndBio = () => {
         const uploadResponse = await uploadToFirebase(uri, fileName, userId);
         if (uploadResponse) {
           firebaseImageURLs.push(uploadResponse.downloadUrl);
-          console.log(firebaseImageURLs)// Store the Firebase URL
+          console.log(firebaseImageURLs)
         }
 
       };
@@ -89,6 +85,7 @@ const ImageAndBio = () => {
       const data = {
         data: {
           profilePhoto: firebaseImageURLs,
+          image: firebaseImageURLs[0],
           work,
           bio,
         },
@@ -110,12 +107,10 @@ const ImageAndBio = () => {
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
         console.error('Error updating profile.');
-        console.log("here 2")
       }
     } catch (error) {
       // Handle fetch or AsyncStorage errors
       console.error('Error:', error);
-      console.log("here 3")
     }
   };
 

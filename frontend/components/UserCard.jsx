@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 
 
 const UserCard = ({ userData }) => {
-  console.log(userData)
   return (
     <View style={styles.cardContainer}>
         <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />

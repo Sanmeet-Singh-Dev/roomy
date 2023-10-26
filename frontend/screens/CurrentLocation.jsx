@@ -1,7 +1,7 @@
 
 import React, { useContext,useState, useEffect } from 'react';
 import { Button, SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { IPADDRESS } from '@env'
 import { UserType } from '../UserContext';
@@ -14,15 +14,12 @@ const CurrentLocation = () => {
   const [location, setLocation] = useState(null);
   const navigation = useNavigation();
   const ipAdress=IPADDRESS;
-  const { userId, setUserId } = useContext(UserType);
-
-  console.log("User id", userId);
+  const route = useRoute();
+  const userId = route.params?.userId;
 
   const geoCode = async () => {
     // Use the address entered by the user
     const geoCodedLocation = await Location.geocodeAsync(address);
-    console.log('Geocoded Address:');
-    console.log(geoCodedLocation);
 
     // Send this custom location data to your backend
     sendLocationDataToBackend({
@@ -59,9 +56,7 @@ const getCurrentLocation = async () => {
 
   const sendLocationDataToBackend = async (locationData) => {
     try {
-        console.log(ipAdress);
         const token = await AsyncStorage.getItem('jwt');
-        console.log(token);
         if (!token) {
           // Handle the case where the token is not available
           console.error('No authentication token available.');
@@ -81,7 +76,7 @@ const getCurrentLocation = async () => {
 
       if (response.ok) {
         // Handle a successful response (e.g., navigate to the next screen)
-        navigation.navigate('imageAndBio');
+        navigation.navigate('imageAndBio' , {userId : userId});
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
       console.error('Error saving location. Response:', response.status , response.statusText)
@@ -126,7 +121,6 @@ const saveLocation = () => {
 
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
-      console.log('Location:', currentLocation);
     };
     getPermissions();
   }, []);
