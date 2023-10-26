@@ -62,8 +62,8 @@ const Livinghabits = () => {
 
   return (
     <View style={styles.container}>
-        <ScrollView>
         <SafeAreaView>
+        <ScrollView>
         <Text>Personal and Living Habits</Text>
 
         <Text>Smoking</Text>
@@ -214,8 +214,8 @@ const Livinghabits = () => {
         
 
         <Button title="Save Habits" onPress={handleSaveHabits} />
-        </SafeAreaView>
         </ScrollView>
+        </SafeAreaView>
     </View>
   )
 }
