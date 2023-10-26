@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, TextInput, Button } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
@@ -51,28 +51,30 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <SafeAreaView>
-                <Text>Welcome To Roomy</Text>
-            </SafeAreaView>
+            <SafeAreaView style={styles.container}>
+            <Text style={styles.text}>Welcome Back Roomy</Text>
+
+             <Text style={styles.label}>Email:</Text>
             <TextInput
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)} 
+            style={styles.textInput}
             />
 
+             <Text style={styles.label}>Password:</Text>    
             <TextInput
             secureTextEntry
             placeholder="Password"
             value={password}
             onChangeText={(text) => setPassword(text)} 
+            style={styles.textInput}
             />
 
-            <Button
-                title="Login"
-                onPress={handleLogin}
-            />
-        </View>
+            <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLogin}>Login</Text>
+            </TouchableOpacity>
+            </SafeAreaView>     
     )
 }
 
@@ -81,6 +83,41 @@ export default Login
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 30,
+      padding: 50,
+      
     },
+    buttonText: {
+        color: '#fff',
+        textAlign: 'center',
+        fontSize: 17,
+        fontWeight: 'bold'
+      },
+      button: {
+        backgroundColor: '#007AFF',
+        color: '#fff',
+        margin: 10,
+        padding: 10,
+        borderRadius: 8,
+      },
+      text: {
+        fontSize: 25,
+        marginBottom: 20,
+        textAlign: 'center'
+      },
+      textInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        marginBottom: 16,
+        margin: 10,
+        padding: 10,
+      },
+      label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginLeft: 10,
+        marginRight: 10,
+      },
 })

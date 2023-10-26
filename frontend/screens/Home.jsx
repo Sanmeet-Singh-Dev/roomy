@@ -148,7 +148,7 @@ const Home = () => {
 
           <Text>Welcome to the Home Screen</Text>
 
-          //passing user data to UserCard component
+          
           {compatibilityData.map((userData, index) => (
             <UserCard key={index} userData={userData} />
           ))}

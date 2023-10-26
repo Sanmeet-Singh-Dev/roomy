@@ -113,7 +113,7 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
       const data = {
         userId,
         data: {
-          images: firebaseImageURLs, // Replace with Firebase image URLs
+          images: firebaseImageURLs,
           title,
           description,
           budget: parseFloat(budget),
