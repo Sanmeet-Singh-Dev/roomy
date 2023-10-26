@@ -158,7 +158,7 @@ const Home = () => {
             onPress={handleNotification}
         />        
     
-
+    </ScrollView>
         </SafeAreaView>
     </View>
   )
