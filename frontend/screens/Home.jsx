@@ -149,16 +149,17 @@ const Home = () => {
           />
 
           <Button
-            title="Compatibility"
-            onPress={handleCompatibility}
-        />   
-
-        <Button
             title="Notification"
             onPress={handleNotification}
-        />        
-    
+        />    
 
+        <Text>Welcome to the Home Screen</Text>
+
+        {compatibilityData.map((userData, index) => (
+          <UserCard key={index} userData={userData} />
+        ))}
+
+        </ScrollView>
         </SafeAreaView>
     </View>
   )
