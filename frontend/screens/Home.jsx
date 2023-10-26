@@ -290,11 +290,16 @@ async function schedulePushNotification(notification) {
           />
 
           <Button
+            title="Compatibility"
+            onPress={handleCompatibility}
+        />   
+
+        <Button
             title="Notification"
             onPress={handleNotification}
         />    
 
-            <TextInput
+       <TextInput
               value={searchValue}
               onChangeText={text => setSearchValue(text)}
             />
