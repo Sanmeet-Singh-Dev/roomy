@@ -245,6 +245,11 @@ async function schedulePushNotification(notification) {
           />
 
           <Button
+            title="Compatibility"
+            onPress={handleCompatibility}
+        />   
+
+        <Button
             title="Notification"
             onPress={handleNotification}
         />    
@@ -279,7 +284,9 @@ async function schedulePushNotification(notification) {
 
         
 
-        </ScrollView>
+    
+    
+    </ScrollView>
         </SafeAreaView>
     </View>
   )
