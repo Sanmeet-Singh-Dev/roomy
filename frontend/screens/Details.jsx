@@ -80,14 +80,15 @@ const Details = () => {
     return (
       <View style={styles.container}>
         <SafeAreaView>
-        <Text>Profile Details</Text>
+        <Text  style={styles.label}>Profile Details</Text>
         <TextInput
           placeholder="Full Name"
           value={fullName}
           onChangeText={setFullName}
+          style={styles.textInput}
         />
 
-        <Text>Gender:</Text>
+        <Text style={styles.label}>Gender:</Text>
 
         <View style={styles.optionsContainer}>
 
@@ -123,24 +124,19 @@ const Details = () => {
 
       </View>
 
-        {/* <TextInput
-          placeholder="Date of Birth"
-          value={dateOfBirth}
-          onChangeText={setDateOfBirth}
-        /> */}
-
-        <Button onPress={showDatepicker} title="Show Date Spinner" />
-
         <DateTimePicker
         testID="dateTimePicker"
         value={date}
         mode="date" // Set to 'spinner' for spinner interface
         // is24Hour={true}
-        display="default" // Set to 'spinner' to show spinner by default
+        display="default" 
+        style={styles.dateTimePicker}
         onChange={onChange}
         />
         
-        <Button title="Save Profile" onPress={handleSaveProfile} />
+            <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleSaveProfile}>Save Profile</Text>
+            </TouchableOpacity>
 
         </SafeAreaView>
       </View>
@@ -163,6 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+    marginBottom: 10
   },
   option: {
     borderWidth: 1,
@@ -172,10 +169,55 @@ const styles = StyleSheet.create({
   },
   selectedOption: {
     backgroundColor: 'blue', // Change to your desired highlight color
-    borderColor: 'blue', // Change to your desired highlight color
+    borderColor: 'blue',
+    color:'#fff' // Change to your desired highlight color
   },
   optionText: {
     color: 'black', // Change to your desired text color
     textAlign: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: '#007AFF',
+    color: '#fff',
+    margin: 10,
+    padding: 10,
+    borderRadius: 8,
+  },
+  text: {
+    fontSize: 25,
+    marginBottom: 20,
+    textAlign: 'center'
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 16,
+    margin: 10,
+    padding: 10,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  dateTimePicker: {
+    // backgroundColor: '#fff',
+    borderColor: 'gray',
+    // borderWidth: 1, 
+    // borderRadius: 8, 
+    paddingHorizontal: 10,
+    marginBottom: 16, 
+    alignSelf: 'center',
+    
   },
 });

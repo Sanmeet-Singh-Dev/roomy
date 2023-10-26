@@ -1,6 +1,6 @@
 
 import React, { useContext,useState, useEffect } from 'react';
-import { Button, SafeAreaView, Text, TextInput, View } from 'react-native';
+import { Button, SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { IPADDRESS } from '@env'
@@ -132,17 +132,24 @@ const saveLocation = () => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <SafeAreaView>
-        <Text>Select your current location or type manually the address and country name:</Text>
+        <Text style={styles.label}>Select your current location or type manually the address and country name:</Text>
         <TextInput
           placeholder="Address"
           value={address}
           onChangeText={setAddress}
+          style={styles.textInput}
         />
+        <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={geoCode}>Save Location</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={getCurrentLocation}>Use Current Location</Text>
+            </TouchableOpacity>
 
-        <Button title="Save Location" onPress={geoCode} />
-        <Button title="Use Current Location" onPress={getCurrentLocation} />
+        {/* <Button title="Save Location" onPress={geoCode} />
+        <Button title="Use Current Location" onPress={getCurrentLocation} /> */}
         {/* <Button title="Save Location" onPress={saveLocation} /> */}
       </SafeAreaView>
     </View>
@@ -150,3 +157,45 @@ const saveLocation = () => {
 };
 
 export default CurrentLocation;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 50,
+    
+  },
+  buttonText: {
+      color: '#fff',
+      textAlign: 'center',
+      fontSize: 17,
+      fontWeight: 'bold'
+    },
+    button: {
+      backgroundColor: '#007AFF',
+      color: '#fff',
+      margin: 10,
+      padding: 10,
+      borderRadius: 8,
+    },
+    text: {
+      fontSize: 25,
+      marginBottom: 20,
+      textAlign: 'center'
+    },
+    textInput: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      marginBottom: 16,
+      margin: 10,
+      padding: 10,
+    },
+    label: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginLeft: 10,
+      marginRight: 10,
+    },
+})
