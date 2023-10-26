@@ -5,16 +5,76 @@ import {
     registerUser,
     logoutUser,
     getUserProfile,
-    updateUserProfile, 
+    getAcceptedFriends,
+    getUserPreferences,
+    saveListMySpaceData,
+    getAllListsMySpace,
+    setLocation,
 } from '..//controllers/userControllers.js';
+
+import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
+import { 
+    updateUserProfile,
+    updateUserBio,
+    updateUserHabits,
+    updateUserInterests,
+    updateUserTraits,
+} from '../controllers/profileController.js';
+import {
+    // getUserPreferences,
+    calculateCompatibilityWithAllUsers,
+    getAllUsers,
+} from '../controllers/compatibilityController.js';
 import { protect } from '../middleware/authMiddleware.js';
+import multer from 'multer';
+import { getMeetings, setMeeting } from '../controllers/meetingController.js';
+
+// router.get('/:id/preferences', protect, getUserPreferences);
+// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
+// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
+
+// router.get('/:id/preferences', protect, getUserPreferences);
+// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
+// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
+
+//Configure multer for handling file uploads 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'files/');  //Specify the desired destination folder
+    },
+    filename: function (req, file, cb) {
+        // Generate a unique filename for the uploaded file
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    },
+});
+
+const upload = multer({ storage: storage });
 
 router.post('/', registerUser);
 router.post('/auth', authUser);
 router.post('/logout', logoutUser);
-router
-    .route('/profile')
-    .get(protect, getUserProfile)
-    .put(protect, updateUserProfile);
+router.put('/profile', protect, updateUserProfile);
+router.get('/accepted-friends/:userId', getAcceptedFriends);
+router.get('/messages/:senderId/:recepientId', getMessages);
+router.get('/meetings/:senderId/:recepientId', getMeetings);
+router.post('/messages' , upload.single('imageFile'),setMessage);
+router.post('/meetings' , setMeeting);
+router.get('/user/:userId', getUser);
+router.post('/deleteMessages' , deleteMessage);
+router.put('/bio', protect, updateUserBio)
+router.put('/habits', protect, updateUserHabits)
+router.put('/interests', protect, updateUserInterests)
+router.put('/traits', protect, updateUserTraits)
+router.get('/:id/preferences', protect, getUserPreferences)
+
+router.post('/save-list-my-space', saveListMySpaceData);
+router.get('/list-spaces', getAllListsMySpace);
+router.post('/set-location', protect, setLocation);
+
+router.get('/all', getAllUsers);
+
+// router.get('/preferences', protect, getUserPreferences);
+router.get('/compatibility', protect, calculateCompatibilityWithAllUsers);
 
 export default router;

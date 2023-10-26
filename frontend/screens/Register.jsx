@@ -1,16 +1,21 @@
-import { View, Text, SafeAreaView, Platform, StatusBar, Button, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Platform, StatusBar, Button, TextInput } from 'react-native'
 import React, {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native'
+import { IPADDRESS } from '@env'
 
 const Register = () => {
 
     const [name, setname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    let ipAdress = IPADDRESS;
+
+    const navigation = useNavigation();
 
     const handleRegister = async () => {
         try {
-            console.log('in try')
-            const response = await fetch('http://192.168.1.94:6000/api/users' , {
+            const response = await fetch(`http://${ipAdress}:6000/api/users` , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,21 +28,26 @@ const Register = () => {
             });
     
             if (response.ok) { 
-                console.log('register successful!')
+                const data = await response.json();
+                const token = data.token;
+
+                await AsyncStorage.setItem('jwt', token);
+                
+                navigation.navigate('details');
             } else {
-            const data = await response.json();
-            setError(data.message || 'Login failed. Please check your credentials.');
-            console.log('Login failed. Please check your credentials.')
+                const data = await response.json();
+                console.log(data.message || 'Registration failed. Please check your credentials.');
+                console.error('Registration failed.');
             }
         } catch (error) {
             console.error('Fetch error:', error);
-            setError('An error occurred. Please  try again later.');
+            
         }
     };
 
 
     return (
-        <View>
+        <View style={styles.container}>
             <SafeAreaView>
                 <Text>Enter your details</Text>
             </SafeAreaView>
@@ -68,3 +78,10 @@ const Register = () => {
 }
 
 export default Register
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 30,
+    },
+})

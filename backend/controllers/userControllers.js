@@ -20,13 +20,14 @@ const registerUser = asyncHandler (async (req, res) => {
         email,
         password,
     });
-
+    
     if(user) {
-        generateToken(res, user._id);
+        const token = generateToken(user._id.toString());
         res.status(201).json({
             _id: user._id,
             name: user.name, 
-            email: user.email
+            email: user.email,
+            token: token
         });
     } else {
         res.status(400);
@@ -40,16 +41,16 @@ const registerUser = asyncHandler (async (req, res) => {
 const authUser = asyncHandler (async (req, res) => {
     const { email, password } = req.body;
 
-    console.log('Received a login request:', { email, password });
-
     const user = await User.findOne({email});
-    
+
+
     if(user && await user.matchPassword(password)) {
-        generateToken(res, user._id);
+        const token = generateToken(user._id.toString());
         res.status(201).json({
             _id: user._id,
             name: user.name, 
-            email: user.email
+            email: user.email,
+            token: token
         });
     } else {
         console.error('Login failed: Invalid email or password');
@@ -83,38 +84,172 @@ const getUserProfile = asyncHandler (async (req, res) => {
     res.status(200).json(user)
 });
 
-// @desc    Update user profile
-// route    PUT /api/users/profile
+//@desc    Update user profile
+// route    POST /api/users/save-list-my-space
 // @access  Private
-const updateUserProfile = asyncHandler (async (req, res) => {
-    const user = await User.findById(req.user._id);
 
-    if(user) {
-        user.name = req.body.name || user.name;
-        user.email = req.body.email || user.email;
-
-        if(req.body.password) {
-            user.password = req.body.password;
-        }
-        const updatedUser = await user.save();
-
-        res.status(201).json({
-            _id: updatedUser._id,
-            name: updatedUser.name, 
-            email: updatedUser.email
-        });
-    } else {
+// Controller function to save listMySpace data
+const saveListMySpaceData = asyncHandler(async (req, res) => {
+    const { userId, data } = req.body; // Assuming data is an object with title, description, budget, and image URLs
+  
+    try {
+      // Find the user document and update the 'listMySpace' field with the new data
+      const user = await User.findById(userId);
+      if (user) {
+        user.listMySpace = data;
+        await user.save();
+        res.status(201).json({ message: 'ListMySpace data saved successfully' });
+      } else {
         res.status(404);
         throw new Error('User not found');
-    }       
+      }
+    } catch (error) {
+      res.status(500);
+      throw new Error('Error saving ListMySpace data: ' + error.message);
+    }
+  });
 
-    res.status(200).json({message: 'Update user profile'})
+//   const getAllListsMySpace = asyncHandler(async (req, res) => {
+//     try {
+//       // Find all users in the database
+//       const users = await User.find();
+  
+//       // Filter users who have a non-empty listMySpace object
+//       const usersWithListMySpace = users.filter((user) => user.listMySpace && Object.keys(user.listMySpace).length > 1);
+//         console.log(usersWithListMySpace)
+//       // Extract and combine listMySpace data from filtered users
+//       const allListsMySpace = usersWithListMySpace.map((user) => user.listMySpace);
+  
+//       res.json(allListsMySpace);
+//     } catch (error) {
+//       console.error('Error fetching all listMySpace data:', error);
+//       res.status(500).json({ message: 'Internal server error' });
+//     }
+//   });
+
+// const getAllListsMySpace = asyncHandler(async (req, res) => {
+//     try {
+//       // Find all users in the database
+//       const users = await User.find();
+  
+//       // Log the listMySpace field for each user
+//       users.forEach((user) => {
+//         console.log('User ID:', user._id);
+//         console.log('listMySpace:', user.listMySpace);
+//       });
+  
+//       // Filter users who have a non-empty listMySpace object
+//       const usersWithListMySpace = users.filter((user) => user.listMySpace && Object.keys(user.listMySpace).length > 0);
+  
+//       // Extract and combine listMySpace data from filtered users
+//       const allListsMySpace = usersWithListMySpace.map((user) => user.listMySpace);
+  
+//       res.json(allListsMySpace);
+//     } catch (error) {
+//       console.error('Error fetching all listMySpace data:', error);
+//       res.status(500).json({ message: 'Internal server error' });
+//     }
+//   });
+
+const getAllListsMySpace = asyncHandler(async (req, res) => {
+    try {
+      // Find all users in the database
+      const users = await User.find();
+  
+      // Filter users who have a non-empty listMySpace object
+      const usersWithListMySpace = users.filter((user) => {
+        const { listMySpace } = user;
+        return listMySpace && listMySpace.title && listMySpace.description && listMySpace.budget;
+      });
+  
+      // Extract and combine listMySpace data from filtered users
+      const allListsMySpace = usersWithListMySpace.map((user) => user.listMySpace);
+  
+      res.json(allListsMySpace);
+    } catch (error) {
+      console.error('Error fetching all listMySpace data:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
 });
+  
+const getUserPreferences = asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+  
+    // Fetch the user's preferences based on their ID
+    const user = await User.findOne({ _id: req.user._id.toString() });
+  
+    if (user) {
+      // Return the user's preferences
+      res.status(200).json({
+        preferences: {
+          smoking: user.smoking,
+          guests: user.guests,
+          drinking: user.drinking,
+          pets: user.pets,
+          food: user.food,
+          interests: user.interests,
+          traits: user.traits,
+          // Add more preferences here
+        },
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+});
+  
+
+const getAcceptedFriends = asyncHandler (async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId).populate("friends", "name email image")
+
+        const acceptedFriends = user.friends;
+        res.json(acceptedFriends);
+    }
+    catch (error) {
+        console.log("Error", error);
+        res.status(500).json({ message: "Internal server error." })
+    }
+});
+
+const setLocation = asyncHandler(async (req, res) => {
+  const { location } = req.body;
+  const user = await User.findOne({ _id: req.user._id.toString() });
+
+    // console.log(userId)
+    // console.log(req.body)
+  
+    try {
+      if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+      }
+
+      user.location = {
+        type: 'Point',
+        coordinates: [location.coordinates[1], location.coordinates[0]],
+      };
+
+  
+      await user.save();
+  
+      res.status(200).json({ message: 'Location set successfully' });
+    } catch (error) {
+      console.error('Error setting location:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
 
 export {
     authUser,
     registerUser,
     logoutUser,
     getUserProfile,
-    updateUserProfile,  
+    getUserPreferences,
+    getAcceptedFriends,
+    saveListMySpaceData,
+    getAllListsMySpace,
+    setLocation,
 };
