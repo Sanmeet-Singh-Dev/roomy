@@ -113,6 +113,10 @@ const Home = () => {
       navigation.navigate('Spaces');
     }
 
+    const handleNotification = () => {
+      navigation.navigate('Notification');
+    }
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -144,17 +148,18 @@ const Home = () => {
               onPress={handleSpaces}
           />
 
-          
+          <Button
+            title="Compatibility"
+            onPress={handleCompatibility}
+        />   
 
-          <Text>Welcome to the Home Screen</Text>
+        <Button
+            title="Notification"
+            onPress={handleNotification}
+        />        
+    
 
-          
-          {compatibilityData.map((userData, index) => (
-            <UserCard key={index} userData={userData} />
-          ))}
-      
-        </ScrollView>
-      </SafeAreaView>
+        </SafeAreaView>
     </View>
   )
 }

@@ -23,6 +23,7 @@ import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import Spaces from './screens/Spaces';
 import CurrentLocation from './screens/CurrentLocation';
 import PersonalTraits from './screens/PersonalTraits';
+import Notification from './screens/NotificationScreen';
 
 const stack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ export default function App() {
         <stack.Screen name="Calendar" component={CalendarScreen} />
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces}/>
+        <stack.Screen name="Notification" component={Notification}/>
       </stack.Navigator>
 
       
