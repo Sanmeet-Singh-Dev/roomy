@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
+
 const UserCard = ({ userData }) => {
+  console.log(userData)
   return (
     <View style={styles.cardContainer}>
-        <Image source={{ uri: userData.user.profileImage }} style={styles.image} />
+        <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />
 
         <View style={styles.userInfo}>
             <Text style={styles.userName}>{userData.user.name}</Text>
