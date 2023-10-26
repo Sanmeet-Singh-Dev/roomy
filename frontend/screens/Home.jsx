@@ -257,10 +257,10 @@ async function schedulePushNotification(notification) {
             <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
             </TouchableOpacity>
 
-          {/* <Button
+          <Button
             title="Notification"
             onPress={handleNotification}
-        />  */}
+        />  
                <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
             </TouchableOpacity> 
@@ -295,7 +295,8 @@ async function schedulePushNotification(notification) {
 
         
 
-        </ScrollView>
+
+    </ScrollView>
         </SafeAreaView>
     </View>
   )
