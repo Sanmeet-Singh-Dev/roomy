@@ -1,5 +1,5 @@
 import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect} from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
@@ -109,6 +109,10 @@ const Home = () => {
       navigation.navigate('Spaces');
     }
 
+    const handleNotification = () => {
+      navigation.navigate('Notification');
+    }
+
   return (
     <View style={styles.container}>
         <SafeAreaView>
@@ -141,6 +145,11 @@ const Home = () => {
           <Button
             title="Compatibility"
             onPress={handleCompatibility}
+        />   
+
+        <Button
+            title="Notification"
+            onPress={handleNotification}
         />        
     
 
