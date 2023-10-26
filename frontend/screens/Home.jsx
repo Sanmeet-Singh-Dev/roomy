@@ -300,6 +300,11 @@ async function schedulePushNotification(notification) {
             </TouchableOpacity>
 
           <Button
+            title="Compatibility"
+            onPress={handleCompatibility}
+        />   
+
+        <Button
             title="Notification"
             onPress={handleNotification}
         />    
