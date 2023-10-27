@@ -1,4 +1,4 @@
-import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -213,7 +213,7 @@ async function schedulePushNotification(notification) {
       <SafeAreaView>
         <ScrollView>
 
-          <Text>Hello, {userName}</Text>
+          <Text style={styles.nameText}>Hello, {userName}</Text>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
           <Ionicons 
@@ -225,34 +225,45 @@ async function schedulePushNotification(notification) {
             name="notifications" size={24} color="black" />
             </View>
 
-          <Button
+          {/* <Button
               title="Logout"
               onPress={handleLogout}
-          />
+          /> */}
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
+            </TouchableOpacity>
 
-          <Button
+          {/* <Button
               title="Location"
               onPress={handleLocation}
-          />
+          /> */}
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
+            </TouchableOpacity>
 
-          <Button
+          {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
-          />
-          <Button
+          /> */}
+             <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
+            </TouchableOpacity>
+
+          {/* <Button
               title="Spaces"
               onPress={handleSpaces}
-          />
+          /> */}
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
+            </TouchableOpacity>
 
-          <Button
-            title="Compatibility"
-            onPress={handleCompatibility}
-        />   
-
-        <Button
+          {/* <Button
             title="Notification"
             onPress={handleNotification}
-        />    
+        />  */}
+               <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
+            </TouchableOpacity> 
 
        <TextInput
               value={searchValue}
@@ -297,4 +308,27 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+},
+button: {
+    backgroundColor: '#007AFF',
+    color: '#fff',
+    margin: 10,
+    padding: 10,
+    borderRadius: 8,
+},
+text: {
+  fontSize: 17,
+  marginTop: 20,
+  textAlign: 'center'
+},
+nameText: {
+  fontSize: 17,
+  marginBottom: 10,
+  marginTop: 20
+}
 })

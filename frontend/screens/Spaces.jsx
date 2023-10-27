@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, View, Image } from 'react-native';
+import { Text, ScrollView, View, Image, StyleSheet } from 'react-native';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location';
 
@@ -77,21 +77,22 @@ const Spaces = () => {
   }, []);
   return (
   <ScrollView>
-  <Text>Spaces</Text>
   {Object.values(listMySpaces).map((space, index) => (
-    <View key={index}>
-      <Text>Title: {space.title}</Text>
-      <Text>Description: {space.description}</Text>
-      <Text>Budget: {space.budget}</Text>
-      <Text>Location: {space.fullAddress || 'Address not available'}</Text>
-      <Text>Images:</Text>
+    <View key={index} style={styles.card}>
+      <Text style={styles.title}>Title: {space.title}</Text>
+      <Text  style={styles.description}>Description: {space.description}</Text>
+      <Text style={styles.budget}>Budget: {space.budget}</Text>
+      <Text style={styles.location}>Location: {space.fullAddress || 'Address not available'}</Text>
+      <Text style={styles.imageLabel}>Images:</Text>
+      <View style={styles.imageContainer}>
       {space.images.map((imageUrl, imgIndex) => (
         <Image
           key={imgIndex}
           source={{ uri: imageUrl }}
-          style={{ width: 100, height: 100 }}
+          style={styles.image}
         />
       ))}
+      </View>
     </View>
   ))}
 </ScrollView>
@@ -99,3 +100,58 @@ const Spaces = () => {
 };
 
 export default Spaces;
+
+const styles = StyleSheet.create({
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: '#fff',
+    padding: 16,
+    marginBottom: 16,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+    marginTop: 15
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  description: {
+    fontSize: 16,
+    marginBottom: 8,
+   
+  },
+  budget: {
+    fontSize: 16,
+    marginBottom: 8,
+
+  },
+  location: {
+    fontSize: 16,
+    marginBottom: 8,
+    
+  },
+  imageLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  imageContainer: {
+    flexDirection: 'row',
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginRight: 8,
+    borderRadius: 8,
+  },
+});

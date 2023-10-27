@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, TextInput, Button, Alert, Text, Image, ScrollView } from 'react-native';
+import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet , TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,7 @@ import { UserType } from '../UserContext';
 import { uploadToFirebase, listFiles } from '../firebase-config';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location'
+
 
 const ListMySpace = ({ onUpload, onTakePhoto }) => {
   const route = useRoute();
@@ -169,16 +170,19 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
         placeholder="Title"
         value={title}
         onChangeText={setTitle}
+        style={styles.textInput}
       />
       <TextInput
         placeholder="Description"
         value={description}
         onChangeText={setDescription}
+        style={styles.textInput}
       />
       <TextInput
         placeholder="Budget"
         value={budget}
         onChangeText={setBudget}
+        style={styles.textInput}
       />
 
       <ScrollView horizontal>
@@ -191,16 +195,67 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
         ))}
       </ScrollView>
       <Camera userId={userId} />
-      <Button title="Pick from Library" onPress={handlePickImage} />
+      <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handlePickImage}>Pick from Library</Text>
+          </TouchableOpacity>
+      {/* <Button title="Pick from Library" onPress={handlePickImage} /> */}
       <TextInput
           placeholder="Address"
           value={address}
           onChangeText={setAddress}
+          style={styles.textInput}
         />
-      <Button title="Use Current Location" onPress={getCurrentLocation} />
-      <Button title="Submit" onPress={handleUpload} />
+         <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={getCurrentLocation}>Use Current Location</Text>
+          </TouchableOpacity>
+      {/* <Button title="Use Current Location" onPress={getCurrentLocation} /> */}
+      {/* <Button title="Submit" onPress={handleUpload} /> */}
+      <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleUpload}>Submit</Text>
+          </TouchableOpacity>
     </View>
   );
 };
 
 export default ListMySpace;
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      padding: 30,
+  },
+  buttonText: {
+      color: '#fff',
+      textAlign: 'center',
+      fontSize: 17,
+      fontWeight: 'bold'
+  },
+  button: {
+      backgroundColor: '#007AFF',
+      color: '#fff',
+      margin: 10,
+      padding: 10,
+      borderRadius: 8,
+  },
+  text: {
+      fontSize: 25,
+      marginBottom: 20,
+      textAlign: 'center'
+  },
+  textInput: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      marginBottom: 16,
+      margin: 10,
+      padding: 10,
+  },
+  label: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginLeft: 10,
+      marginRight: 10,
+  },
+})
