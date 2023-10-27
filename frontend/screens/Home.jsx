@@ -255,6 +255,7 @@ async function schedulePushNotification(notification) {
         <ScrollView>
 
           <Text style={styles.nameText}>Hello, {userName}</Text>
+          <Text style={styles.nameText}>Hello, {userName}</Text>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
           <Ionicons 
@@ -267,13 +268,19 @@ async function schedulePushNotification(notification) {
             </View>
 
           {/* <Button
+          {/* <Button
               title="Logout"
               onPress={handleLogout}
           /> */}
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
             </TouchableOpacity>
+         
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
+            </TouchableOpacity>
 
+          {/* <Button
           {/* <Button
               title="Location"
               onPress={handleLocation}
@@ -281,10 +288,21 @@ async function schedulePushNotification(notification) {
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
             </TouchableOpacity>
+        
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
+            </TouchableOpacity>
 
+          {/* <Button
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
+          /> */}
+             <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
+            </TouchableOpacity>
+
+          {/* <Button
           /> */}
              <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
@@ -348,6 +366,29 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+},
+button: {
+    backgroundColor: '#007AFF',
+    color: '#fff',
+    margin: 10,
+    padding: 10,
+    borderRadius: 8,
+},
+text: {
+  fontSize: 17,
+  marginTop: 20,
+  textAlign: 'center'
+},
+nameText: {
+  fontSize: 17,
+  marginBottom: 10,
+  marginTop: 20
+}
   buttonText: {
     color: '#fff',
     textAlign: 'center',

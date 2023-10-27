@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet , TouchableOpacity} from 'react-native';
+import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet , TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +11,7 @@ import { UserType } from '../UserContext';
 import { uploadToFirebase, listFiles } from '../firebase-config';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location'
+
 
 
 const ListMySpace = ({ onUpload, onTakePhoto }) => {
@@ -199,10 +201,15 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
             <Text style={styles.buttonText} onPress={handlePickImage}>Pick from Library</Text>
           </TouchableOpacity>
       {/* <Button title="Pick from Library" onPress={handlePickImage} /> */}
+      <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handlePickImage}>Pick from Library</Text>
+          </TouchableOpacity>
+      {/* <Button title="Pick from Library" onPress={handlePickImage} /> */}
       <TextInput
           placeholder="Address"
           value={address}
           onChangeText={setAddress}
+          style={styles.textInput}
           style={styles.textInput}
         />
          <TouchableOpacity style={styles.button}>  
