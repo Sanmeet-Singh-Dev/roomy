@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 25,
     marginBottom: 20,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 20,
   }
 });
