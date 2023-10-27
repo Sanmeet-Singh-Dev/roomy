@@ -269,7 +269,10 @@ async function schedulePushNotification(notification) {
           {/* <Button
               title="Logout"
               onPress={handleLogout}
-          />
+          /> */}
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
+            </TouchableOpacity>
 
           {/* <Button
               title="Location"
@@ -282,22 +285,26 @@ async function schedulePushNotification(notification) {
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
-          />
-        */}
-          <Button
+          /> */}
+             <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
+            </TouchableOpacity>
+
+          {/* <Button
               title="Spaces"
               onPress={handleSpaces}
-          />
+          /> */}
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
+            </TouchableOpacity>
 
-          <Button
-            title="Compatibility"
-            onPress={handleCompatibility}
-        />   
-
-        <Button
+          {/* <Button
             title="Notification"
             onPress={handleNotification}
-        />    
+        />  */}
+               <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
+            </TouchableOpacity> 
 
        <TextInput
               value={searchValue}
@@ -338,4 +345,27 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+},
+button: {
+    backgroundColor: '#007AFF',
+    color: '#fff',
+    margin: 10,
+    padding: 10,
+    borderRadius: 8,
+},
+text: {
+  fontSize: 17,
+  marginTop: 20,
+  textAlign: 'center'
+},
+nameText: {
+  fontSize: 17,
+  marginBottom: 10,
+  marginTop: 20
+}
 })

@@ -213,7 +213,6 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
       <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleUpload}>Submit</Text>
           </TouchableOpacity>
-          {/* <Camera userId={userId} /> */}
     </View>
   );
 };

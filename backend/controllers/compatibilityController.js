@@ -69,7 +69,7 @@ const calculateCompatibilityWithAllUsers = async (req, res) => {
             // Create an object to represent the user and their compatibility score
                 const compatibilityData = {
                     user: user,
-                    score: compatibilityScore,
+                    score: compatibilityScore.toFixed(0),
                 };
 
                 // Add the compatibility data to the array
