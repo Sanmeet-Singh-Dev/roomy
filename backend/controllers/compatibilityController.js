@@ -18,17 +18,17 @@ const calculateCompatibilityScore = async (userId, user) => {
     // Fetch preferences for both users based on their IDs
     const currentUser = await User.findOne({ _id: userId });
 
-    let score = 0.64*6;
+    // let score = 0.64*6;
 
-    score += currentUser.interests.length*0.64;
-    score += currentUser.traits.length*0.64;
+    // score += currentUser.interests.length*0.64;
+    // score += currentUser.traits.length*0.64;
 
     // console.log("score of current user: : ", score);
   
     // Calculate compatibility score based on preferences (use your algorithm)
     const compatibilityScore = calculateCompatibility(currentUser, user);
 
-    const finalPercentage = (compatibilityScore/score)*100;
+    const finalPercentage = compatibilityScore;
 
     // console.log("Final Percentage: ", finalPercentage);
 
@@ -50,10 +50,12 @@ const calculateCompatibilityWithAllUsers = async (req, res) => {
             // Exclude the current user from compatibility calculations
             const compatibilityScore = await calculateCompatibilityScore(userId, user);
 
+
+
             // Create an object to represent the user and their compatibility score
                 const compatibilityData = {
                     user: user,
-                    score: compatibilityScore,
+                    score: compatibilityScore.toFixed(0),
                 };
 
                 // Add the compatibility data to the array
@@ -75,7 +77,7 @@ const calculateCompatibilityWithAllUsers = async (req, res) => {
 // Function to calculate the compatibility score based on preferences
 const calculateCompatibility = (currentUser, user) => {
 
-    const weight = 0.64;
+    const weight = 5.57;
   
     // Calculate the compatibility score based on preferences
     let compatibilityScore = 0;
