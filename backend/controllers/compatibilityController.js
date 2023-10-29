@@ -14,9 +14,8 @@ const getAllUsers = async () => {
 };
 
 // Function to calculate the compatibility score between two users
-const calculateCompatibilityScore = async (userId, user) => {
+const calculateCompatibilityScore = async (currentUser, user) => {
     // Fetch preferences for both users based on their IDs
-    const currentUser = await User.findOne({ _id: userId });
 
     let score = 0.64*6;
 
@@ -43,12 +42,18 @@ const calculateCompatibilityWithAllUsers = async (req, res) => {
         const userId = req.user._id.toString();
 
         const compatibilityScores = [];
-        const users = await getAllUsers();
+        let users = await getAllUsers();
+
+        const currentUser = await User.findOne({ _id: userId });
+
+        for (const blockedUserId of currentUser.blockedUser) {
+          users = users.filter(user => user._id.toString() !== blockedUserId.toString());
+        }
     
         for (const user of users) {
             if (user._id.toString() !== userId) {
             // Exclude the current user from compatibility calculations
-            const compatibilityScore = await calculateCompatibilityScore(userId, user);
+            const compatibilityScore = await calculateCompatibilityScore(currentUser, user);
 
             // Create an object to represent the user and their compatibility score
                 const compatibilityData = {

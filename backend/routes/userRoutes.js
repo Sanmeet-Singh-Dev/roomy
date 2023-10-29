@@ -10,6 +10,13 @@ import {
     saveListMySpaceData,
     getAllListsMySpace,
     setLocation,
+    getFriendRequests,
+    sendFriendRequest,
+    getUserFirends,
+    sentFriendRequests,
+    acceptRequest,
+    recievedFriendRequests,
+    blockUser,
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -48,6 +55,13 @@ router.post('/auth', authUser);
 router.post('/logout', logoutUser);
 router.put('/profile', protect, updateUserProfile);
 router.get('/accepted-friends/:userId', getAcceptedFriends);
+router.get('/friends/:userId', getUserFirends)
+router.get('/friend-request/:userId', getFriendRequests);
+router.post('/friend-request', sendFriendRequest);
+router.post('/block-user', blockUser);
+router.get('/friend-requests/sent/:userId', sentFriendRequests);
+router.get('/friend-requests/recieved/:userId', recievedFriendRequests);
+router.post('/friend-request/accept', acceptRequest);
 router.get('/messages/:senderId/:recepientId', getMessages);
 router.get('/meetings/:senderId/:recepientId', getMeetings);
 router.post('/messages' , upload.single('imageFile'),setMessage);

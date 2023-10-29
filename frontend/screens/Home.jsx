@@ -62,8 +62,8 @@ const Home = () => {
       }
 
       fetchUsers();
-      fetchCompatibleUsers()
-  }, []);
+      fetchCompatibleUsers();
+  }, [compatibilityData]);
 
     //function to handle logout
     const handleLogout = async () => {
@@ -124,10 +124,15 @@ const Home = () => {
 
           <Text>Hello, {userName}</Text>
 
+          <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
           <Ionicons 
             onPress={() => navigation.navigate("Chats")}
             name="chatbox-ellipses-outline" size={24} color="black" />
 
+            <Ionicons 
+            onPress={() => navigation.navigate("showNotificationScreen")}
+            name="notifications" size={24} color="black" />
+            </View>
 
           <Button
               title="Logout"
@@ -156,7 +161,7 @@ const Home = () => {
         <Text>Welcome to the Home Screen</Text>
 
         {compatibilityData.map((userData, index) => (
-          <UserCard key={index} userData={userData} />
+          <UserCard key={index} userData={userData}  />
         ))}
 
         </ScrollView>
