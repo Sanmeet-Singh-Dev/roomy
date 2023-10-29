@@ -288,6 +288,9 @@ async function schedulePushNotification(notification) {
       }
 
         
+        {compatibilityData.map((userData, index) => (
+          <UserCard key={index} userData={userData}  />
+        ))}
 
         </ScrollView>
         </SafeAreaView>
