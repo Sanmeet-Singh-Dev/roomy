@@ -24,6 +24,7 @@ import Spaces from './screens/Spaces';
 import CurrentLocation from './screens/CurrentLocation';
 import PersonalTraits from './screens/PersonalTraits';
 import Notification from './screens/NotificationScreen';
+import ShowNotificationScreen from './screens/ShowNotificationScreen';
 
 const stack = createNativeStackNavigator();
 
@@ -53,6 +54,7 @@ export default function App() {
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces}/>
         <stack.Screen name="Notification" component={Notification}/>
+        <stack.Screen name="showNotificationScreen" component={ShowNotificationScreen} />
       </stack.Navigator>
 
       
