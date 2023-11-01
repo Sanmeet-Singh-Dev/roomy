@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
+import UserSingleScreen from './UserSingleScreen';
 import { TextInput } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
 

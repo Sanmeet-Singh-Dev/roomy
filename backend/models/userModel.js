@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema({
         type: Date,
         required: false,
     },
+    budget: {
+        type: Number,
+        required: false,
+    },
     location: {
         type: {
             type: String,

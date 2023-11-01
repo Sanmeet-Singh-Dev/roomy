@@ -1,9 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
-import { UserType } from '../UserContext';
+import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 
 const UserCard = ({ userData }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('userSingleScreen', { user: userData });
+  }
+
 
   const { userId, setUserId } = useContext(UserType);
   const [requestSent , setRequestSent] = useState(false);
@@ -163,49 +169,52 @@ catch(error){
 
   return (
     <View style={styles.cardContainer}>
-        <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />
-
-        <View style={styles.userInfo}>
-            <Text style={styles.userName}>{userData.user.name}</Text>
-            <Text style={styles.userScore}>{userData.score}%</Text>
+      <TouchableWithoutFeedback onPress={handlePress}>
+        <View>
+          <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />
+          <View style={styles.userInfo}>
+              <Text style={styles.userName}>{userData.user.name}</Text>
+              <Text style={styles.userScore}>{userData.score}%</Text>
+              <Text style={styles.userScore}>Budget: ${userData.user.budget} / month</Text>
 
             <View style={{display:"flex", flexDirection:"row" , justifyContent:"space-around"}}>
         
-        {userFriends.includes(userData.user._id) ? (
-                <Pressable
+              {userFriends.includes(userData.user._id) ? (
+              <Pressable
                 style ={{backgroundColor:"#82CD47",padding:8,borderRadius:6,width:85}}
                 >
                     <Text style={{textAlign:"center",color:"white",fontSize:13}}>Friends</Text>
-                </Pressable>
-            ) : requestSent || friendRequests.some((friend) => friend._id === userData.user._id) ? (
-                <Pressable
+              </Pressable>
+                ) : requestSent || friendRequests.some((friend) => friend._id === userData.user._id) ? (
+              <Pressable
                 style ={{backgroundColor:"gray",padding:8,borderRadius:6,width:85}}
                 >
                     <Text style={{textAlign:"center",color:"white",fontSize:13}}>Request Sent</Text>
                 </Pressable>
-            ) :  recievedRequest.some((friend) => friend._id === userData.user._id)  ? (
+                ) :  recievedRequest.some((friend) => friend._id === userData.user._id)  ? (
               <Pressable
                 onPress={() => acceptRequest(userData.user._id)}
                 style={{ backgroundColor: "#0066b2", padding: 10, borderRadius: 6 }}>
                 <Text style={{ textAlign: "center", color: "white" }}>Accept</Text>
-            </Pressable>
-            ) : (
-                <Pressable 
-            onPress={() => sendFriendRequest(userId , userData.user._id) }
-            style ={{backgroundColor:"#567189",padding:8,borderRadius:6,width:85}}>
+              </Pressable>
+                ) : (
+              <Pressable 
+                onPress={() => sendFriendRequest(userId , userData.user._id) }
+                style ={{backgroundColor:"#567189",padding:8,borderRadius:6,width:85}}>
                 <Text style={{textAlign:"center",color:"white",fontSize:13}}>Add Friend</Text>
-            </Pressable>
-            )}
+              </Pressable>
+                )}
 
-            <Pressable
-            onPress={() => handleBlockUser(userId , userData.user._id) }
-            style ={{backgroundColor:"#d63838",padding:8,borderRadius:6,width:85}}>
-            <Text style={{textAlign:"center",color:"white",fontSize:13}}>Block User</Text>
-            </Pressable>
+              <Pressable
+                onPress={() => handleBlockUser(userId , userData.user._id) }
+                style ={{backgroundColor:"#d63838",padding:8,borderRadius:6,width:85}}>
+                <Text style={{textAlign:"center",color:"white",fontSize:13}}>Block User</Text>
+              </Pressable>
             </View>
 
-            </View>
-
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
