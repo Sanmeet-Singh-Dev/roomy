@@ -1,4 +1,4 @@
-import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -214,6 +214,7 @@ async function schedulePushNotification(notification) {
       <SafeAreaView>
         <ScrollView>
 
+
           <Text style={styles.nameText}>Hello, {userName}</Text>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
@@ -227,13 +228,19 @@ async function schedulePushNotification(notification) {
             </View>
 
           {/* <Button
+          {/* <Button
               title="Logout"
               onPress={handleLogout}
           /> */}
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
             </TouchableOpacity>
+          /> */}
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
+            </TouchableOpacity>
 
+          {/* <Button
           {/* <Button
               title="Location"
               onPress={handleLocation}
@@ -241,10 +248,21 @@ async function schedulePushNotification(notification) {
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
             </TouchableOpacity>
+          /> */}
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
+            </TouchableOpacity>
 
+          {/* <Button
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
+          /> */}
+             <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
+            </TouchableOpacity>
+
+          {/* <Button
           /> */}
              <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
@@ -266,6 +284,10 @@ async function schedulePushNotification(notification) {
         <Button
             title="Notification"
             onPress={handleNotification}
+        />  */}
+               <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
+            </TouchableOpacity> 
         />    */}
 
         <Text style={styles.text}>Welcome to the Home Screen</Text>
