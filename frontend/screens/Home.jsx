@@ -235,10 +235,6 @@ async function schedulePushNotification(notification) {
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
             </TouchableOpacity>
-          /> */}
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
-            </TouchableOpacity>
 
           {/* <Button
           {/* <Button
@@ -248,21 +244,11 @@ async function schedulePushNotification(notification) {
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
             </TouchableOpacity>
-          /> */}
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
-            </TouchableOpacity>
-
+        
           {/* <Button
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
-          /> */}
-             <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity>
-
-          {/* <Button
           /> */}
              <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
@@ -288,7 +274,6 @@ async function schedulePushNotification(notification) {
                <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
             </TouchableOpacity> 
-        />    */}
 
         <Text style={styles.text}>Welcome to the Home Screen</Text>
 

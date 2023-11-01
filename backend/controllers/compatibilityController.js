@@ -26,17 +26,12 @@ const calculateCompatibilityScore = async (currentUser, user) => {
 
     userOptions += user.interests.length;
     userOptions += user.traits.length;
-    // let score = 0.64*6;
-
-    // score += currentUser.interests.length*0.64;
-    // score += currentUser.traits.length*0.64;
 
     // Calculate compatibility score based on preferences (use your algorithm)
     const compatibilityScore = calculateCompatibility(currentUser, user);
 
     let totalOptions = 0;
-    // let finalPercentage = 0;
-    const finalPercentage = compatibilityScore;
+    let finalPercentage = 0;
 
     if( currentUserOptions >= userOptions ){
       totalOptions = currentUserOptions;
@@ -71,12 +66,10 @@ const calculateCompatibilityWithAllUsers = async (req, res) => {
             // Exclude the current user from compatibility calculations
             const compatibilityScore = await calculateCompatibilityScore(currentUser, user);
 
-
-
             // Create an object to represent the user and their compatibility score
                 const compatibilityData = {
                     user: user,
-                    score: compatibilityScore.toFixed(0),
+                    score: compatibilityScore,
                 };
 
                 // Add the compatibility data to the array
