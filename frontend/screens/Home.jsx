@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
+import { Camera } from '../Camera/Camera';
 
 const Home = () => {
     const route = useRoute();
@@ -174,7 +175,7 @@ const Home = () => {
         {compatibilityData.map((userData, index) => (
           <UserCard key={index} userData={userData} />
         ))}
-
+        <Camera userId={userId} />
         </ScrollView>
         </SafeAreaView>
     </View>
