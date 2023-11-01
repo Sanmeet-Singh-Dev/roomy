@@ -102,8 +102,8 @@ const Home = () => {
     }
 }
 useEffect(() => {
-  fetchNotifications(userId);
-  sendNotification(notifications);
+      fetchNotifications(userId);
+      sendNotification(notifications);
 }, [notifications, userId]);
 
 const sendNotification = () => {
@@ -138,6 +138,7 @@ async function schedulePushNotification(notification) {
         });
 
         if (response.ok) {
+          console.log("2");
           console.log("Notification deleted.")
         }
         else {
