@@ -83,6 +83,8 @@ const UserCard = ({ userData }) => {
 
           if(response.ok){
               setRequestSent(true);
+              const message = "You have a new friend request from name";
+              handleSend(currentUserId, selectedUserId, message);
           }
       }
       catch(error){
@@ -90,6 +92,30 @@ const UserCard = ({ userData }) => {
       }
   }
 
+  const handleSend = async (currentUserId, selectedUserId, message) => {
+    try {
+          const data = {
+            senderId: currentUserId,
+            recepientId: selectedUserId,
+            message: message
+          };
+
+        const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (response.ok) {
+          console.log("Request notification sent successfully.");
+        }
+    }
+    catch (error) {
+        console.log("Error in sending notification", error);
+    }
+}
   const acceptRequest = async (friendRequestId) => {
 
     try {
@@ -106,6 +132,8 @@ const UserCard = ({ userData }) => {
 
         if (response.ok) {
             setFriendRequets(friendRequests.filter((request) => request._id !== friendRequestId));
+            const message = "name has accepted your friend request";
+              handleSend(userId, friendRequestId, message);
         }
     }
     catch (error) {
