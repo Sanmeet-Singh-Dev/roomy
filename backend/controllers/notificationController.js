@@ -31,7 +31,9 @@ const getNotifications = asyncHandler (async (req, res) => {
     try {
         const { recepientId } = req.params;
         const notifications = await Notification.find({ recepientId:recepientId });
+        if(notifications.length > 0){
         res.json(notifications);
+        }
     } catch (error) {
         console.log("error", error);
         res.status(500).json({ error: "Internal server error" });
