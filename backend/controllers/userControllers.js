@@ -333,6 +333,10 @@ const blockUser = asyncHandler (async (req, res) => {
           $push: { blockedUser: selectedUserId }
         });
 
+        await User.findByIdAndUpdate(selectedUserId, {
+          $push: { blockedUser: currentUserId }
+        });
+
       await User.findByIdAndUpdate(currentUserId, {
         $pull: { friendRequests: selectedUserId }
       });

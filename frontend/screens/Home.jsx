@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +8,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
+import { TextInput } from 'react-native-paper';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Home = () => {
     const route = useRoute();
@@ -16,54 +26,126 @@ const Home = () => {
     let ipAdress = IPADDRESS;
     const [compatibilityData, setCompatibilityData] = useState([]);
     const userDataArray = [];
+    const [searchValue ,  setSearchValue ] = useState("");
+    const [filteredData , setFilteredData ] = useState("");
     
     const { userId, setUserId } = useContext(UserType);
+    const { expoPushToken, setExpoPushToken } = useContext(UserType);
+    const  [notifications , setNotifications ] = useState([]);
+    
+    
     useEffect(() => {
-      const fetchUsers = async () => {
-          const token = await AsyncStorage.getItem("jwt");
-          const decodedToken = jwt_decode(token);
-          const userId = decodedToken.userId;
-          setUserId(userId);
-      };
+     handleCompatibility();
+    }, []);
 
-      //fucntion to fetch all users and compatibility percentage
-      const fetchCompatibleUsers = async () => {
-        try {
-          // Get the authentication token from AsyncStorage
-          const token = await AsyncStorage.getItem('jwt');
-          
-          if (!token) {
-            // Handle the case where the token is not available
-            console.error('No authentication token available.');
-            return;
-          }
+  const handleCompatibility = () => {
+    const fetchUsers = async () => {
+      const token = await AsyncStorage.getItem("jwt");
+      const decodedToken = jwt_decode(token);
+      const userId = decodedToken.userId;
+      setUserId(userId);
+  };
+
+  //fucntion to fetch all users and compatibility percentage
+  const fetchCompatibleUsers = async () => {
+    try {
+      // Get the authentication token from AsyncStorage
+      const token = await AsyncStorage.getItem('jwt');
       
-          //sending request to API to get all users
-          const response = await fetch(`http://${ipAdress}:6000/api/users/compatibility`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`, // Include the token as a bearer token
-            },
-          });
-      
-          if (response.ok) {
-            // Handle a successful response
-            const data = await response.json();
-            setCompatibilityData(data);
-          } else {
-            // Handle an unsuccessful response (e.g., show an error message)
-            console.error('Error fetching users.');
-          }
-        } catch (error) {
-          // Handle fetch or AsyncStorage errors
-          console.error('Error:', error);
-        }
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('No authentication token available.');
+        return;
       }
+  
+      //sending request to API to get all users
+      const response = await fetch(`http://${ipAdress}:6000/api/users/compatibility`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+        },
+      });
+  
+      if (response.ok) {
+        // Handle a successful response
+        const data = await response.json();
+        setCompatibilityData(data);
+      } else {
+        // Handle an unsuccessful response (e.g., show an error message)
+        console.error('Error fetching users.');
+      }
+    } catch (error) {
+      // Handle fetch or AsyncStorage errors
+      console.error('Error:', error);
+    }
+  }
 
-      fetchUsers();
-      fetchCompatibleUsers();
-  }, [compatibilityData]);
+  fetchUsers();
+  fetchCompatibleUsers();
+  }
+
+  const fetchNotifications = async (userId) => {
+    try {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/notifications/${userId}`)
+        const data = await response.json();
+        if (response.ok) {
+            setNotifications(data);
+        }
+        else {
+            console.log("error showing notifications", response.status.message);
+        }
+    }
+    catch (error) {
+        console.log("Error fetching notifications", error)
+    }
+}
+useEffect(() => {
+  fetchNotifications(userId);
+  sendNotification(notifications);
+}, [notifications, userId]);
+
+const sendNotification = () => {
+notifications.map((notification) => {
+  schedulePushNotification(notification);
+  })
+}
+
+async function schedulePushNotification(notification) {
+  
+  deleteNotification(notification._id);
+
+    if(notification.isNotified === false ){
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Roomy Notification! 📬",
+          body: notification.message
+        },
+        trigger: { seconds: 2 },
+      });
+    }
+  }
+
+  const deleteNotification = async (id) => {
+    try {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/deleteNotification`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id : id })
+        });
+
+        if (response.ok) {
+          console.log("Notification deleted.")
+        }
+        else {
+            console.log("Error in deleting notification", response.status);
+        }
+    } catch (error) {
+        console.log("Error in deleting notificatioon", error);
+    }
+}
 
     //function to handle logout
     const handleLogout = async () => {
@@ -117,6 +199,14 @@ const Home = () => {
       navigation.navigate('Notification');
     }
 
+    const handleSearch = () => {
+      const searchResults = compatibilityData.filter(user => user.user.name.toLowerCase().includes(searchValue.toLowerCase()));
+      setFilteredData(searchResults);
+    }
+
+    const handleReset = () => {
+      setFilteredData("");
+    }
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -158,11 +248,35 @@ const Home = () => {
             onPress={handleNotification}
         />    
 
+            <TextInput
+              value={searchValue}
+              onChangeText={text => setSearchValue(text)}
+            />
+        <Button
+            title="Search"
+            onPress={handleSearch}
+        /> 
+        <Button
+            title="Reset"
+            onPress={handleReset}
+        /> 
+
         <Text>Welcome to the Home Screen</Text>
 
-        {compatibilityData.map((userData, index) => (
-          <UserCard key={index} userData={userData}  />
-        ))}
+      {
+        filteredData == "" ? (
+          compatibilityData.map((userData, index) => (
+            <UserCard key={index} userData={userData}  />
+          ))
+         ) : (
+          filteredData.map((userData, index) => (
+            <UserCard key={index} userData={userData}  />
+          ))
+          )
+      
+      }
+
+        
 
         </ScrollView>
         </SafeAreaView>

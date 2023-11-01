@@ -17,21 +17,32 @@ const getAllUsers = async () => {
 const calculateCompatibilityScore = async (currentUser, user) => {
     // Fetch preferences for both users based on their IDs
 
-    let score = 0.64*6;
 
-    score += currentUser.interests.length*0.64;
-    score += currentUser.traits.length*0.64;
+    let currentUserOptions = 6; 
+    let userOptions = 6;
 
-    // console.log("score of current user: : ", score);
-  
+    currentUserOptions += currentUser.interests.length;
+    currentUserOptions += currentUser.traits.length;
+
+    userOptions += user.interests.length;
+    userOptions += user.traits.length;
+
     // Calculate compatibility score based on preferences (use your algorithm)
     const compatibilityScore = calculateCompatibility(currentUser, user);
 
-    const finalPercentage = (compatibilityScore/score)*100;
+    let totalOptions = 0;
+    let finalPercentage = 0;
 
-    // console.log("Final Percentage: ", finalPercentage);
+    if( currentUserOptions >= userOptions ){
+      totalOptions = currentUserOptions;
+    } else 
+        totalOptions = userOptions;
 
-    return finalPercentage;
+    if(compatibilityScore !== 0 ){
+      finalPercentage = compatibilityScore*(100/totalOptions);
+    }
+
+    return finalPercentage.toFixed(0);
 };
   
 // Calculate compatibility scores with all users
@@ -80,11 +91,11 @@ const calculateCompatibilityWithAllUsers = async (req, res) => {
 // Function to calculate the compatibility score based on preferences
 const calculateCompatibility = (currentUser, user) => {
 
-    const weight = 0.64;
+    const weight = 1;
   
     // Calculate the compatibility score based on preferences
     let compatibilityScore = 0;
-  
+
     // Calculate work compatibility
     if (currentUser.work === user.work) {
         compatibilityScore += weight;

@@ -35,6 +35,7 @@ import {
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
 import { deleteMeeting, getMeetings, setMeeting, updateMeeting } from '../controllers/meetingController.js';
+import { deleteNotification, getNotifications, setNotification } from '../controllers/notificationController.js';
 
 //Configure multer for handling file uploads 
 const storage = multer.diskStorage({
@@ -84,5 +85,8 @@ router.get('/all', getAllUsers);
 
 // router.get('/preferences', protect, getUserPreferences);
 router.get('/compatibility', protect, calculateCompatibilityWithAllUsers);
+router.post('/request-notification' , setNotification)
+router.get('/notifications/:recepientId' , getNotifications);
+router.post('/deleteNotification', deleteNotification);
 
 export default router;
