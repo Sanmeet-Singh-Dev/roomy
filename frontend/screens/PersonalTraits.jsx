@@ -78,7 +78,7 @@ const PersonalTraits = () => {
   return (
     <View style={styles.containerMain}>
       <ScrollView>
-      <Text>Select Your Personal Traits:</Text>
+      <Text style={styles.text}>Select Your Personal Traits:</Text>
       <View style={styles.container}>
 
         {availableTraits.map((traits) => (
@@ -134,5 +134,9 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black',
     textAlign: 'center',
+  },
+  text: {
+    fontSize: 17,
+    marginTop: 30,
   },
 });
