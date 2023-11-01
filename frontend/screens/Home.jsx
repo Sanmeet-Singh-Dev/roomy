@@ -308,8 +308,10 @@ async function schedulePushNotification(notification) {
         <Button
             title="Notification"
             onPress={handleNotification}
-        />    */}
-
+        />  */}
+               <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
+            </TouchableOpacity> 
         <Text style={styles.text}>Welcome to the Home Screen</Text>
 
       {
