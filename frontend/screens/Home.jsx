@@ -20,6 +20,7 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+import { Camera } from '../Camera/Camera';
 
 const Home = () => {
     const route = useRoute();
@@ -354,6 +355,11 @@ async function schedulePushNotification(notification) {
 
 
     </ScrollView>
+        {compatibilityData.map((userData, index) => (
+          <UserCard key={index} userData={userData} />
+        ))}
+        <Camera userId={userId} />
+      
         </SafeAreaView>
     </View>
   )
