@@ -133,6 +133,12 @@ const userSchema = mongoose.Schema({
             ref: "User"
         }
     ],
+    blockedUser: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
     listMySpace: {
         images: [String],
         title: String,
