@@ -21,6 +21,7 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+import { Camera } from '../Camera/Camera';
 
 const Home = () => {
     const route = useRoute();
