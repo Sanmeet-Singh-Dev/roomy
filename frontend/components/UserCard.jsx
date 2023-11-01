@@ -154,6 +154,8 @@ const handleBlockUser = async ( currentUserId, selectedUserId ) => {
 
     if(response.ok){
       console.log("Successfully blocked user");
+      const message = "name has blocked you"
+      handleSend(currentUserId , selectedUserId , message);
     }
 }
 catch(error){
