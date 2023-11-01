@@ -304,12 +304,6 @@ async function schedulePushNotification(notification) {
             </TouchableOpacity>
 
           {/* <Button
-          /> */}
-             <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity>
-
-          {/* <Button
               title="Spaces"
               onPress={handleSpaces}
           /> */}
@@ -394,7 +388,7 @@ nameText: {
   fontSize: 17,
   marginBottom: 10,
   marginTop: 20
-}
+},
   buttonText: {
     color: '#fff',
     textAlign: 'center',
