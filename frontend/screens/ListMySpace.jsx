@@ -210,7 +210,6 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
           value={address}
           onChangeText={setAddress}
           style={styles.textInput}
-          style={styles.textInput}
         />
          <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={getCurrentLocation}>Use Current Location</Text>
