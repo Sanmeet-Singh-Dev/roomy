@@ -9,6 +9,7 @@ const Details = () => {
     const [fullName, setFullName] = useState('');
     const [gender, setGender] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
+    const [budget, setBudget] = useState('');
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
 
@@ -54,6 +55,7 @@ const Details = () => {
               fullName,
               gender,
               dateOfBirth,
+              budget,
             }),
           });
       
@@ -75,66 +77,76 @@ const Details = () => {
     return (
       <View style={styles.container}>
         <SafeAreaView>
-        <Text  style={styles.label}>Profile Details</Text>
-        <TextInput
-          placeholder="Full Name"
-          value={fullName}
-          onChangeText={setFullName}
-          style={styles.textInput}
-        />
+          <Text  style={styles.label}>Profile Details</Text>
+          <TextInput
+            placeholder="Full Name"
+            value={fullName}
+            onChangeText={setFullName}
+            style={styles.textInput}
+          />
 
-        <Text style={styles.label}>Gender:</Text>
+          <Text style={styles.label}>Gender:</Text>
 
-        <View style={styles.optionsContainer}>
+          <View style={styles.optionsContainer}>
 
-          <TouchableOpacity
-            style={[
-              styles.option,
-              gender === 'Male' && styles.selectedOption,
-            ]}
-            onPress={() => handleGenderSelection('Male')}
-          >
-            <Text style={styles.optionText}>Male</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.option,
-              gender === 'Female' && styles.selectedOption,
-            ]}
-            onPress={() => handleGenderSelection('Female')}
-          >
-            <Text style={styles.optionText}>Female</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.option,
-              gender === 'Other' && styles.selectedOption,
-            ]}
-            onPress={() => handleGenderSelection('Other')}
-          >
-            <Text style={styles.optionText}>Other</Text>
-          </TouchableOpacity>
-
-      </View>
-
-        <DateTimePicker
-        testID="dateTimePicker"
-        value={date}
-        mode="date" // Set to 'spinner' for spinner interface
-        // is24Hour={true}
-        display="default" 
-        style={styles.dateTimePicker}
-        onChange={onChange}
-        />
-        
-            <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleSaveProfile}>Save Profile</Text>
+            <TouchableOpacity
+              style={[
+                styles.option,
+                gender === 'Male' && styles.selectedOption,
+              ]}
+              onPress={() => handleGenderSelection('Male')}
+            >
+              <Text style={styles.optionText}>Male</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+              style={[
+                styles.option,
+                gender === 'Female' && styles.selectedOption,
+              ]}
+              onPress={() => handleGenderSelection('Female')}
+            >
+              <Text style={styles.optionText}>Female</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.option,
+                gender === 'Other' && styles.selectedOption,
+              ]}
+              onPress={() => handleGenderSelection('Other')}
+            >
+              <Text style={styles.optionText}>Other</Text>
+            </TouchableOpacity>
+
+          </View>
+
+          <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="date" // Set to 'spinner' for spinner interface
+          // is24Hour={true}
+          display="default" 
+          style={styles.dateTimePicker}
+          onChange={onChange}
+          />
+
+          <TextInput
+            keyboardType="numeric"
+            placeholder="Budget"
+            onChangeText={setBudget}
+            value={budget}
+            style={styles.textInput}
+          />
+          
+          <TouchableOpacity style={styles.button}>  
+          <Text style={styles.buttonText} onPress={handleSaveProfile}>Save Profile</Text>
+          </TouchableOpacity>
+
         </SafeAreaView>
+        
       </View>
+
     );
 };
   

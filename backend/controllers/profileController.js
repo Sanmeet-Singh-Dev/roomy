@@ -13,6 +13,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       userProfile.fullName = req.body.fullName || User.fullName;
       userProfile.gender = req.body.gender || User.gender;
       userProfile.dateOfBirth = req.body.dateOfBirth || User.dateOfBirth;
+      userProfile.budget = req.body.budget || User.budget;
   
       const updatedUserProfile = await userProfile.save();
   

@@ -1,17 +1,26 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-
+import { View, Text, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const UserCard = ({ userData }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('userSingleScreen', { user: userData });
+  }
+
   return (
     <View style={styles.cardContainer}>
-        <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />
-
-        <View style={styles.userInfo}>
-            <Text style={styles.userName}>{userData.user.name}</Text>
-            <Text style={styles.userScore}>{userData.score}%</Text>
+      <TouchableWithoutFeedback onPress={handlePress}>
+        <View>
+          <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />
+          <View style={styles.userInfo}>
+              <Text style={styles.userName}>{userData.user.name}</Text>
+              <Text style={styles.userScore}>{userData.score}%</Text>
+              <Text style={styles.userScore}>Budget: ${userData.user.budget} / month</Text>
+          </View>
         </View>
-        
+      </TouchableWithoutFeedback>
     </View>
   );
 };
