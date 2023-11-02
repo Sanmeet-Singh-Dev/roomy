@@ -20,7 +20,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-import { Camera } from '../Camera/Camera';
 
 const Home = () => {
     const route = useRoute();
@@ -268,11 +267,10 @@ async function schedulePushNotification(notification) {
             name="notifications" size={24} color="black" />
             </View>
 
-          {/* <Button
-          {/* <Button
+          <Button
               title="Logout"
               onPress={handleLogout}
-          /> */}
+          /> 
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
             </TouchableOpacity>
@@ -298,12 +296,8 @@ async function schedulePushNotification(notification) {
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
-          /> */}
-             <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity>
-
-          {/* <Button
+          />
+          <Button
               title="Spaces"
               onPress={handleSpaces}
           /> */}
