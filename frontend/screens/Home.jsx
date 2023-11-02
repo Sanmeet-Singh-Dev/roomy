@@ -181,6 +181,11 @@ async function schedulePushNotification(notification) {
         }
     };
 
+    const handleSort = () => {
+      console.log("Sort Clicked")
+      navigation.navigate('userSortScreen');
+    }
+
     const handleListMySpace = () => {
       console.log("List my Space Clicked")
       navigation.navigate('listMySpace');
@@ -247,7 +252,12 @@ async function schedulePushNotification(notification) {
           <Button
             title="Notification"
             onPress={handleNotification}
-        />    
+          />
+
+          <Button
+            title="Sort"
+            onPress={handleSort}
+          />          
 
             <TextInput
               value={searchValue}

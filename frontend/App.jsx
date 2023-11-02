@@ -26,6 +26,7 @@ import PersonalTraits from './screens/PersonalTraits';
 import Notification from './screens/NotificationScreen';
 import UserSingleScreen from './screens/UserSingleScreen';
 import ShowNotificationScreen from './screens/ShowNotificationScreen';
+import UserSortScreen from './screens/UserSortScreen';
 
 const stack = createNativeStackNavigator();
 
@@ -48,6 +49,7 @@ export default function App() {
         <stack.Screen name='interests' component={Interests} options={{ headerShown: false }} />
         <stack.Screen name='personalTraits' component={PersonalTraits} options={{ headerShown: false }} />
         <stack.Screen name='userSingleScreen' component={UserSingleScreen} options={{ headerShown: false }} />
+        <stack.Screen name='userSortScreen' component={UserSortScreen} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
         <stack.Screen name="newChat" component={NewChatScreen} />
         <stack.Screen name="Messages" component={ChatMessagesScreen} />       
