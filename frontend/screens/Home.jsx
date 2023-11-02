@@ -33,6 +33,7 @@ const Home = () => {
     const { userId, setUserId } = useContext(UserType);
     const { expoPushToken, setExpoPushToken } = useContext(UserType);
     const  [notifications , setNotifications ] = useState([]);
+    const [ userFriends, setUserFriends ] = useState([]);
     
     
     useEffect(() => {
@@ -81,10 +82,11 @@ const Home = () => {
       console.error('Error:', error);
     }
   }
-
+  
   fetchUsers();
   fetchCompatibleUsers();
-  }
+  
+}
 
   const fetchNotifications = async (userId) => {
     try {
@@ -138,7 +140,6 @@ async function schedulePushNotification(notification) {
         });
 
         if (response.ok) {
-          console.log("2");
           console.log("Notification deleted.")
         }
         else {
@@ -214,6 +215,7 @@ async function schedulePushNotification(notification) {
     const handleReset = () => {
       setFilteredData("");
     }
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -278,20 +280,14 @@ async function schedulePushNotification(notification) {
       {
         filteredData == "" ? (
           compatibilityData.map((userData, index) => (
-            <UserCard key={index} userData={userData}  />
+            <UserCard key={index} userData={userData} userFriends={userFriends} />
           ))
          ) : (
           filteredData.map((userData, index) => (
-            <UserCard key={index} userData={userData}  />
+            <UserCard key={index} userData={userData} userFriends={userFriends} />
           ))
           )
-      
       }
-
-        
-        {compatibilityData.map((userData, index) => (
-          <UserCard key={index} userData={userData}  />
-        ))}
 
         </ScrollView>
         </SafeAreaView>
