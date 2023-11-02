@@ -1,9 +1,173 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable,  } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { UserType } from '../UserContext';
+import { IPADDRESS } from "@env"
 
 const UserSingleScreen = ({ route   }) => {
     //user data
     const { user } = route.params;
+
+    const { userId, setUserId } = useContext(UserType);
+  const [requestSent , setRequestSent] = useState(false);
+    const [friendRequests, setFriendRequets] = useState([]);
+    const [ userFriends, setUserFriends ] = useState([]);
+    const [ recievedRequest , setRecievedRequest ] = useState([]);
+    let ipAdress = IPADDRESS;
+
+    useEffect(() => {
+      const fetchFriendRequests = async () => {
+          try{
+              const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/sent/${userId}`);
+              const data = await response.json();
+              if(response.ok){
+                  setFriendRequets(data);
+              }
+              else {
+                  console.log("error ", response.status);
+              }
+          }catch(error){
+          console.log("error ", error);
+      }
+      }
+
+      fetchFriendRequests();
+
+  },[friendRequests]);
+
+  useEffect(() => {
+    const fetchRecievedRequests = async () => {
+        try{
+            const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/recieved/${userId}`);
+            const data = await response.json();
+            if(response.ok){
+                setRecievedRequest(data);
+            }
+            else {
+                console.log("error ", response.status);
+            }
+        }catch(error){
+        console.log("error ", error);
+    }
+    }
+
+    fetchRecievedRequests();
+
+},[recievedRequest]);
+
+  useEffect(() => {
+      const fetchUserFriends = async () => {
+          try{
+              const response = await fetch(`http://${ipAdress}:6000/api/users/friends/${userId}`);
+              const data = await response.json();
+              if(response.ok){
+                  setUserFriends(data);
+              }
+              else {
+                  console.log("error ", response.status);
+              }
+          }catch(error){
+          console.log("error ", error);
+      }
+      }
+
+      fetchUserFriends();
+  },[userFriends]);
+
+  const sendFriendRequest = async (currentUserId, selectedUserId ) => {
+      try{
+          const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request`,{
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body:JSON.stringify({currentUserId,selectedUserId})
+          })
+
+          if(response.ok){
+              setRequestSent(true);
+              const message = "You have a new friend request from name";
+              handleSend(currentUserId, selectedUserId, message);
+          }
+      }
+      catch(error){
+          console.log("error ", error);
+      }
+  }
+
+  const handleSend = async (currentUserId, selectedUserId, message) => {
+    try {
+          const data = {
+            senderId: currentUserId,
+            recepientId: selectedUserId,
+            message: message
+          };
+
+        const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (response.ok) {
+          console.log("Request notification sent successfully.");
+        }
+    }
+    catch (error) {
+        console.log("Error in sending notification", error);
+    }
+}
+  const acceptRequest = async (friendRequestId) => {
+
+    try {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request/accept`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                senderId: friendRequestId,
+                recepientId: userId
+            })
+        })
+
+        if (response.ok) {
+            setFriendRequets(friendRequests.filter((request) => request._id !== friendRequestId));
+            const message = "name has accepted your friend request";
+              handleSend(userId, friendRequestId, message);
+        }
+    }
+    catch (error) {
+        console.log("Error accepting the friend request ", error);
+    }
+}
+
+const handleBlockUser = async ( currentUserId, selectedUserId ) => {
+
+  try{
+    const response = await fetch(`http://${ipAdress}:6000/api/users/block-user`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body:JSON.stringify({currentUserId,selectedUserId})
+    })
+
+    if(response.ok){
+      // setUserFriends(data);
+        console.log("Successfully blocked user");
+        const message = "name has blocked you"
+        handleSend(currentUserId , selectedUserId , message);
+    }
+    else {
+        console.log("error ", response.status);
+    }
+}
+catch(error){
+    console.log("error ", error);
+}
+}
 
     //function to calculate age
     const calculateAge = (dateOfBirth) => {
@@ -41,6 +205,42 @@ const UserSingleScreen = ({ route   }) => {
               <Text style={styles.userScore}>Budget: ${user.user.budget} / month</Text>
               <Text style={styles.heading}>Bio</Text>
               <Text style={styles.userScore}>{user.user.bio}</Text>
+
+              <View style={{display:"flex", flexDirection:"row" , justifyContent:"space-around"}}>
+      
+            {userFriends.includes(user.user._id) ? (
+            <Pressable
+              style ={{backgroundColor:"#82CD47",padding:8,borderRadius:6,width:85}}
+              >
+                  <Text style={{textAlign:"center",color:"white",fontSize:13}}>Friends</Text>
+            </Pressable>
+              ) : requestSent || friendRequests.some((friend) => friend._id === user.user._id) ? (
+            <Pressable
+              style ={{backgroundColor:"gray",padding:8,borderRadius:6,width:85}}
+              >
+                  <Text style={{textAlign:"center",color:"white",fontSize:13}}>Request Sent</Text>
+              </Pressable>
+              ) :  recievedRequest.some((friend) => friend._id === user.user._id)  ? (
+            <Pressable
+              onPress={() => acceptRequest(user.user._id)}
+              style={{ backgroundColor: "#0066b2", padding: 10, borderRadius: 6 }}>
+              <Text style={{ textAlign: "center", color: "white" }}>Accept</Text>
+            </Pressable>
+              ) : (
+            <Pressable 
+              onPress={() => sendFriendRequest(userId , user.user._id) }
+              style ={{backgroundColor:"#567189",padding:8,borderRadius:6,width:85}}>
+              <Text style={{textAlign:"center",color:"white",fontSize:13}}>Add Friend</Text>
+            </Pressable>
+              )}
+
+            <Pressable
+              onPress={() => handleBlockUser(userId , user.user._id) }
+              style ={{backgroundColor:"#d63838",padding:8,borderRadius:6,width:85}}>
+              <Text style={{textAlign:"center",color:"white",fontSize:13}}>Block User</Text>
+            </Pressable>
+          </View>
+              
               <Text style={styles.heading}>{user.user.name}'s Interests</Text>
               <View style={styles.optionContainer}>
                 {user.user.interests.map((interest, index) => (

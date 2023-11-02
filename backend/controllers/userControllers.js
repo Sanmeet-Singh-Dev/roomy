@@ -360,21 +360,18 @@ const blockUser = asyncHandler (async (req, res) => {
       await User.findByIdAndUpdate(selectedUserId, {
         $pull: { sentFriendRequests: currentUserId }
       });
-
-
-      res.sendStatus(200);
+      res.sendStatus(200)
   }
   catch (error) {
-      res.status(500);
+    console.log("Error ", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 const setLocation = asyncHandler(async (req, res) => {
   const { location } = req.body;
   const user = await User.findOne({ _id: req.user._id.toString() });
-
-    // console.log(userId)
-    // console.log(req.body)
   
     try {
       if (!user) {
