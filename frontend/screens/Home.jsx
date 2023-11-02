@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
-import UserSingleScreen from './UserSingleScreen';
 import { TextInput } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
 
@@ -19,7 +18,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-import { Camera } from '../Camera/Camera';
 
 const Home = () => {
     const route = useRoute();
@@ -227,11 +225,10 @@ async function schedulePushNotification(notification) {
             name="notifications" size={24} color="black" />
             </View>
 
-          {/* <Button
-          {/* <Button
+          <Button
               title="Logout"
               onPress={handleLogout}
-          /> */}
+          /> 
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
             </TouchableOpacity>
@@ -257,12 +254,8 @@ async function schedulePushNotification(notification) {
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
-          /> */}
-             <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity>
-
-          {/* <Button
+          />
+          <Button
               title="Spaces"
               onPress={handleSpaces}
           /> */}
