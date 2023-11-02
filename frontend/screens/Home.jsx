@@ -1,4 +1,4 @@
-import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
-import UserSingleScreen from './UserSingleScreen';
 import { TextInput } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
 
@@ -19,7 +18,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-import { Camera } from '../Camera/Camera';
 
 const Home = () => {
     const route = useRoute();
@@ -214,8 +212,7 @@ async function schedulePushNotification(notification) {
       <SafeAreaView>
         <ScrollView>
 
-
-          <Text style={styles.nameText}>Hello, {userName}</Text>
+          <Text>Hello, {userName}</Text>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
           <Ionicons 
@@ -227,55 +224,44 @@ async function schedulePushNotification(notification) {
             name="notifications" size={24} color="black" />
             </View>
 
-          {/* <Button
-          {/* <Button
+          <Button
               title="Logout"
               onPress={handleLogout}
-          /> */}
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
-            </TouchableOpacity>
+          />
 
-          {/* <Button
-          {/* <Button
+          <Button
               title="Location"
               onPress={handleLocation}
-          /> */}
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
-            </TouchableOpacity>
-        
-          {/* <Button
-          {/* <Button
+          />
+
+          <Button
               title="List My Space"
               onPress={handleListMySpace}
-          /> */}
-             <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity>
-
-          {/* <Button
+          />
+          <Button
               title="Spaces"
               onPress={handleSpaces}
-          /> */}
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
-            </TouchableOpacity>
+          />
 
-          {/* <Button
-            title="Compatibility"
-            onPress={handleCompatibility}
-        />   
-
-        <Button
+          <Button
             title="Notification"
             onPress={handleNotification}
-        />  */}
-               <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
-            </TouchableOpacity> 
+        />    
 
-        <Text style={styles.text}>Welcome to the Home Screen</Text>
+            <TextInput
+              value={searchValue}
+              onChangeText={text => setSearchValue(text)}
+            />
+        <Button
+            title="Search"
+            onPress={handleSearch}
+        /> 
+        <Button
+            title="Reset"
+            onPress={handleReset}
+        /> 
+
+        <Text>Welcome to the Home Screen</Text>
 
       {
         filteredData == "" ? (
@@ -292,14 +278,7 @@ async function schedulePushNotification(notification) {
 
         
 
-    
-    
-    </ScrollView>
-        {compatibilityData.map((userData, index) => (
-          <UserCard key={index} userData={userData} />
-        ))}
-        <Camera userId={userId} />
-      
+        </ScrollView>
         </SafeAreaView>
     </View>
   )
@@ -312,27 +291,4 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
-},
-button: {
-    backgroundColor: '#007AFF',
-    color: '#fff',
-    margin: 10,
-    padding: 10,
-    borderRadius: 8,
-},
-text: {
-  fontSize: 17,
-  marginTop: 20,
-  textAlign: 'center'
-},
-nameText: {
-  fontSize: 17,
-  marginBottom: 10,
-  marginTop: 20
-}
 })
