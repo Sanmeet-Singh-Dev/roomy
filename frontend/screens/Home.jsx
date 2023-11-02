@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
-import UserSingleScreen from './UserSingleScreen';
 import { TextInput } from 'react-native-paper';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
@@ -21,7 +20,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-import { Camera } from '../Camera/Camera';
 
 const Home = () => {
     const route = useRoute();
@@ -271,10 +269,7 @@ async function schedulePushNotification(notification) {
           {/* <Button
               title="Logout"
               onPress={handleLogout}
-          /> */}
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
-            </TouchableOpacity>
+          />
 
           {/* <Button
               title="Location"
@@ -287,32 +282,31 @@ async function schedulePushNotification(notification) {
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
-          /> */}
-             <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity>
-
-          {/* <Button
+          />
+        */}
+          <Button
               title="Spaces"
               onPress={handleSpaces}
-          /> */}
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
-            </TouchableOpacity>
+          />
 
-          {/* <Button
-            title="Compatibility"
-            onPress={handleCompatibility}
-        />   
-
-        <Button
+          <Button
             title="Notification"
             onPress={handleNotification}
-        />  */}
-               <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
-            </TouchableOpacity> 
-        <Text style={styles.text}>Welcome to the Home Screen</Text>
+        />    
+
+            <TextInput
+              value={searchValue}
+              onChangeText={text => setSearchValue(text)}
+            />
+        <Button
+            title="Search"
+            onPress={handleSearch}
+        /> 
+        <Button
+            title="Reset"
+            onPress={handleReset}
+        /> 
+        <Text>Welcome to the Home Screen</Text>
 
       {
         filteredData == "" ? (
@@ -339,27 +333,4 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
-},
-button: {
-    backgroundColor: '#007AFF',
-    color: '#fff',
-    margin: 10,
-    padding: 10,
-    borderRadius: 8,
-},
-text: {
-  fontSize: 17,
-  marginTop: 20,
-  textAlign: 'center'
-},
-nameText: {
-  fontSize: 17,
-  marginBottom: 10,
-  marginTop: 20
-}
 })
