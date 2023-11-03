@@ -36,6 +36,42 @@ const Home = () => {
     const { expoPushToken, setExpoPushToken } = useContext(UserType);
     const  [notifications , setNotifications ] = useState([]);
     const [ userFriends, setUserFriends ] = useState([]);
+
+    const [sortingGender, setSortingGender] = useState('Male');
+    const [sortingBudget, setSortingBudget] = useState([0, 10000]);
+    const [sortingWork, setSortingWork] = useState('Student');
+    const [sortingPets, setSortingPets] = useState('Yes');
+
+    const onApplySorting = (sortingGender, sortingBudget, sortingWork, sortingPets) => {
+      // Create a copy of the original data to avoid mutating it
+      let filteredData = [...compatibilityData];
+    
+      if (sortingGender) {
+        filteredData = filteredData.filter((item) => item.user.gender === sortingGender);
+      }
+    
+      if (sortingWork) {
+        filteredData = filteredData.filter((item) => item.user.work === sortingWork);
+      }
+    
+      if (sortingBudget[0] || sortingBudget[1]) {
+        filteredData = filteredData.filter((item) => {
+          const budgetInRange =
+            (!sortingBudget[0] || item.user.budget >= sortingBudget[0]) &&
+            (!sortingBudget[1] || item.user.budget <= sortingBudget[1]);
+          return budgetInRange;
+        });
+      }
+    
+      if (sortingPets) {
+        filteredData = filteredData.filter((item) => item.user.pets === sortingPets);
+      }
+
+      // console.log(filteredData);
+    
+      // Update the compatibilityData state with the filtered data
+      setCompatibilityData(filteredData);
+    };
     
     useEffect(() => {
       registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -222,8 +258,7 @@ async function schedulePushNotification(notification) {
     };
 
     const handleSort = () => {
-      console.log("Sort Clicked")
-      navigation.navigate('userSortScreen');
+      navigation.navigate('userSortScreen', { onApplySorting: onApplySorting });
     }
 
     const handleListMySpace = () => {
@@ -248,6 +283,8 @@ async function schedulePushNotification(notification) {
 
     const handleReset = () => {
       setFilteredData("");
+      handleCompatibility();
+      
     }
 
   return (
@@ -281,42 +318,44 @@ async function schedulePushNotification(notification) {
               title="List My Space"
               onPress={handleListMySpace}
           />
+
           <Button
               title="Spaces"
               onPress={handleSpaces}
           />
 
-          <Button
+           <Button
             title="Sort"
-            onPress={handleSort}
-          />          
+            onPress={()=> handleSort(onApplySorting)}
+          />   
 
-            <TextInput
-              value={searchValue}
-              onChangeText={text => setSearchValue(text)}
-            />
-        <Button
-            title="Search"
-            onPress={handleSearch}
-        /> 
-        <Button
-            title="Reset"
-            onPress={handleReset}
-        /> 
+          <TextInput
+            value={searchValue}
+            onChangeText={text => setSearchValue(text)}
+          />
 
-        <Text>Welcome to the Home Screen</Text>
+          <Button
+              title="Search"
+              onPress={handleSearch}
+          /> 
+          <Button
+              title="Reset"
+              onPress={handleReset}
+          />
 
-      {
-        filteredData == "" ? (
-          compatibilityData.map((userData, index) => (
-            <UserCard key={index} userData={userData} userFriends={userFriends} />
-          ))
-         ) : (
-          filteredData.map((userData, index) => (
-            <UserCard key={index} userData={userData} userFriends={userFriends} />
-          ))
-          )
-      }
+              <Text>Welcome to the Home Screen</Text>
+
+            {
+              filteredData == "" ? (
+                compatibilityData.map((userData, index) => (
+                  <UserCard key={index} userData={userData} userFriends={userFriends} />
+                ))
+              ) : (
+                filteredData.map((userData, index) => (
+                  <UserCard key={index} userData={userData} userFriends={userFriends} />
+                ))
+                )
+            }
 
         </ScrollView>
         </SafeAreaView>
