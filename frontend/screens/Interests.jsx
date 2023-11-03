@@ -78,7 +78,7 @@ const Interests = () => {
   return (
     <View style={styles.containerMain}>
       <ScrollView>
-      <Text>Select Your Interests:</Text>
+      <Text style={styles.text}>Select Your Interests:</Text>
       
       <View style={styles.container}>
         {availableInterests.map((interest) => (
@@ -134,5 +134,9 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black', // Change to your desired text color
     textAlign: 'center',
+  },
+  text: {
+    fontSize: 17,
+    marginTop: 30,
   },
 });
