@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+// import { string } from "yargs";
 
 const userSchema = mongoose.Schema({
     name: {
@@ -140,6 +141,12 @@ const userSchema = mongoose.Schema({
         }
     ],
     listMySpace: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            default: function () {
+                return new mongoose.Types.ObjectId();
+            }
+        },
         images: [String],
         title: String,
         description: String,
@@ -155,6 +162,49 @@ const userSchema = mongoose.Schema({
                 default: [0, 0], // Default coordinates
             }
       },
+      attributes: [
+        {
+            type: String,
+            enum: [
+                'parking', 'laundry', 'balcony', 'hydro',
+                'air-con', 'basement', 'bike-parking',
+                'oven', 'concierge', 'dishwasher', 'fireplace',
+                'fitness-center','patio','microwave',
+                'tv', 'garbage-disposal', 'refrigerator', 'wheelchair-accessible',
+                'roof-deck', 'storage', 'walkin-closet'
+            ]
+        }
+      ],
+      numOfBedrooms: {
+        type: Number,
+      },
+      numOfBathroom: {
+        type: Number,
+      },
+      availability: {
+        type: String,
+        enum: [
+            'immediate', 'later'
+        ]
+      },
+      roomSuitability: {
+        type: String,
+        enum: [
+            'student', 'professionals', 'couples'
+        ]
+      },
+      petFriendly: {
+        type: String,
+        enum: [
+            'allowed', 'not-allowed'
+        ]
+      },
+      furnished: {
+        type: String,
+        enum: [
+            'unfurnished','fully-furnished','partially-furnished'
+        ]
+      }
 
     },
   }, 
