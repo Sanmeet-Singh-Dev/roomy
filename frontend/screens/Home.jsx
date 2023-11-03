@@ -283,7 +283,10 @@ async function schedulePushNotification(notification) {
     const handleReset = () => {
       setFilteredData("");
       handleCompatibility();
-      
+    }
+
+    const handleBlockedUsers = () => {
+      navigation.navigate('BlockedUsers');
     }
 
   return (
@@ -321,6 +324,11 @@ async function schedulePushNotification(notification) {
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleBlockedUsers}>Blocked Users</Text>
+            </TouchableOpacity>
+
             <Button
             title="Sort"
             onPress={()=> handleSort(onApplySorting)}

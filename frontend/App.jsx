@@ -26,6 +26,7 @@ import PersonalTraits from './screens/PersonalTraits';
 import UserSingleScreen from './screens/UserSingleScreen';
 import ShowNotificationScreen from './screens/ShowNotificationScreen';
 import UserSortScreen from './screens/UserSortScreen';
+import BlockedUserScreen from './screens/BlockedUserScreen';
 
 const stack = createNativeStackNavigator();
 
@@ -57,6 +58,7 @@ export default function App() {
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces}/>
         <stack.Screen name="showNotificationScreen" component={ShowNotificationScreen} />
+        <stack.Screen name="BlockedUsers" component={BlockedUserScreen} />
       </stack.Navigator>
 
       

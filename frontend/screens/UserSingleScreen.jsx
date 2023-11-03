@@ -169,6 +169,31 @@ catch(error){
 }
 }
 
+const unfriendUser = async ( currentUserId, selectedUserId ) => {
+
+  try{
+    const response = await fetch(`http://${ipAdress}:6000/api/users/unfriend-user`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body:JSON.stringify({currentUserId,selectedUserId})
+    })
+
+    if(response.ok){
+        console.log("Successfully removed as a friend");
+        const message = "name has removed you as a friend"
+        handleSend(currentUserId , selectedUserId , message);
+    }
+    else {
+        console.log("error ", response.status);
+    }
+}
+catch(error){
+    console.log("error ", error);
+}
+}
+
     //function to calculate age
     const calculateAge = (dateOfBirth) => {
       const birthDate = new Date(dateOfBirth);
@@ -209,11 +234,20 @@ catch(error){
               <View style={{display:"flex", flexDirection:"row" , justifyContent:"space-around"}}>
       
             {userFriends.includes(user.user._id) ? (
+            <View style={{display:"flex", flexDirection:"row" , justifyContent:"space-around"}}>
             <Pressable
-              style ={{backgroundColor:"#82CD47",padding:8,borderRadius:6,width:85}}
+              style ={{backgroundColor:"#82CD47",padding:8,borderRadius:6,width:85, marginRight:40}}
               >
                   <Text style={{textAlign:"center",color:"white",fontSize:13}}>Friends</Text>
             </Pressable>
+
+              <Pressable
+              onPress={() => unfriendUser(userId, user.user._id)}
+              style ={{backgroundColor:"#82CD47",padding:8,borderRadius:6,width:85}}
+                >
+                <Text style={{textAlign:"center",color:"white",fontSize:13}}>Unfriend</Text>
+                </Pressable>
+                </View>
               ) : requestSent || friendRequests.some((friend) => friend._id === user.user._id) ? (
             <Pressable
               style ={{backgroundColor:"gray",padding:8,borderRadius:6,width:85}}

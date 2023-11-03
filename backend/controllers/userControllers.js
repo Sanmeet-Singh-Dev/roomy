@@ -368,6 +368,62 @@ const blockUser = asyncHandler (async (req, res) => {
   }
 });
 
+const unblockUser = asyncHandler (async (req, res) => {
+  const { currentUserId, selectedUserId } = req.body;
+  try {
+      await User.findByIdAndUpdate(currentUserId, {
+          $pull: { blockedUser: selectedUserId }
+        });
+        await User.findByIdAndUpdate(selectedUserId, {
+          $pull: { blockedUser: currentUserId }
+        });
+      res.sendStatus(200)
+  }
+  catch (error) {
+    console.log("Error ", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+const unfriendUser = asyncHandler (async (req, res) => {
+  const { currentUserId, selectedUserId } = req.body;
+  try {
+      await User.findByIdAndUpdate(currentUserId, {
+       $pull: { friends: selectedUserId }
+      });
+
+      await User.findByIdAndUpdate(selectedUserId, {
+        $pull: { friends: currentUserId }
+      });
+
+      res.sendStatus(200)
+  }
+  catch (error) {
+    console.log("Error ", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+const getBlockedUsers = async (req, res) => {
+  
+  try {
+    const userId = req.user._id;
+    User.findById(userId).populate("blockedUser").then((user) => {
+        if(!user){
+            return res.status(404).json({message:"User not found"});
+        }
+        const blockedUsers = user.blockedUser;
+        res.status(200).json(blockedUsers);
+    })
+} catch (error) {
+    console.log("Error ", error);
+    res.status(500).json({ error: "Internal server error" });
+}
+};
+
+
 
 const setLocation = asyncHandler(async (req, res) => {
   const { location } = req.body;
@@ -411,5 +467,8 @@ export {
     sentFriendRequests,
     acceptRequest,
     recievedFriendRequests,
-    blockUser
+    blockUser,
+    unblockUser,
+    unfriendUser,
+    getBlockedUsers
 };
