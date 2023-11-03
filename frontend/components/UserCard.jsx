@@ -159,10 +159,15 @@ const handleBlockUser = async ( currentUserId, selectedUserId ) => {
     })
 
     if(response.ok){
-      console.log("Successfully blocked user");
+        setUserFriends(data);
+        console.log("Successfully blocked user");
       const message = "name has blocked you"
       handleSend(currentUserId , selectedUserId , message);
     }
+    else {
+        console.log("error ", response.status);
+    }
+      
 }
 catch(error){
     console.log("error ", error);

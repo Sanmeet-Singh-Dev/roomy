@@ -361,9 +361,14 @@ const blockUser = asyncHandler (async (req, res) => {
         $pull: { sentFriendRequests: currentUserId }
       });
 
-
-      res.sendStatus(200);
-  }
+      User.findById(currentUserId).populate("friends").then((user) => {
+        if(!user){
+              return res.status(404).json({message:"User not found"});
+        }
+          const friendIds = user.friends.map((friend) => friend._id);
+          res.status(200).json(friendIds);
+        })
+    }
   catch (error) {
       res.status(500);
   }
