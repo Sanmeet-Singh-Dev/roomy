@@ -255,7 +255,7 @@ async function schedulePushNotification(notification) {
         <ScrollView>
 
           <Text style={styles.nameText}>Hello, {userName}</Text>
-          <Text style={styles.nameText}>Hello, {userName}</Text>
+          {/* <Text style={styles.nameText}>Hello, {userName}</Text> */}
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
           <Ionicons 
@@ -267,17 +267,17 @@ async function schedulePushNotification(notification) {
             name="notifications" size={24} color="black" />
             </View>
 
-          <Button
+          {/* <Button
               title="Logout"
               onPress={handleLogout}
-          /> 
+          />  */}
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
             </TouchableOpacity>
          
-          <TouchableOpacity style={styles.button}>  
+          {/* <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
           {/* <Button
           {/* <Button
@@ -288,27 +288,28 @@ async function schedulePushNotification(notification) {
             <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
             </TouchableOpacity>
         
-          <TouchableOpacity style={styles.button}>  
+          {/* <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
           {/* <Button
           {/* <Button
               title="List My Space"
               onPress={handleListMySpace}
-          />
-          <Button
-              title="Spaces"
-              onPress={handleSpaces}
           /> */}
+
+           <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
+            </TouchableOpacity>
+
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
             </TouchableOpacity>
-
+{/* 
           <Button
             title="Notification"
             onPress={handleNotification}
-        />  
+        />   */}
                <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
             </TouchableOpacity> 
@@ -330,11 +331,11 @@ async function schedulePushNotification(notification) {
       {
         filteredData == "" ? (
           compatibilityData.map((userData, index) => (
-            <UserCard key={index} userData={userData} userFriends={userFriends} />
+            <UserCard key={index} userData={userData} userFriends={userFriends}  />
           ))
          ) : (
           filteredData.map((userData, index) => (
-            <UserCard key={index} userData={userData} userFriends={userFriends} />
+            <UserCard key={index} userData={userData} userFriends={userFriends}  />
           ))
           )
       }
@@ -343,10 +344,6 @@ async function schedulePushNotification(notification) {
 
 
     </ScrollView>
-        {compatibilityData.map((userData, index) => (
-          <UserCard key={index} userData={userData} />
-        ))}
-        <Camera userId={userId} />
       
         </SafeAreaView>
     </View>
