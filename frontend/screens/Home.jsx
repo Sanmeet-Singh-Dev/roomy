@@ -1,4 +1,4 @@
-import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, Platform} from 'react-native'
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
-import UserSingleScreen from './UserSingleScreen';
 import { TextInput } from 'react-native-paper';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
@@ -292,7 +291,8 @@ async function schedulePushNotification(notification) {
       <SafeAreaView>
         <ScrollView>
 
-          <Text>Hello, {userName}</Text>
+          <Text style={styles.nameText}>Hello, {userName}</Text>
+          {/* <Text style={styles.nameText}>Hello, {userName}</Text> */}
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
           <Ionicons 
@@ -304,60 +304,58 @@ async function schedulePushNotification(notification) {
             name="notifications" size={24} color="black" />
             </View>
 
-          <Button
-              title="Logout"
-              onPress={handleLogout}
-          />
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
+            </TouchableOpacity>
 
-          <Button
-              title="Location"
-              onPress={handleLocation}
-          />
+        
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
+            </TouchableOpacity>
+        
 
-          <Button
-              title="List My Space"
-              onPress={handleListMySpace}
-          />
+           <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
+            </TouchableOpacity>
 
-          <Button
-              title="Spaces"
-              onPress={handleSpaces}
-          />
-
-           <Button
+          <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
+            </TouchableOpacity>
+            <Button
             title="Sort"
             onPress={()=> handleSort(onApplySorting)}
           />   
+       <TextInput
+              value={searchValue}
+              onChangeText={text => setSearchValue(text)}
+            />
+        <Button
+            title="Search"
+            onPress={handleSearch}
+        /> 
+        <Button
+            title="Reset"
+            onPress={handleReset}
+        /> 
+        <Text>Welcome to the Home Screen</Text>
 
-          <TextInput
-            value={searchValue}
-            onChangeText={text => setSearchValue(text)}
-          />
+      {
+        filteredData == "" ? (
+          compatibilityData.map((userData, index) => (
+            <UserCard key={index} userData={userData} userFriends={userFriends}  />
+          ))
+         ) : (
+          filteredData.map((userData, index) => (
+            <UserCard key={index} userData={userData} userFriends={userFriends}  />
+          ))
+          )
+      }
 
-          <Button
-              title="Search"
-              onPress={handleSearch}
-          /> 
-          <Button
-              title="Reset"
-              onPress={handleReset}
-          />
+        
 
-              <Text>Welcome to the Home Screen</Text>
 
-            {
-              filteredData == "" ? (
-                compatibilityData.map((userData, index) => (
-                  <UserCard key={index} userData={userData} userFriends={userFriends} />
-                ))
-              ) : (
-                filteredData.map((userData, index) => (
-                  <UserCard key={index} userData={userData} userFriends={userFriends} />
-                ))
-                )
-            }
-
-        </ScrollView>
+    </ScrollView>
+      
         </SafeAreaView>
     </View>
   )
@@ -370,4 +368,50 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
   },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+},
+button: {
+    backgroundColor: '#007AFF',
+    color: '#fff',
+    margin: 10,
+    padding: 10,
+    borderRadius: 8,
+},
+text: {
+  fontSize: 17,
+  marginTop: 20,
+  textAlign: 'center'
+},
+nameText: {
+  fontSize: 17,
+  marginBottom: 10,
+  marginTop: 20
+},
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+},
+button: {
+    backgroundColor: '#007AFF',
+    color: '#fff',
+    margin: 10,
+    padding: 10,
+    borderRadius: 8,
+},
+text: {
+  fontSize: 17,
+  marginTop: 20,
+  textAlign: 'center'
+},
+nameText: {
+  fontSize: 17,
+  marginBottom: 10,
+  marginTop: 20
+}
 })
