@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet , TouchableOpacity} from 'react-native';
-import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet , TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';

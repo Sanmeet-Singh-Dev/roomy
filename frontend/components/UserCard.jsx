@@ -1,6 +1,8 @@
-import React from 'react';
+import React  from 'react';
 import { View, Text, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useContext } from 'react';
+import IPADDRESS from '@env';
 
 const UserCard = ({ userData }) => {
   const navigation = useNavigation();

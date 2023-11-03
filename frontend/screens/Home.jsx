@@ -267,36 +267,15 @@ async function schedulePushNotification(notification) {
             name="notifications" size={24} color="black" />
             </View>
 
-          {/* <Button
-              title="Logout"
-              onPress={handleLogout}
-          />  */}
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
             </TouchableOpacity>
-         
-          {/* <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
-            </TouchableOpacity> */}
 
-          {/* <Button
-          {/* <Button
-              title="Location"
-              onPress={handleLocation}
-          /> */}
+        
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
             </TouchableOpacity>
         
-          {/* <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
-            </TouchableOpacity> */}
-
-          {/* <Button
-          {/* <Button
-              title="List My Space"
-              onPress={handleListMySpace}
-          /> */}
 
            <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
@@ -305,15 +284,6 @@ async function schedulePushNotification(notification) {
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
             </TouchableOpacity>
-{/* 
-          <Button
-            title="Notification"
-            onPress={handleNotification}
-        />   */}
-               <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleNotification}>Notification</Text>
-            </TouchableOpacity> 
-
        <TextInput
               value={searchValue}
               onChangeText={text => setSearchValue(text)}
