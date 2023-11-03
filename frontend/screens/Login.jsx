@@ -54,7 +54,7 @@ const Login = () => {
             <SafeAreaView style={styles.container}>
             <Text style={styles.text}>Welcome Back Roomy</Text>
 
-             <Text style={styles.label}>Email:</Text>
+            <Text style={styles.label}>Email:</Text>
             <TextInput
             placeholder="Email"
             value={email}
@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
       text: {
         fontSize: 25,
         marginBottom: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: 20,
       },
       textInput: {
         height: 40,
