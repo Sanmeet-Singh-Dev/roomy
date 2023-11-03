@@ -35,6 +35,42 @@ const Home = () => {
     const { expoPushToken, setExpoPushToken } = useContext(UserType);
     const  [notifications , setNotifications ] = useState([]);
     const [ userFriends, setUserFriends ] = useState([]);
+
+    const [sortingGender, setSortingGender] = useState('Male');
+    const [sortingBudget, setSortingBudget] = useState([0, 10000]);
+    const [sortingWork, setSortingWork] = useState('Student');
+    const [sortingPets, setSortingPets] = useState('Yes');
+
+    const onApplySorting = (sortingGender, sortingBudget, sortingWork, sortingPets) => {
+      // Create a copy of the original data to avoid mutating it
+      let filteredData = [...compatibilityData];
+    
+      if (sortingGender) {
+        filteredData = filteredData.filter((item) => item.user.gender === sortingGender);
+      }
+    
+      if (sortingWork) {
+        filteredData = filteredData.filter((item) => item.user.work === sortingWork);
+      }
+    
+      if (sortingBudget[0] || sortingBudget[1]) {
+        filteredData = filteredData.filter((item) => {
+          const budgetInRange =
+            (!sortingBudget[0] || item.user.budget >= sortingBudget[0]) &&
+            (!sortingBudget[1] || item.user.budget <= sortingBudget[1]);
+          return budgetInRange;
+        });
+      }
+    
+      if (sortingPets) {
+        filteredData = filteredData.filter((item) => item.user.pets === sortingPets);
+      }
+
+      // console.log(filteredData);
+    
+      // Update the compatibilityData state with the filtered data
+      setCompatibilityData(filteredData);
+    };
     
     useEffect(() => {
       registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -221,8 +257,7 @@ async function schedulePushNotification(notification) {
     };
 
     const handleSort = () => {
-      console.log("Sort Clicked")
-      navigation.navigate('userSortScreen');
+      navigation.navigate('userSortScreen', { onApplySorting: onApplySorting });
     }
 
     const handleListMySpace = () => {
@@ -247,6 +282,8 @@ async function schedulePushNotification(notification) {
 
     const handleReset = () => {
       setFilteredData("");
+      handleCompatibility();
+      
     }
 
   return (
@@ -284,6 +321,10 @@ async function schedulePushNotification(notification) {
           <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
             </TouchableOpacity>
+            <Button
+            title="Sort"
+            onPress={()=> handleSort(onApplySorting)}
+          />   
        <TextInput
               value={searchValue}
               onChangeText={text => setSearchValue(text)}
