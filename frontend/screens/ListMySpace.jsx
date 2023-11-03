@@ -19,7 +19,6 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [budget, setBudget] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
   const { userId, setUserId } = useContext(UserType);
 
@@ -82,7 +81,7 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
 
 
   const handleUpload = async () => {
-    if (!title || !description || !budget || selectedImages.length === 0) {
+    if (!title || !description || selectedImages.length === 0) {
       Alert.alert('Please Check Input', 'Please enter all the details and select at least one image');
       return;
     }
@@ -118,7 +117,6 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
           images: firebaseImageURLs,
           title,
           description,
-          budget: parseFloat(budget),
           location: locationData
         },
         
@@ -134,6 +132,7 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
 
       if (response.ok) {
         Alert.alert('Success', 'Details saved successfully');
+        navigation.navigate('room-details');
       } else {
         const responseData = await response.json();
         Alert.alert('Error', responseData.message || 'Failed to save details.');
@@ -179,12 +178,6 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
         onChangeText={setDescription}
         style={styles.textInput}
       />
-      <TextInput
-        placeholder="Budget"
-        value={budget}
-        onChangeText={setBudget}
-        style={styles.textInput}
-      />
 
       <ScrollView horizontal>
         {selectedImages.map((uri, index) => (
@@ -209,12 +202,10 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
          <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={getCurrentLocation}>Use Current Location</Text>
           </TouchableOpacity>
-      {/* <Button title="Use Current Location" onPress={getCurrentLocation} /> */}
-      {/* <Button title="Submit" onPress={handleUpload} /> */}
       <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleUpload}>Submit</Text>
           </TouchableOpacity>
-          {/* <Camera userId={userId} /> */}
+          <Camera userId={userId} />
     </View>
   );
 };

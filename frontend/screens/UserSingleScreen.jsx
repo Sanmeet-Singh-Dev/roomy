@@ -220,7 +220,9 @@ catch(error){
         <SafeAreaView>
             <ScrollView>
               <View style={styles.imageContainer}>
-                <Image source={{ uri: user.user.profilePhoto[0]}} style={styles.image} />
+                <Image 
+                 source={{ uri: user.user.profilePhoto[0]}} 
+                style={styles.image} />
                 <Text style={styles.userName}>{user.user.name}, {userAge}</Text>
               </View>
               <View style={styles.CompatibilityContainer}>
@@ -292,7 +294,9 @@ catch(error){
                 <Text style={styles.heading}>{user.user.name}'s listings</Text>
                   {user.user.listMySpace.description ? (
                     <View>
-                      <Image source={{ uri: user.user.listMySpace.images[0]}} style={styles.image} />
+                      <Image 
+                       source={{ uri: user.user.listMySpace.images[0]}} 
+                      style={styles.image} />
                       <Text style={styles.title}>{user.user.listMySpace.title}</Text>
                       <Text style={styles.description}>{user.user.listMySpace.description}</Text>
                       <Text style={styles.rent}>Rent</Text>
