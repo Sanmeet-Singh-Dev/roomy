@@ -1,4 +1,4 @@
-import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, Platform} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,7 +10,9 @@ import { IPADDRESS } from "@env"
 import UserCard from '../components/UserCard';
 import UserSingleScreen from './UserSingleScreen';
 import { TextInput } from 'react-native-paper';
+import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -35,7 +37,43 @@ const Home = () => {
     const  [notifications , setNotifications ] = useState([]);
     const [ userFriends, setUserFriends ] = useState([]);
     
+    useEffect(() => {
+      registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    }, []);
+
+    async function registerForPushNotificationsAsync() {
+      let token;
+      if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+          name: 'default',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF231F7C',
+        });
+      }
     
+      if (Device.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          alert('Failed to get push token for push notification!');
+          return;
+        }
+    
+        const projectId = Constants.expoConfig?.extra?.eas.projectId;
+        token = (await Notifications.getExpoPushTokenAsync({ projectId: projectId })).data;
+        console.log(token);
+      } else {
+        alert('Must use physical device for Push Notifications');
+      }
+    
+      return token;
+    }
+
     useEffect(() => {
      handleCompatibility();
     }, []);
@@ -203,10 +241,6 @@ async function schedulePushNotification(notification) {
       navigation.navigate('Spaces');
     }
 
-    const handleNotification = () => {
-      navigation.navigate('Notification');
-    }
-
     const handleSearch = () => {
       const searchResults = compatibilityData.filter(user => user.user.name.toLowerCase().includes(searchValue.toLowerCase()));
       setFilteredData(searchResults);
@@ -250,11 +284,6 @@ async function schedulePushNotification(notification) {
           <Button
               title="Spaces"
               onPress={handleSpaces}
-          />
-
-          <Button
-            title="Notification"
-            onPress={handleNotification}
           />
 
           <Button
