@@ -27,6 +27,9 @@ import UserSingleScreen from './screens/UserSingleScreen';
 import ShowNotificationScreen from './screens/ShowNotificationScreen';
 import UserSortScreen from './screens/UserSortScreen';
 import BlockedUserScreen from './screens/BlockedUserScreen';
+import RoomDetails from './screens/RoomDetails';
+import RoomAttributes from './screens/RoomAttributes';
+import SingleSpace from './screens/SingleSpace';
 
 const stack = createNativeStackNavigator();
 
@@ -54,6 +57,9 @@ export default function App() {
         <stack.Screen name="newChat" component={NewChatScreen} />
         <stack.Screen name="Messages" component={ChatMessagesScreen} />       
         <stack.Screen name="listMySpace" component={ListMySpace}/>
+        <stack.Screen name="room-attributes" component={RoomAttributes}/>
+        <stack.Screen name="single-space" component={SingleSpace}/>
+        <stack.Screen name="room-details" component={RoomDetails}/>
         <stack.Screen name="Calendar" component={CalendarScreen} />
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces}/>

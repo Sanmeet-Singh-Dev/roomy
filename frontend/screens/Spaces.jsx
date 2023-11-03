@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, View, Image, StyleSheet } from 'react-native';
+import { Text, ScrollView, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native'
 
 const Spaces = () => {
   const [listMySpaces, setListMySpaces] = useState([]);
   const iPAdress = IPADDRESS
+  const navigation = useNavigation();
   useEffect(() => {
     const fetchDataAndGeocode = async () => {
       try {
@@ -73,11 +75,18 @@ const Spaces = () => {
       }
     };
 
+
     fetchDataAndGeocode();
   }, []);
+
+  const navigateToSpaceDetails = (space) => {
+    navigation.navigate('single-space', { space });
+  };
+
   return (
   <ScrollView>
   {Object.values(listMySpaces).map((space, index) => (
+     <TouchableOpacity key={index} onPress={() => navigateToSpaceDetails(space)}>
     <View key={index} style={styles.card}>
       <Text style={styles.title}>Title: {space.title}</Text>
       <Text  style={styles.description}>Description: {space.description}</Text>
@@ -94,6 +103,7 @@ const Spaces = () => {
       ))}
       </View>
     </View>
+    </TouchableOpacity>
   ))}
 </ScrollView>
 );

@@ -29,6 +29,8 @@ import {
     updateUserHabits,
     updateUserInterests,
     updateUserTraits,
+    updateUserRoomAttributes,
+    saveRoomDetails
 } from '../controllers/profileController.js';
 import {
     // getUserPreferences,
@@ -80,6 +82,8 @@ router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
 router.put('/interests', protect, updateUserInterests)
 router.put('/traits', protect, updateUserTraits)
+router.put('/update-room-attributes', protect, updateUserRoomAttributes)
+router.post('/update-room-details', protect, saveRoomDetails)
 router.get('/:id/preferences', protect, getUserPreferences)
 
 router.post('/save-list-my-space', saveListMySpaceData);

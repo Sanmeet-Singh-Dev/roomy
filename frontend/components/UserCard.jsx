@@ -13,7 +13,9 @@ const UserCard = ({ userData }) => {
     <View style={styles.cardContainer}>
       <TouchableWithoutFeedback onPress={handlePress}>
         <View>
-          <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />
+          <Image
+            source={{ uri: userData.user.profilePhoto[0]}} 
+           style={styles.image} />
           <View style={styles.userInfo}>
               <Text style={styles.userName}>{userData.user.name}</Text>
               <Text style={styles.userScore}>{userData.score}%</Text>
