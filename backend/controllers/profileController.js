@@ -13,6 +13,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       userProfile.fullName = req.body.fullName || User.fullName;
       userProfile.gender = req.body.gender || User.gender;
       userProfile.dateOfBirth = req.body.dateOfBirth || User.dateOfBirth;
+      userProfile.budget = req.body.budget || User.budget;
   
       const updatedUserProfile = await userProfile.save();
   
@@ -27,7 +28,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/bio
 // @access  Private
 const updateUserBio = asyncHandler(async (req, res) => {
-  const { work, bio } = req.body;
+  const { work, bio, profilePhoto,image } = req.body.data;
+  console.log(req.body);
   // Find the user's profile by their user ID
   const userProfile = await User.findOne({ _id: req.user._id.toString() });
 
@@ -35,6 +37,8 @@ const updateUserBio = asyncHandler(async (req, res) => {
     // Update user profile fields
     userProfile.work = work || userProfile.work;
     userProfile.bio = bio || userProfile.bio;
+    userProfile.profilePhoto = profilePhoto || userProfile.profilePhoto;
+    userProfile.image = image || userProfile.image;
 
     const updatedUserProfile = await userProfile.save();
   

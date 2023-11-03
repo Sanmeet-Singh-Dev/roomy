@@ -13,19 +13,14 @@ import {
 } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import moment from 'moment';
-import * as Calendar from 'expo-calendar';
-import * as Localization from 'expo-localization';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { v4 as uuidv4 } from 'uuid';
 import useKeyboardHeight from '../hooks/useKeyboardHeight';
-import useStore from '../store/store';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 
 const { width: vw } = Dimensions.get('window');
-// moment().format('YYYY/MM/DD')
 
 const styles = StyleSheet.create({
   createTaskButton: {
@@ -86,7 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 19
   },
   taskContainer: {
-    height: 400,
+    height: 300,
     width: 327,
     alignSelf: 'center',
     borderRadius: 20,
@@ -99,7 +94,7 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     shadowOpacity: 0.2,
     elevation: 5,
-    padding: 22
+    padding: 38
   },
   calenderContainer: {
     marginTop: 30,
@@ -128,17 +123,8 @@ const styles = StyleSheet.create({
 
 const CreateMeeting = ({ route }) => {
     const navigation = useNavigation();
-  const { updateTodo } = useStore((state) => ({
-    updateTodo: state.updateTodo
-  }));
-
-//   console.log("Update to do: ",updateTodo);
 
   const keyboardHeight = useKeyboardHeight();
-
-  const createNewCalendar = route.params?.createNewCalendar ?? (() => null);
-  const updateCurrentTask = route.params?.updateCurrentTask ?? (() => null);
-  const currentDate = route.params?.currentDate ?? (() => null);
 
   const [selectedDay, setSelectedDay] = useState({
     [`${moment().format('YYYY')}-${moment().format('MM')}-${moment().format(
@@ -154,11 +140,8 @@ const CreateMeeting = ({ route }) => {
   const [visibleHeight, setVisibleHeight] = useState(
     Dimensions.get('window').height
   );
-  const [isAlarmSet, setAlarmSet] = useState(false);
   const [alarmTime, setAlarmTime] = useState(moment().format());
   const [isDateTimePickerVisible, setDateTimePickerVisible] = useState(false);
-  const [meetings, setMeetings] = useState([]);
-  const [recepientData, setRecepientData] = useState();
     const recepientId = route.params?.recepientId;
     const { userId, setUserId } = useContext(UserType);
     let ipAdress = IPADDRESS;
@@ -170,97 +153,6 @@ const CreateMeeting = ({ route }) => {
       setVisibleHeight(Dimensions.get('window').height);
     }
   }, [keyboardHeight]);
-
-  const fetchMeetings = async () => {
-    try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/meetings/${userId}/${recepientId}`)
-        // console.log("response message",response)
-        const data = await response.json();
-        // console.log("Data ",data);
-        if (response.ok) {
-            setMeetings(data);
-        }
-        else {
-            console.log("error showing messages", response.status.meeting);
-        }
-    }
-    catch (error) {
-        console.log("Error fetching messages", error)
-    }
-}
-
-useEffect(() => {
-    fetchMeetings();
-}, [meetings])
-
-useEffect(() => {
-    const fetchRecepientData = async () => {
-        try {
-            const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`);
-            // console.log("response ", response);
-            const data = await response.json();
-            // console.log("User data",data)
-            setRecepientData(data);
-        }
-        catch (error) {
-            console.log("Error retrieving details ", error);
-        }
-    }
-
-    fetchRecepientData();
-}, [])
-
-  const handleAlarmSet = () => {
-    setAlarmSet(!isAlarmSet);
-  };
-
-  const synchronizeCalendar = async () => {
-    // console.log("Inside Synchronising calendar ");
-    const calendarId = await createNewCalendar();
-    // console.log("CalendarId as ", calendarId);
-    try {
-      const createEventId = await addEventsToCalendar(calendarId);
-    //   console.log("Create event id ",createEventId)
-      handleCreateEventData(createEventId);
-    } catch (e) {
-      Alert.alert(e.message);
-    }
-  };
-
-  const addEventsToCalendar = async (calendarId) => {
-    // console.log("Adding to calendar ");
-    const event = {
-      title: taskText,
-      notes: notesText,
-      startDate: moment(alarmTime).add(0, 'm').toDate(),
-      endDate: moment(alarmTime).add(5, 'm').toDate(),
-      timeZone: Localization.timezone
-    };
-
-    // console.log("Event to create is ",event);
-    try {
-        const calendars = await Calendar.getCalendarsAsync(
-            Calendar.EntityTypes.EVENT
-          );
-        //   console.log(calendarId.toString());
-        //   console.log('Here Calendar Events ');
-        //   console.log({ calendars });
-      const createEventAsyncResNew = await Calendar.createEventAsync(
-        calendarId.toString(),
-        event
-      );
-    //   console.log("Event added successfully with ID:", createEventAsyncResNew);
-      const calendarsAgain = await Calendar.getCalendarsAsync(
-        Calendar.EntityTypes.EVENT
-      );
-    //   console.log('Here Calendar Events AGAINNN');
-    //   console.log({ calendarsAgain });
-      return createEventAsyncResNew;
-    } catch (error) {
-        console.error("Error adding event to calendar:", error);
-      console.log(error);
-    }
-  };
 
   const showDateTimePicker = () => setDateTimePickerVisible(true);
 
@@ -274,7 +166,6 @@ useEffect(() => {
 
   const handleSend = async (creatTodo) => {
 
-    // console.log("Create to in start is", creatTodo);
     const temp = recepientId;
     const tempCreateTodo = creatTodo;
     try {
@@ -309,11 +200,10 @@ useEffect(() => {
             },
             body: JSON.stringify(data)
         })
-
         if (response.ok) {
-            // setMeetings("");
-console.log("Response OK");
-            // fetchMeetings();
+            console.log("Response OK");
+            const message = "name has scheduled a meeting with you"
+            handleSendNotification(userId, temp, message);
         }
     }
     catch (error) {
@@ -321,8 +211,33 @@ console.log("Response OK");
     }
 }
   
+const handleSendNotification = async (currentUserId, selectedUserId, message) => {
+  try {
+        const data = {
+          senderId: currentUserId,
+          recepientId: selectedUserId,
+          message: message
+        };
+
+      const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
+          method: "POST",
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+      })
+
+      if (response.ok) {
+        console.log("Request notification sent successfully.");
+      }
+  }
+  catch (error) {
+      console.log("Error in sending notification", error);
+  }
+}
+
+
   const handleCreateEventData = async (createEventId) => {
-    // console.log("Creating the meeting ",createEventId);
     const creatTodo = {
       key: generateUniqueId(),
       date: `${moment(currentDay).format('YYYY')}-${moment(currentDay).format(
@@ -335,8 +250,6 @@ console.log("Response OK");
           notes: notesText,
           alarm: {
             time: alarmTime,
-            isOn: isAlarmSet,
-            createEventAsyncRes: createEventId
           },
           color: `rgb(${Math.floor(
             Math.random() * Math.floor(256)
@@ -358,10 +271,7 @@ console.log("Response OK");
     };
 
     await handleSend(creatTodo);
-    // console.log("TO DO : ",creatTodo);
     navigation.goBack();
-    await updateTodo(creatTodo);
-    updateCurrentTask(currentDate);
   };
 
   const handleDatePicked = (date) => {
@@ -381,7 +291,6 @@ console.log("Response OK");
         onCancel={hideDateTimePicker}
         mode="time"
         date={new Date()}
-        isDarkModeEnabled
       />
 
       <SafeAreaView style={styles.container}>
@@ -452,32 +361,6 @@ console.log("Response OK");
                 value={taskText}
                 placeholder="What is meeting about?"
               />
-              {/* <Text
-                style={{
-                  fontSize: 14,
-                  color: '#BDC6D8',
-                  marginVertical: 10
-                }}
-              >
-                Suggestion
-              </Text>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={styles.readBook}>
-                  <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                    Read book
-                  </Text>
-                </View>
-                <View style={styles.design}>
-                  <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                    Design
-                  </Text>
-                </View>
-                <View style={styles.learn}>
-                  <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                    Learn
-                  </Text>
-                </View>
-              </View> */}
               <View style={styles.notesContent} />
               <View>
                 <Text style={styles.notes}>Location</Text>
@@ -516,36 +399,6 @@ console.log("Response OK");
                 </TouchableOpacity>
               </View>
               <View style={styles.separator} />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
-                }}
-              >
-                <View>
-                  <Text
-                    style={{
-                      color: '#9CAAC4',
-                      fontSize: 16,
-                      fontWeight: '600'
-                    }}
-                  >
-                    Alarm
-                  </Text>
-                  <View
-                    style={{
-                      height: 25,
-                      marginTop: 3
-                    }}
-                  >
-                    <Text style={{ fontSize: 19 }}>
-                      {moment(alarmTime).format('h:mm A')}
-                    </Text>
-                  </View>
-                </View>
-                <Switch value={isAlarmSet} onValueChange={handleAlarmSet} />
-              </View>
             </View>
             <TouchableOpacity
               disabled={taskText === ''}
@@ -557,13 +410,7 @@ console.log("Response OK");
                 }
               ]}
               onPress={async () => {
-                console.log("Alarm set as ",isAlarmSet)
-                if (isAlarmSet) {
-                  await synchronizeCalendar();
-                }
-                if (!isAlarmSet) {
                   handleCreateEventData();
-                }
               }}
             >
               <Text

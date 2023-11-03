@@ -19,6 +19,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: false,
     },
+    profilePhoto: {
+        type: [String]
+    },
     gender: {
         type: String,
         enum: ['Male', 'Female', 'Other'], // Enum for gender options
@@ -26,6 +29,10 @@ const userSchema = mongoose.Schema({
     },
     dateOfBirth: {
         type: Date,
+        required: false,
+    },
+    budget: {
+        type: Number,
         required: false,
     },
     location: {
@@ -121,6 +128,12 @@ const userSchema = mongoose.Schema({
         }
     ],
     sentFriendRequests: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    blockedUser: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"

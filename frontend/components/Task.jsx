@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     zIndex: 1000,
     elevation: 1000,
-    paddingBottom: 54
+    paddingBottom: 54,
+    marginTop: 35
   },
   card: {
     width: 327,
@@ -44,15 +45,9 @@ const styles = StyleSheet.create({
   textContainer: { textAlign: 'center', fontSize: 17, fontWeight: '500' }
 });
 
-// = ({ isModalVisible, children }) =>
 export default class Task extends React.Component {
   render() {
-
-    // console.log("Here in task ");
     const { isModalVisible, children, setModalVisible } = this.props;
-
-    // console.log("Props", this.props);
-
 
     return (
       <Modal
@@ -63,14 +58,7 @@ export default class Task extends React.Component {
       >
         <View
           style={[
-            styles.container,
-            {
-              ...Platform.select({
-                android: {
-                  // paddingTop: shouldMove ? 240 : null,
-                }
-              })
-            }
+            styles.container
           ]}
         >
           <View style={styles.cardMain}>

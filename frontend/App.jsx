@@ -17,22 +17,20 @@ import { Camera } from './Camera/Camera';
 import Interests from './screens/Interests';
 import CalendarScreen from './screens/CalendarScreen'
 import CreateMeeting from './screens/CreateMeeting';
-import useStore from '../frontend/store/store';
 
 import NewChatScreen from './screens/NewChatScreen';
 import ChatMessagesScreen from './screens/ChatMessagesScreen';
 import Spaces from './screens/Spaces';
 import CurrentLocation from './screens/CurrentLocation';
 import PersonalTraits from './screens/PersonalTraits';
+import Notification from './screens/NotificationScreen';
+import UserSingleScreen from './screens/UserSingleScreen';
+import ShowNotificationScreen from './screens/ShowNotificationScreen';
+import UserSortScreen from './screens/UserSortScreen';
 
 const stack = createNativeStackNavigator();
 
 export default function App() {
-
-  const init = useStore((store) => store.init);
-  useEffect(() => {
-    init();
-  }, []);
 
   return (
 
@@ -50,6 +48,8 @@ export default function App() {
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
         <stack.Screen name='interests' component={Interests} options={{ headerShown: false }} />
         <stack.Screen name='personalTraits' component={PersonalTraits} options={{ headerShown: false }} />
+        <stack.Screen name='userSingleScreen' component={UserSingleScreen} options={{ headerShown: false }} />
+        <stack.Screen name='userSortScreen' component={UserSortScreen} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
         <stack.Screen name="newChat" component={NewChatScreen} />
         <stack.Screen name="Messages" component={ChatMessagesScreen} />       
@@ -57,6 +57,8 @@ export default function App() {
         <stack.Screen name="Calendar" component={CalendarScreen} />
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces}/>
+        <stack.Screen name="Notification" component={Notification}/>
+        <stack.Screen name="showNotificationScreen" component={ShowNotificationScreen} />
       </stack.Navigator>
 
       

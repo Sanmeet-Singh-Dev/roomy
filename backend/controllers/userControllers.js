@@ -213,12 +213,165 @@ const getAcceptedFriends = asyncHandler (async (req, res) => {
     }
 });
 
+// Endpoint to send a request to a User
+const sendFriendRequest = asyncHandler (async (req, res) => {
+  const { currentUserId, selectedUserId } = req.body;
+
+  try {
+      //Update recievers friendRequest array
+      await User.findByIdAndUpdate(selectedUserId, {
+          $push: { friendRequests: currentUserId }
+      });
+
+      //Update senders sentfriendrequest array
+      await User.findByIdAndUpdate(currentUserId, {
+          $push: { sentFriendRequests: selectedUserId }
+      });
+
+      res.sendStatus(200);
+  }
+  catch (error) {
+      res.status(500);
+  }
+});
+
+
+// Endpoint to show all the friend request of a particular user
+const getFriendRequests = asyncHandler (async (req, res) => {
+
+  try {
+      const { userId } = req.params;
+
+      const user = await User.findById(userId).populate("friendRequests", "name email image").lean();
+      const friendRequests = user.friendRequests;
+      res.json(friendRequests);
+  }
+  catch (error) {
+      console.log("Error", error);
+      res.status(500).json({ message: "Internal Server error." })
+  }
+});
+
+const getUserFirends = asyncHandler (async (req, res) => {
+  try {
+      const { userId } = req.params;
+      User.findById(userId).populate("friends").then((user) => {
+          if(!user){
+              return res.status(404).json({message:"User not found"});
+          }
+
+          const friendIds = user.friends.map((friend) => friend._id);
+          res.status(200).json(friendIds);
+      })
+  } catch (error) {
+      console.log("Error ", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const sentFriendRequests = asyncHandler (async (req, res) => {
+  try {
+      const { userId } = req.params;
+      const user = await User.findById(userId).populate("sentFriendRequests", "name email image").lean();
+
+      const sentFriendRequests = user.sentFriendRequests;
+      res.json(sentFriendRequests);
+  } catch (error) {
+      console.log("Error ", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const recievedFriendRequests = asyncHandler (async (req, res) => {
+  try {
+      const { userId } = req.params;
+      const user = await User.findById(userId).populate("friendRequests", "name email image").lean();
+
+      const recievedFriendRequests = user.friendRequests;
+      res.json(recievedFriendRequests);
+  } catch (error) {
+      console.log("Error ", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Endpoint to accept a request of a particular person
+const acceptRequest = asyncHandler (async (req, res) => {
+
+  try {
+      const { senderId, recepientId } = req.body;
+
+      // Retrieve the document of Sender and Recepient
+      const sender = await User.findById(senderId);
+      const recepient = await User.findById(recepientId);
+
+      sender.friends.push(recepientId);
+      recepient.friends.push(senderId);
+
+      recepient.friendRequests = recepient.friendRequests.filter((request) => request.toString() !== senderId.toString());
+      sender.sentFriendRequests = sender.sentFriendRequests.filter((request) => request.toString() !== recepientId.toString());
+
+      await sender.save();
+      await recepient.save();
+
+      res.status(200).json({ message: "Friend Request accepted successfully." })
+  }
+  catch (error) {
+      console.log("Error", error);
+      res.status(500).json({ message: "Internal server error." })
+  }
+});
+
+
+// Endpoint to Block a User
+const blockUser = asyncHandler (async (req, res) => {
+  const { currentUserId, selectedUserId } = req.body;
+
+  try {
+    
+      await User.findByIdAndUpdate(currentUserId, {
+          $push: { blockedUser: selectedUserId }
+        });
+
+        await User.findByIdAndUpdate(selectedUserId, {
+          $push: { blockedUser: currentUserId }
+        });
+
+      await User.findByIdAndUpdate(currentUserId, {
+        $pull: { friendRequests: selectedUserId }
+      });
+
+      await User.findByIdAndUpdate(currentUserId, {
+        $pull: { sentFriendRequests: selectedUserId }
+      });
+
+      await User.findByIdAndUpdate(currentUserId, {
+       $pull: { friends: selectedUserId }
+      });
+
+      await User.findByIdAndUpdate(selectedUserId, {
+        $pull: { friends: currentUserId }
+      });
+
+      await User.findByIdAndUpdate(selectedUserId, {
+        $pull: { friendRequests: currentUserId }
+      });
+
+      await User.findByIdAndUpdate(selectedUserId, {
+        $pull: { sentFriendRequests: currentUserId }
+      });
+      res.sendStatus(200)
+  }
+  catch (error) {
+    console.log("Error ", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 const setLocation = asyncHandler(async (req, res) => {
   const { location } = req.body;
   const user = await User.findOne({ _id: req.user._id.toString() });
-
-    // console.log(userId)
-    // console.log(req.body)
   
     try {
       if (!user) {
@@ -252,4 +405,11 @@ export {
     saveListMySpaceData,
     getAllListsMySpace,
     setLocation,
+    getFriendRequests,
+    sendFriendRequest,
+    getUserFirends,
+    sentFriendRequests,
+    acceptRequest,
+    recievedFriendRequests,
+    blockUser
 };
