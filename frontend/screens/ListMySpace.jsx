@@ -200,10 +200,6 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
             <Text style={styles.buttonText} onPress={handlePickImage}>Pick from Library</Text>
           </TouchableOpacity>
       {/* <Button title="Pick from Library" onPress={handlePickImage} /> */}
-      <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handlePickImage}>Pick from Library</Text>
-          </TouchableOpacity>
-      {/* <Button title="Pick from Library" onPress={handlePickImage} /> */}
       <TextInput
           placeholder="Address"
           value={address}
