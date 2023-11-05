@@ -9,6 +9,12 @@ const SpaceDetails = ({ route }) => {
     <ScrollView>
       <View style={styles.card}>
         <Text style={styles.title}>Title: {space.title}</Text>
+        <Text style={styles.imageLabel}>Images:</Text>
+        <View style={styles.imageContainer}>
+          {space.images.map((imageUrl, imgIndex) => (
+            <Image key={imgIndex} source={{ uri: imageUrl }} style={styles.image} />
+          ))}
+        </View>
         <Text style={styles.description}>Description: {space.description}</Text>
         <Text style={styles.budget}>Budget: {space.budget}</Text>
         <Text style={styles.location}>Location: {space.fullAddress || 'Address not available'}</Text>
@@ -20,12 +26,13 @@ const SpaceDetails = ({ route }) => {
         <Text style={styles.petFriendly}>Pet Friendly: {space.petFriendly || 'N/A'}</Text>
         <Text style={styles.furnished}>Furnished: {space.furnished || 'N/A'}</Text>
         
-        <Text style={styles.imageLabel}>Images:</Text>
-        <View style={styles.imageContainer}>
-          {space.images.map((imageUrl, imgIndex) => (
-            <Image key={imgIndex} source={{ uri: imageUrl }} style={styles.image} />
-          ))}
-        </View>
+       
+        
+        <View style={styles.optionContainer}>
+                {space.attributes.map((attribute, index) => (
+                    <Text style={styles.option} key={index}>{attribute}</Text>
+                ))}
+      </View>
       </View>
     </ScrollView>
   );
@@ -98,6 +105,19 @@ const styles = StyleSheet.create({
     height: 100,
     marginRight: 8,
     borderRadius: 8,
+  },
+  optionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  option: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    margin: 5,
   },
 });
 

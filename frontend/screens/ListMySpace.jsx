@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import jwt_decode from "jwt-decode";
 import * as ImagePicker from 'expo-image-picker';
-import { Camera } from '../Camera/Camera';
 import { UserType } from '../UserContext';
 import { uploadToFirebase, listFiles } from '../firebase-config';
 import { IPADDRESS } from '@env'
@@ -21,6 +20,7 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
   const [description, setDescription] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
   const { userId, setUserId } = useContext(UserType);
+  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
 
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState(null);
@@ -163,6 +163,39 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
     }
   };
 
+   const handleClickImage = async () => {
+    try {
+      const cameraResp = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        quality: 1
+
+      });
+
+      console.log(cameraResp)
+
+      if (!cameraResp.canceled) {
+        const { uri } = cameraResp.assets[0];
+        const fileName = uri.split('/').pop();
+        setSelectedImages([...selectedImages, uri]);
+        // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
+        // Alert.alert('Success Picture uploaded successfully');
+      }
+    } catch (error) {
+      console.error('ImagePicker Error:', error);
+      Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
+    }
+
+  if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
+    return (
+      <View style={styles.container}>
+        <Text>Permission Not Granted {permission?.status}</Text>
+        <StatusBar style="auto" />
+        <Button title="Request Camera Permission" onPress={requestPermission}></Button>
+      </View>
+    )
+  }
+ }
 
   return (
     <View>
@@ -188,11 +221,12 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
           />
         ))}
       </ScrollView>
-      <Camera userId={userId} />
+      <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleClickImage}>Click a Picture</Text>
+          </TouchableOpacity>
       <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handlePickImage}>Pick from Library</Text>
           </TouchableOpacity>
-      {/* <Button title="Pick from Library" onPress={handlePickImage} /> */}
       <TextInput
           placeholder="Address"
           value={address}
@@ -205,7 +239,7 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
       <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleUpload}>Submit</Text>
           </TouchableOpacity>
-          <Camera userId={userId} />
+          {/* <Camera userId={userId} /> */}
     </View>
   );
 };
