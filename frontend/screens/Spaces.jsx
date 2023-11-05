@@ -101,6 +101,12 @@ const Spaces = () => {
           style={styles.image}
         />
       ))}
+      <View style={styles.optionContainer}>
+                {space.attributes.map((attribute, index) => (
+                    <Text style={styles.option} key={index}>{attribute}</Text>
+                ))}
+      </View>
+
       </View>
     </View>
     </TouchableOpacity>
@@ -163,5 +169,18 @@ const styles = StyleSheet.create({
     height: 100,
     marginRight: 8,
     borderRadius: 8,
+  },
+  optionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  option: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    margin: 5,
   },
 });
