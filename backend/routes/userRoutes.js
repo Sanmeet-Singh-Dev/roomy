@@ -20,6 +20,7 @@ import {
     unfriendUser,
     unblockUser,
     getBlockedUsers,
+    getUserNotifications,
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -63,6 +64,7 @@ router.put('/profile', protect, updateUserProfile);
 router.get('/accepted-friends/:userId', getAcceptedFriends);
 router.get('/friends/:userId', getUserFirends)
 router.get('/friend-request/:userId', getFriendRequests);
+router.get('/notifications/:userId', getUserNotifications);
 router.post('/friend-request', sendFriendRequest);
 router.post('/block-user', blockUser);
 router.post('/unblock-user', unblockUser);

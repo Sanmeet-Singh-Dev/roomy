@@ -34,7 +34,6 @@ const Home = () => {
     const { userId, setUserId } = useContext(UserType);
     const { expoPushToken, setExpoPushToken } = useContext(UserType);
     const  [notifications , setNotifications ] = useState([]);
-    const [ userFriends, setUserFriends ] = useState([]);
 
     const [sortingGender, setSortingGender] = useState('Male');
     const [sortingBudget, setSortingBudget] = useState([0, 10000]);
@@ -213,7 +212,7 @@ async function schedulePushNotification(notification) {
         });
 
         if (response.ok) {
-          console.log("Notification deleted.")
+          // console.log("Notification deleted.")
         }
         else {
             console.log("Error in deleting notification", response.status);
@@ -303,7 +302,7 @@ async function schedulePushNotification(notification) {
             name="chatbox-ellipses-outline" size={24} color="black" />
 
             <Ionicons 
-            onPress={() => navigation.navigate("showNotificationScreen")}
+            onPress={() => navigation.navigate("Notifications")}
             name="notifications" size={24} color="black" />
             </View>
 
@@ -350,18 +349,14 @@ async function schedulePushNotification(notification) {
       {
         filteredData == "" ? (
           compatibilityData.map((userData, index) => (
-            <UserCard key={index} userData={userData} userFriends={userFriends}  />
+            <UserCard key={index} userData={userData} />
           ))
          ) : (
           filteredData.map((userData, index) => (
-            <UserCard key={index} userData={userData} userFriends={userFriends}  />
+            <UserCard key={index} userData={userData} />
           ))
           )
       }
-
-        
-
-
     </ScrollView>
       
         </SafeAreaView>

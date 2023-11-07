@@ -252,6 +252,21 @@ const getFriendRequests = asyncHandler (async (req, res) => {
   }
 });
 
+const getUserNotifications = asyncHandler (async (req, res) => {
+
+  try {
+      const { userId } = req.params;
+
+      const user = await User.findById(userId);
+      const notifications = user.notifications;
+      res.json(notifications);
+  }
+  catch (error) {
+      console.log("Error", error);
+      res.status(500).json({ message: "Internal Server error." })
+  }
+});
+
 const getUserFirends = asyncHandler (async (req, res) => {
   try {
       const { userId } = req.params;
@@ -470,5 +485,6 @@ export {
     blockUser,
     unblockUser,
     unfriendUser,
-    getBlockedUsers
+    getBlockedUsers,
+    getUserNotifications
 };

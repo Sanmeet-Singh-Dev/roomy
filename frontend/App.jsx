@@ -63,7 +63,7 @@ export default function App() {
         <stack.Screen name="Calendar" component={CalendarScreen} />
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces}/>
-        <stack.Screen name="showNotificationScreen" component={ShowNotificationScreen} />
+        <stack.Screen name="Notifications" component={ShowNotificationScreen} />
         <stack.Screen name="BlockedUsers" component={BlockedUserScreen} />
       </stack.Navigator>
 

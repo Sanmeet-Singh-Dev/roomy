@@ -18,7 +18,13 @@ const setNotification = asyncHandler ( async (req, res) => {
             timeStamp: new Date()
         });
 
+        const recipientUser = await User.findById(recepientId);
+        recipientUser.notifications.push(newNotification);
+        
+        await recipientUser.save();
+
         await newNotification.save();
+
         res.status(200).json({ message: "Notification sent successfully. " });
     }
     catch (error) {
@@ -41,7 +47,7 @@ const getNotifications = asyncHandler (async (req, res) => {
 const deleteNotification = asyncHandler (async (req, res) => {
     try {
         const { id } = req.body;
-        console.log("notification id ", id);
+        // console.log("notification id ", id);
         await Notification.deleteMany({ _id:id });
 
         res.json({ message: "Notification deleted successfully." })
