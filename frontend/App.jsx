@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginOptions from './screens/LoginOptions';
 import Login from './screens/Login';
 import Register from './screens/Register';
@@ -26,12 +27,15 @@ import PersonalTraits from './screens/PersonalTraits';
 import UserSingleScreen from './screens/UserSingleScreen';
 import ShowNotificationScreen from './screens/ShowNotificationScreen';
 import UserSortScreen from './screens/UserSortScreen';
+import BottomTabBar from './components/BottomTabBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BlockedUserScreen from './screens/BlockedUserScreen';
 import RoomDetails from './screens/RoomDetails';
 import RoomAttributes from './screens/RoomAttributes';
 import SingleSpace from './screens/SingleSpace';
 
 const stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
@@ -41,10 +45,11 @@ export default function App() {
       <NavigationContainer>
 
       <stack.Navigator initialRouteName='loginOptions'>
+        <stack.Screen name="home" component={BottomTabBar} options={{headerShown: false}} />
         <stack.Screen name="loginOptions" component={LoginOptions} options={{headerShown: false}} />
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />
         <stack.Screen name='register' component={Register} options={{ headerShown: false }} />
-        <stack.Screen name='home' component={Home} options={{ headerShown: false }} />
+        {/* <stack.Screen name='home' component={Home} options={{ headerShown: false }} /> */}
         <stack.Screen name="location" component={CurrentLocation}/>
         <stack.Screen name='details' component={Details} options={{ headerShown: false }} />
         <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
@@ -66,7 +71,6 @@ export default function App() {
         <stack.Screen name="Notifications" component={ShowNotificationScreen} />
         <stack.Screen name="BlockedUsers" component={BlockedUserScreen} />
       </stack.Navigator>
-
       
     </NavigationContainer>
     </UserContext>
