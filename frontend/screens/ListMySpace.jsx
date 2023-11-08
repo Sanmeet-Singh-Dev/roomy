@@ -9,6 +9,7 @@ import { UserType } from '../UserContext';
 import { uploadToFirebase, listFiles } from '../firebase-config';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location'
+import { manipulateAsync } from 'expo-image-manipulator';
 
 
 
@@ -153,7 +154,12 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
       if (!result.canceled) {
         const { uri } = result.assets[0];
         const fileName = uri.split('/').pop();
-        setSelectedImages([...selectedImages, uri]);
+        const compressedImage = await manipulateAsync(
+          uri,
+          [{ resize: { width: 800, height: 600 } }],
+          { format: 'jpeg', compress: 0.8 }
+        );
+        setSelectedImages([...selectedImages, compressedImage.uri]);
         // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
         // Alert.alert('Success Picture uploaded successfully');
       }
@@ -177,7 +183,14 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
       if (!cameraResp.canceled) {
         const { uri } = cameraResp.assets[0];
         const fileName = uri.split('/').pop();
-        setSelectedImages([...selectedImages, uri]);
+
+        const compressedImage = await manipulateAsync(
+          uri,
+          [{ resize: { width: 800, height: 600 } }],
+          { format: 'jpeg', compress: 0.8 }
+        );
+
+        setSelectedImages([...selectedImages, compressedImage.uri]);
         // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
         // Alert.alert('Success Picture uploaded successfully');
       }
