@@ -1,7 +1,9 @@
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import { useNavigation } from '@react-navigation/native'
 import { useNavigation } from '@react-navigation/native'
 
 const UserSingleScreen = ({ route }) => {
