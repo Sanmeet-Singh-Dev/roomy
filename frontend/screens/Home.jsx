@@ -12,6 +12,8 @@ import { TextInput } from 'react-native-paper';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import BottomTabBar from '../components/BottomTabBar';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -20,6 +22,8 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+const Tab = createBottomTabNavigator();
 
 const Home = () => {
     const route = useRoute();
@@ -297,9 +301,9 @@ async function schedulePushNotification(notification) {
           {/* <Text style={styles.nameText}>Hello, {userName}</Text> */}
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-          <Ionicons 
+          {/* <Ionicons 
             onPress={() => navigation.navigate("Chats")}
-            name="chatbox-ellipses-outline" size={24} color="black" />
+            name="chatbox-ellipses-outline" size={24} color="black" /> */}
 
             <Ionicons 
             onPress={() => navigation.navigate("Notifications")}
@@ -316,18 +320,13 @@ async function schedulePushNotification(notification) {
             </TouchableOpacity>
         
 
-           <TouchableOpacity style={styles.button}>  
+           {/* <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
-          <TouchableOpacity style={styles.button}>  
+          {/* <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleBlockedUsers}>Blocked Users</Text>
-            </TouchableOpacity>
-
+            </TouchableOpacity> */}
             <Button
             title="Sort"
             onPress={()=> handleSort(onApplySorting)}
@@ -357,6 +356,11 @@ async function schedulePushNotification(notification) {
           ))
           )
       }
+
+      {/* <BottomTabBar /> */}
+        
+
+
     </ScrollView>
       
         </SafeAreaView>
