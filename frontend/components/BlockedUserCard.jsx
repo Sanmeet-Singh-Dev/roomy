@@ -66,7 +66,7 @@ const BlockedUserCard = ({ userData }) => {
   return (
     <View style={styles.cardContainer}>
         <View>
-          <Image source={{ uri: userData.user.profilePhoto[0]}} style={styles.image} />
+          <Image source={{ uri: userData.profilePhoto[0]}} style={styles.image} />
           <View style={{display:'flex', flexDirection:"row", justifyContent:"space-between"}}>
           <View style={styles.userInfo}>
               <Text style={styles.userName}>{userData.name}</Text>

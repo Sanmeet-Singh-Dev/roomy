@@ -204,9 +204,21 @@ const userSchema = mongoose.Schema({
         enum: [
             'unfurnished','fully-furnished','partially-furnished'
         ]
-      }
-
+      },
     },
+    notifications: [
+        {
+            senderId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User" // Reference to the sender user
+            },
+            message: String,
+            timeStamp: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ],
   }, 
 
 {

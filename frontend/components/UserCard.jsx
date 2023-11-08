@@ -1,9 +1,36 @@
-import React  from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { UserType } from '../UserContext';
+import { IPADDRESS } from "@env"
 
 const UserCard = ({ userData }) => {
   const navigation = useNavigation();
+  const { userId, setUserId } = useContext(UserType);
+  const [ userFriends , setUserFriends ] = useState([]);
+  const ipAdress = IPADDRESS;
+
+  useEffect(() => {
+    const fetchUserFriends = async () => {
+        try{
+            const response = await fetch(`http://${ipAdress}:6000/api/users/friends/${userId}`);
+            const data = await response.json();
+            if(response.ok){
+                setUserFriends(data);
+            }
+            else {
+                console.log("error ", response.status);
+            }
+        }catch(error){
+        console.log("error ", error);
+    }
+    }
+
+    fetchUserFriends();
+},[userFriends]);
+
+if(userFriends.includes(userData.user._id)){
+}
 
   const handlePress = () => {
     navigation.navigate('userSingleScreen', { user: userData });
@@ -13,9 +40,15 @@ const UserCard = ({ userData }) => {
     <View style={styles.cardContainer}>
       <TouchableWithoutFeedback onPress={handlePress}>
         <View>
-          <Image
-            source={{ uri: userData.user.profilePhoto[0]}} 
-           style={styles.image} />
+       { userFriends.includes(userData.user._id) ? (
+        <Image
+        source={{ uri: userData.user.profilePhoto[0]}} 
+       style={styles.image} />
+       ) : (
+        <Image
+        source={{ uri: userData.user.profilePhoto[0]}} 
+       style={styles.image} blurRadius={20}/>
+       ) }
           <View style={styles.userInfo}>
               <Text style={styles.userName}>{userData.user.name}</Text>
               <Text style={styles.userScore}>{userData.score}%</Text>
