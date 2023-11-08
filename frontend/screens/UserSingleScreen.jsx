@@ -1,7 +1,8 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable,  } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import { useNavigation } from '@react-navigation/native'
 
 const UserSingleScreen = ({ route   }) => {
     //user data
@@ -13,6 +14,7 @@ const UserSingleScreen = ({ route   }) => {
     const [ userFriends, setUserFriends ] = useState([]);
     const [ recievedRequest , setRecievedRequest ] = useState([]);
     let ipAdress = IPADDRESS;
+    const navigation = useNavigation();
 
     useEffect(() => {
       const fetchFriendRequests = async () => {
@@ -211,6 +213,9 @@ catch(error){
     
       return age;
     };
+    const navigateToSpaceDetails = (space) => {
+      navigation.navigate('single-space', { space });
+    };
 
     //storing user age in a variable
     const userAge = calculateAge(user.user.dateOfBirth);
@@ -289,7 +294,8 @@ catch(error){
                     <Text style={styles.option} key={index}>{trait}</Text>
                 ))}
               </View>
-
+              
+              <TouchableOpacity   onPress={() => navigation.navigate('single-space', { space: user.user.listMySpace })}>
               <View>
                 <Text style={styles.heading}>{user.user.name}'s listings</Text>
                   {user.user.listMySpace.description ? (
@@ -302,10 +308,13 @@ catch(error){
                       <Text style={styles.rent}>Rent</Text>
                       <Text style={styles.budget}>{user.user.listMySpace.budget} cad/month</Text>
                     </View>
+       
                   ) : (
                     <Text>{user.user.name} has not listed any spaces yet.</Text>
                   )}
+                  
               </View>
+              </TouchableOpacity>
 
             </ScrollView>
         </SafeAreaView>
