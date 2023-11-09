@@ -77,7 +77,7 @@ const Details = () => {
     return (
       <View style={styles.container}>
         <SafeAreaView>
-          <Text  style={styles.label}>Profile Details</Text>
+          <Text  style={styles.label}>Full Name</Text>
           <TextInput
             placeholder="Full Name"
             value={fullName}
@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
+    backgroundColor: 'white'
   },
   label: {
     fontSize: 16,
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginTop: 10,
     marginBottom: 10
   },

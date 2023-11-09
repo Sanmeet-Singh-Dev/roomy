@@ -42,7 +42,7 @@ if(userFriends.includes(userData.user._id)){
         <View>
        { userFriends.includes(userData.user._id) ? (
         <Image
-        source={{ uri: userData.user.profilePhoto[0]}} 
+        // source={{ uri: userData.user.profilePhoto[0]}} 
        style={styles.image} />
        ) : (
         <Image

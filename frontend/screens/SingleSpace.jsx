@@ -12,6 +12,7 @@ const SpaceDetails = ({ route }) => {
   let user;
   // console.log(space)
   const [userData, setUserData] = useState({});
+  const [ userFriends , setUserFriends ] = useState([]);
   
 
   const renderImageCarousel = () => (
@@ -43,6 +44,25 @@ const SpaceDetails = ({ route }) => {
   
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    const fetchUserFriends = async () => {
+        try{
+            const response = await fetch(`http://${iPAdress}:6000/api/users/friends/${userId}`);
+            const data = await response.json();
+            if(response.ok){
+                setUserFriends(data);
+            }
+            else {
+                console.log("error ", response.status);
+            }
+        }catch(error){
+        console.log("error ", error);
+    }
+    }
+
+    fetchUserFriends();
+},[userFriends]);
 
   const onViewProfile = ()=>{
     user = {
@@ -137,12 +157,21 @@ const SpaceDetails = ({ route }) => {
               <Text style={styles.sellerTitle}>Seller Information</Text>
               <View style={styles.sellerInfo}>
                 <View style={styles.profileContainer}>
+                { userFriends.includes(userData._id) ? (
                   <Image
                     source={{
                       uri: userData.profilePhoto[0] || 'Seller Profile Pic',
                     }}
-                    style={styles.profileImage}
+                    style={styles.profileImage} 
                   />
+                ) : (
+                  <Image
+                    source={{
+                      uri: userData.profilePhoto[0] || 'Seller Profile Pic',
+                    }}
+                    style={styles.profileImage} blurRadius={20}
+                  />
+                ) }
                 </View>
                 <View style={styles.sellerDetails}>
                   <Text style={styles.userName}>{userData.name || 'User Name'}</Text>

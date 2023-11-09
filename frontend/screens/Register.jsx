@@ -53,6 +53,7 @@ const Register = () => {
             <Text style={styles.label}>Name:</Text>
             <TextInput
                 placeholder="Enter your name"
+                placeholderTextColor="#AFB1B6"
                 value={name}
                 onChangeText={(text) => setname(text)}
                 style={styles.textInput}
@@ -60,6 +61,7 @@ const Register = () => {
              <Text style={styles.label}>Email:</Text>
             <TextInput
                 placeholder="Email"
+                placeholderTextColor="#AFB1B6"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
                 style={styles.textInput}
@@ -69,6 +71,7 @@ const Register = () => {
             <TextInput
                 secureTextEntry
                 placeholder="Password"
+                placeholderTextColor="#AFB1B6"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
                 style={styles.textInput}
@@ -88,6 +91,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 30,
+        backgroundColor: '#3E206D',
+        marginTop: 80,
+        borderRadius: 40
     },
     buttonText: {
         color: '#fff',
@@ -96,16 +102,24 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     button: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#FF8F66',
         color: '#fff',
         margin: 10,
-        padding: 10,
+        marginTop: 60,
+        marginLeft: 45,
+        marginRight: 45,
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingTop: 14,
+        paddingBottom: 14,
         borderRadius: 8,
     },
     text: {
         fontSize: 25,
-        marginBottom: 20,
-        textAlign: 'center'
+        marginBottom: 60,
+        textAlign: 'center',
+        color:'#EEEEEE',
+        marginTop:60
     },
     textInput: {
         height: 40,
@@ -113,14 +127,21 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 10,
-        marginBottom: 16,
+        marginBottom: 10,
         margin: 10,
+        marginLeft: 30,
+        marginRight: 30,
         padding: 10,
+        color:'#EEEEEE'
+
     },
     label: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        color:'#EEEEEE',
+
+
     },
 })
