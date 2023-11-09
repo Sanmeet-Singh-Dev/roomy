@@ -5,6 +5,7 @@ import { useNavigation , useRoute} from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 import { uploadToFirebase } from '../firebase-config';
 import { UserType } from '../UserContext';
+import { manipulateAsync } from 'expo-image-manipulator';
 import { IPADDRESS } from '@env';
 
 
@@ -45,7 +46,14 @@ const ImageAndBio = () => {
       if (!result.canceled) {
         const { uri } = result.assets[0];
         const fileName = uri.split('/').pop();
-        setSelectedImages([...selectedImages, uri]);
+
+        const compressedImage = await manipulateAsync(
+          uri,
+          [{ resize: { width: 800, height: 600 } }],
+          { format: 'jpeg', compress: 0.6 }
+        );
+
+        setSelectedImages([...selectedImages, compressedImage.uri]);
 
       }
     } catch (error) {
