@@ -84,6 +84,25 @@ const getUserProfile = asyncHandler (async (req, res) => {
     res.status(200).json(user)
 });
 
+const getUserById = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Get the userId from the request parameters
+
+    // Find the user by their ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Respond with the user's data
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching user data' });
+  }
+};
+
 //@desc    Update user profile
 // route    POST /api/users/save-list-my-space
 // @access  Private
@@ -96,6 +115,7 @@ const saveListMySpaceData = asyncHandler(async (req, res) => {
       // Find the user document and update the 'listMySpace' field with the new data
       const user = await User.findById(userId);
       if (user) {
+        data.user = userId;
         user.listMySpace = data;
         await user.save();
         res.status(201).json({ message: 'ListMySpace data saved successfully' });
@@ -171,6 +191,41 @@ const getAllListsMySpace = asyncHandler(async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+
+const getUserByListMySpaceId = async (req, res) => {
+  try {
+    const { listMySpaceId } = req.params;
+
+    // Find the listMySpace object by its ID
+    const listMySpace = await ListMySpace.findById(listMySpaceId);
+
+    if (!listMySpace) {
+      return res.status(404).json({ message: 'ListMySpace not found' });
+    }
+
+    const userId = listMySpace.user; // Retrieve the associated user's ID from listMySpace
+
+    // Find the associated user by their ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Associated user not found' });
+    }
+
+    // Return the user's profile information
+    return res.json({
+      name: user.name,
+      profilePhoto: user.profilePhoto,
+      // Include other user information as needed
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
   
 const getUserPreferences = asyncHandler(async (req, res) => {
     const userId = req.params.id;
@@ -486,5 +541,7 @@ export {
     unblockUser,
     unfriendUser,
     getBlockedUsers,
-    getUserNotifications
+    getUserNotifications,
+    getUserByListMySpaceId,
+    getUserById
 };

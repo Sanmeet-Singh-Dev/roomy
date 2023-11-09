@@ -187,7 +187,7 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
         const compressedImage = await manipulateAsync(
           uri,
           [{ resize: { width: 800, height: 600 } }],
-          { format: 'jpeg', compress: 0.8 }
+          { format: 'jpeg', compress: 0.6 }
         );
 
         setSelectedImages([...selectedImages, compressedImage.uri]);

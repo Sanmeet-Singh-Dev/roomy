@@ -205,6 +205,10 @@ const userSchema = mongoose.Schema({
             'unfurnished','fully-furnished','partially-furnished'
         ]
       },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
     },
     notifications: [
         {

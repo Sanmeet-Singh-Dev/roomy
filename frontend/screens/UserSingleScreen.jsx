@@ -4,8 +4,11 @@ import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import { useNavigation } from '@react-navigation/native'
 
+
 const UserSingleScreen = ({ route }) => {
   const { user } = route.params;
+
+  // console.log("User is", user);
 
   const { userId, setUserId } = useContext(UserType);
   const [requestSent, setRequestSent] = useState(false);
