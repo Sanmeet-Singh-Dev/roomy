@@ -8,6 +8,8 @@ const Interests = () => {
   const [selectedInterests, setSelectedInterests] = useState([]);
 
   const navigation = useNavigation();
+  const currentStep = 4;
+    const steps = 6;
 
   const availableInterests = [
     'music', 'dance', 'travel', 'art',
@@ -77,6 +79,19 @@ const Interests = () => {
 
   return (
     <View style={styles.containerMain}>
+       <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
       <ScrollView>
       <Text style={styles.text}>Select Your Interests:</Text>
       
@@ -90,15 +105,15 @@ const Interests = () => {
             ]}
             onPress={() => toggleInterest(interest)}
           >
-            <Text style={styles.optionText}>{interest}</Text>
+            <Text style={[styles.optionText, { color: selectedInterests.includes(interest) ? 'white' : 'black' }, ]}>{interest}</Text>
           </TouchableOpacity>
         ))}
 
       </View>
-      <Button
-        title="Next"
-        onPress={handleSaveInterests}
-      />
+
+      <TouchableOpacity style={styles.button}>  
+          <Text style={styles.buttonText} onPress={handleSaveInterests}>Next </Text>
+          </TouchableOpacity>
 
     </ScrollView>
 
@@ -111,32 +126,80 @@ export default Interests
 const styles = StyleSheet.create({
   containerMain: {
     flex: 1,
-    padding: 30,
+    backgroundColor: 'white'
   },
   container: {
-    flexDirection: 'row', // Set the flexDirection to 'row' for horizontal layout
-    flexWrap: 'wrap', // Allow elements to wrap to the next line
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'flex-start',
-     // Align elements to the left
+    marginTop: 10,
+    marginLeft: 14,
+  },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '27%'
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width:15,
+    height: 15,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+  },
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgray',
+    marginHorizontal: 1,
   },
   option: {
     borderWidth: 1,
     borderColor: '#ccc',
-    paddingVertical: 5, // Adjust vertical padding
-    paddingHorizontal: 10, // Adjust horizontal padding
+    backgroundColor: '#EEEEEE',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
-    margin: 5, // Add margin to separate the options
+    margin: 5,
   },
   selectedOption: {
-    backgroundColor: 'blue', // Change to your desired highlight color
-    borderColor: 'blue', // Change to your desired highlight color
+    backgroundColor: '#FF8F66', 
+    color: 'white',  
   },
   optionText: {
-    color: 'black', // Change to your desired text color
+    color: 'black',
     textAlign: 'center',
   },
   text: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
     fontSize: 17,
-    marginTop: 30,
+    fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: '#FF8F66',
+    color: '#fff',
+    margin: 10,
+    marginTop: 60,
+    marginLeft: 96,
+    marginRight: 96,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 8,
   },
 });

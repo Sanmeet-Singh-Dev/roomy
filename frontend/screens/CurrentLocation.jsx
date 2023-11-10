@@ -16,6 +16,8 @@ const CurrentLocation = () => {
   const ipAdress=IPADDRESS;
   const route = useRoute();
   const userId = route.params?.userId;
+  const currentStep = 1;
+    const steps = 6;
 
   const geoCode = async () => {
     // Use the address entered by the user
@@ -127,19 +129,32 @@ const saveLocation = () => {
 
   return (
     <View style={styles.container}>
+       <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
       <SafeAreaView>
-        <Text style={styles.label}>Select your current location or type manually the address and country name:</Text>
+        <Text style={styles.label}>Where are you looking to move to?</Text>
         <TextInput
           placeholder="Address"
           value={address}
           onChangeText={setAddress}
           style={styles.textInput}
         />
-        <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={geoCode}>Save Location</Text>
+         <TouchableOpacity style={styles.currentButton}>  
+            <Text style={styles.buttonText} onPress={getCurrentLocation}>Set Current Location</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={getCurrentLocation}>Use Current Location</Text>
+        <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={geoCode}>Next</Text>
             </TouchableOpacity>
 
         {/* <Button title="Save Location" onPress={geoCode} />
@@ -155,8 +170,32 @@ export default CurrentLocation;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 50,
-    
+    backgroundColor: 'white'
+  },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '27%'
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width: 15,
+    height: 15,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+  },
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgray',
+    marginHorizontal: 1,
   },
   buttonText: {
       color: '#fff',
@@ -164,12 +203,31 @@ const styles = StyleSheet.create({
       fontSize: 17,
       fontWeight: 'bold'
     },
+    currentButton: {
+      backgroundColor: '#51367B',
+    color: '#fff',
+    margin: 10,
+    marginTop: 10,
+    marginLeft: 80,
+    marginRight: 80,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 8,
+    },
     button: {
-      backgroundColor: '#007AFF',
-      color: '#fff',
-      margin: 10,
-      padding: 10,
-      borderRadius: 8,
+      backgroundColor: '#FF8F66',
+    color: '#fff',
+    margin: 10,
+    marginTop: 200,
+    marginLeft: 96,
+    marginRight: 96,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 8,
     },
     text: {
       fontSize: 25,
@@ -183,13 +241,17 @@ const styles = StyleSheet.create({
       borderRadius: 8,
       paddingHorizontal: 10,
       marginBottom: 16,
+      marginTop: 12,
       margin: 10,
+      marginLeft: 20,
+      marginRight: 20,
       padding: 10,
     },
     label: {
       fontSize: 16,
-      fontWeight: 'bold',
-      marginLeft: 10,
-      marginRight: 10,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10
     },
 })

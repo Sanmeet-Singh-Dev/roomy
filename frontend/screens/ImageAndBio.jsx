@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation , useRoute} from '@react-navigation/native'
@@ -17,6 +17,8 @@ const ImageAndBio = () => {
   // const [selectedImageUri, setSelectedImageUri] = useState(null);
   const route = useRoute();
   const userId = route.params?.userId;
+  const currentStep = 2;
+  const steps = 6;
 
   const navigation = useNavigation();
 
@@ -122,16 +124,47 @@ const ImageAndBio = () => {
     }
   };
 
-
+  const handlePressOutside = () => {
+    Keyboard.dismiss();
+  };
 
 
   return (
-    <View>
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
+    <View style={styles.container}>
       <SafeAreaView>
 
-        <Text>Image Component here.</Text>
+      <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
 
-        <Text>What do you currently do?</Text>
+        <Text style={styles.label}>Add your Images/Videos</Text>
+
+        <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
+          {selectedImages.map((uri, index) => (
+            <Image 
+              key={index}
+              source={{ uri }}
+              style={{ width: 100, height: 100, marginLeft: 20, marginTop: 10, marginBottom: 10, }}
+            />
+          ))}
+        </ScrollView>
+
+        <TouchableOpacity style={styles.currentButton}>  
+            <Text style={styles.buttonText} onPress={handleImageSelection}>Select Image</Text>
+            </TouchableOpacity>
+      
+        <Text style={styles.label}>What do you currently do?</Text>
 
         <View style={styles.optionsContainer}>
 
@@ -187,28 +220,23 @@ const ImageAndBio = () => {
 
         </View>
 
+        <Text style={styles.label}>Add a Bio</Text>
         <TextInput
           placeholder="Add a Bio:"
           value={bio}
           onChangeText={setBio}
+          multiline={true}
+          // numberOfLines={4}
+          style={styles.textArea}
         />
 
-        <ScrollView horizontal>
-          {selectedImages.map((uri, index) => (
-            <Image
-              key={index}
-              source={{ uri }}
-              style={{ width: 100, height: 100, marginRight: 10 }}
-            />
-          ))}
-        </ScrollView>
-
-        <Button title="Select Image" onPress={handleImageSelection} />
-
-        <Button title="Next" onPress={handleSaveProfile} />
+<TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={handleSaveProfile}>Next</Text>
+            </TouchableOpacity>
 
       </SafeAreaView>
     </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -216,27 +244,108 @@ export default ImageAndBio
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 40,
+    marginBottom: 40,
+    width: '27%'
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width:15,
+    height: 15,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+  },
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgray',
+    marginHorizontal: 1,
+  },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+  fontWeight: 'bold',
+  marginLeft: 20,
+  marginRight: 20,
+  marginTop: 10
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+  },
+  currentButton: {
+  backgroundColor: '#51367B',
+  color: '#fff',
+  margin: 10,
+  marginTop: 10,
+  marginLeft: 96,
+  marginRight: 96,
+  marginBottom: 10,
+  paddingLeft: 24,
+  paddingRight: 24,
+  paddingTop: 14,
+  paddingBottom: 14,
+  borderRadius: 8,
+  },
+  button: {
+  backgroundColor: '#FF8F66',
+  color: '#fff',
+  margin: 10,
+  marginTop: 50,
+  marginLeft: 96,
+  marginRight: 96,
+  paddingLeft: 24,
+  paddingRight: 24,
+  paddingTop: 14,
+  paddingBottom: 14,
+  borderRadius: 8,
   },
   optionsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: 10,
     marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 20
   },
   option: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 5
   },
   selectedOption: {
-    backgroundColor: 'blue', // Change to your desired highlight color
-    borderColor: 'blue', // Change to your desired highlight color
+    backgroundColor: 'FF8F66', 
+    color: 'white'
   },
   optionText: {
     color: 'black', // Change to your desired text color
     textAlign: 'center',
+  },
+  textArea: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 8,
+    marginTop: 8,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 8,
+    textAlignVertical: 'top',
+    height: 80,
   },
 });
