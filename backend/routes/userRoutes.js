@@ -101,7 +101,7 @@ router.get('/all', getAllUsers);
 router.get('/compatibility', protect, calculateCompatibilityWithAllUsers);
 router.get('/getBlockedUsers', protect, getBlockedUsers);
 router.post('/request-notification' , setNotification)
-router.get('/notifications/:recepientId' , getNotifications);
+router.get('/notification/:recepientId' , getNotifications);
 router.post('/deleteNotification', deleteNotification);
 router.get('/getUserByListMySpace/:listMySpaceId', getUserByListMySpaceId);
 router.get('/users/:userId', getUserById);

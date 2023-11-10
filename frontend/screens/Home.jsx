@@ -181,7 +181,7 @@ if(userId !== null && userId !== undefined && userId !== ""){
 
   const fetchNotifications = async (userId) => {
     try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/notifications/${userId}`)
+        const response = await fetch(`http://${ipAdress}:6000/api/users/notification/${userId}`)
         const data = await response.json();
         if (response.ok) {
             setNotifications(data);
@@ -206,11 +206,9 @@ notifications.map((notification) => {
 }
 
 async function schedulePushNotification(notification) {
-  
-  deleteNotification(notification._id);
-
-    if(notification.isNotified === false ){
-      await Notifications.scheduleNotificationAsync({
+  if(notification.isNotified === false){
+    deleteNotification(notification._id);
+    await Notifications.scheduleNotificationAsync({
         content: {
           title: "Roomy Notification! 📬",
           body: notification.message
