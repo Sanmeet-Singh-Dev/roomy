@@ -22,7 +22,8 @@ import {
     getBlockedUsers,
     getUserNotifications,
     getUserByListMySpaceId,
-    getUserById
+    getUserById,
+    getUserSpaces
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -104,5 +105,6 @@ router.get('/notifications/:recepientId' , getNotifications);
 router.post('/deleteNotification', deleteNotification);
 router.get('/getUserByListMySpace/:listMySpaceId', getUserByListMySpaceId);
 router.get('/users/:userId', getUserById);
+router.get('/users/:userId/spaces', getUserSpaces);
 
 export default router;
