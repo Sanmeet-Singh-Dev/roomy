@@ -338,7 +338,6 @@ async function schedulePushNotification(notification) {
                 )
             }
           </View>
-
         </ScrollView>
       </SafeAreaView>
     </View>
