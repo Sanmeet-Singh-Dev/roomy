@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginOptions from './screens/LoginOptions';
 import Login from './screens/Login';
 import Register from './screens/Register';
@@ -45,7 +44,7 @@ export default function App() {
     <UserContext >
       <NavigationContainer>
 
-      <stack.Navigator initialRouteName='loginOptions'>
+        <stack.Navigator initialRouteName='loginOptions'>
         <stack.Screen name="home" component={BottomTabBar} options={{headerShown: false}} />
         <stack.Screen name="loginOptions" component={LoginOptions} options={{headerShown: false}} />
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />

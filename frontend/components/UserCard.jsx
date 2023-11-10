@@ -46,7 +46,7 @@ if(userFriends.includes(userData.user._id)){
        style={styles.image} />
        ) : (
         <Image
-        source={{ uri: userData.user.profilePhoto[0]}} 
+        // source={{ uri: userData.user.profilePhoto[0]}}
        style={styles.image} blurRadius={20}/>
        ) }
           <View style={styles.userInfo}>

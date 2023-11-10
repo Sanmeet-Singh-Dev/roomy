@@ -221,11 +221,11 @@ const UserSingleScreen = ({ route }) => {
           <View style={styles.imageContainer}>
             {userFriends.includes(user.user._id) ? (
               <Image
-                source={{ uri: user.user.profilePhoto[0] }}
+                // source={{ uri: user.user.profilePhoto[0] }}
                 style={styles.image} />
             ) : (
               <Image
-                source={{ uri: user.user.profilePhoto[0] }}
+                // source={{ uri: user.user.profilePhoto[0] }}
                 style={styles.image} blurRadius={20} />
             )}
             <Text style={styles.userName}>{user.user.name}, {userAge}</Text>
