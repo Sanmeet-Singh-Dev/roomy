@@ -162,7 +162,7 @@ const SpaceDetails = ({ route }) => {
                     source={{
                       uri: userData.profilePhoto[0] || 'Seller Profile Pic',
                     }}
-                    style={styles.profileImage} 
+                    style={styles.profileImage}
                   />
                 ) : (
                   <Image

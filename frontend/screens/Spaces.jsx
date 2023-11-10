@@ -130,7 +130,7 @@ if(userId !== null && userId !== undefined && userId !== ""){
       <View style={styles.header}>
             <View>
               <Text style={styles.nameText}>Hello, {userData.name}!</Text>
-              <Text style={styles.tagline}>Let's find the perfect room-mate for you ?</Text>
+              <Text style={styles.tagline}>Let's find the perfect room for you ?</Text>
             </View>
             {userData.profilePhoto?.[0] ? (
               <Image
@@ -246,10 +246,12 @@ const styles = StyleSheet.create({
     width: '60%',
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
     borderRadius: 50,
     marginLeft: 20,
+    borderWidth: 3,
+    borderColor: "#FF8F66"
   },
   header: {
     display: 'flex',

@@ -415,10 +415,12 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
     borderRadius: 50,
     marginLeft: 20,
+    borderWidth: 3,
+    borderColor: "#FF8F66"
   },
   inputContainer: {
     flexDirection: 'row',

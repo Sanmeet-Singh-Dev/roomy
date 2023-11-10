@@ -34,6 +34,7 @@ import RoomDetails from './screens/RoomDetails';
 import RoomAttributes from './screens/RoomAttributes';
 import SingleSpace from './screens/SingleSpace';
 import ListingOne from './screens/ListingOne';
+import Splash from './screens/Splash';
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,7 +46,8 @@ export default function App() {
     <UserContext >
       <NavigationContainer>
 
-        <stack.Navigator initialRouteName='loginOptions'>
+        <stack.Navigator initialRouteName='splash'>
+        <stack.Screen name="splash" component={Splash} options={{headerShown: false}} />
         <stack.Screen name="home" component={BottomTabBar} options={{headerShown: false}} />
         <stack.Screen name="loginOptions" component={LoginOptions} options={{headerShown: false}} />
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />

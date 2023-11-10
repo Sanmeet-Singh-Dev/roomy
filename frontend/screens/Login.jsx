@@ -54,11 +54,13 @@ const Login = () => {
     return (
       <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
             <SafeAreaView style={styles.container}>
-            <Text style={styles.text}>Welcome Back Roomy</Text>
+            <Text style={styles.text}>Sign In</Text>
+            <Text style={styles.headingBottom}>Enter your credentials to access your account</Text>
 
             <Text style={styles.label}>Email:</Text>
             <TextInput
             placeholder="Email"
+            placeholderTextColor="#FF8F66"
             value={email}
             onChangeText={(text) => setEmail(text)} 
             style={styles.textInput}
@@ -68,6 +70,7 @@ const Login = () => {
             <TextInput
             secureTextEntry
             placeholder="Password"
+            placeholderTextColor="#FF8F66"
             value={password}
             onChangeText={(text) => setPassword(text)} 
             style={styles.textInput}
@@ -91,8 +94,10 @@ const styles = StyleSheet.create({
   },
   container: {
       flex: 1,
-      padding: 50,
-      
+      padding: 30,
+        backgroundColor: '#3E206D',
+        marginTop: 80,
+        borderRadius: 40
     },
     buttonText: {
         color: '#fff',
@@ -101,17 +106,24 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
       },
       button: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#FF8F66',
         color: '#fff',
         margin: 10,
-        padding: 10,
+        marginTop: 60,
+        marginLeft: 45,
+        marginRight: 45,
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingTop: 14,
+        paddingBottom: 14,
         borderRadius: 8,
       },
       text: {
-        fontSize: 25,
-        marginBottom: 20,
+        fontSize: 24,
+        fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 20,
+        color:'#EEEEEE',
+        marginTop:60
       },
       textInput: {
         height: 40,
@@ -119,14 +131,24 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 10,
-        marginBottom: 16,
+        marginBottom: 10,
         margin: 10,
+        marginLeft: 30,
+        marginRight: 30,
         padding: 10,
+        color:'#EEEEEE'
       },
       label: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        color:'#EEEEEE',
       },
+      headingBottom: {
+        color: 'white',
+        marginTop: 10,
+        marginBottom: 60,
+        textAlign: 'center'
+      }
 })
