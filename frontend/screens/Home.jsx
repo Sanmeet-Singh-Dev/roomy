@@ -13,7 +13,6 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import BottomTabBar from '../components/BottomTabBar';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -23,18 +22,14 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const Tab = createBottomTabNavigator();
-
 const Home = () => {
     const route = useRoute();
     const userName = route.params?.userName;
     const navigation = useNavigation();
     let ipAdress = IPADDRESS;
     const [compatibilityData, setCompatibilityData] = useState([]);
-    const userDataArray = [];
     const [searchValue ,  setSearchValue ] = useState("");
     const [filteredData , setFilteredData ] = useState("");
-    
     const { userId, setUserId } = useContext(UserType);
     const { expoPushToken, setExpoPushToken } = useContext(UserType);
     const  [notifications , setNotifications ] = useState([]);
@@ -226,39 +221,6 @@ async function schedulePushNotification(notification) {
     }
 }
 
-    //function to handle logout
-    const handleLogout = async () => {
-        // Send a request to the logout endpoint on your server
-        try {
-          const response = await fetch(`http://${ipAdress}:6000/api/users/logout`, {
-            method: 'POST', // Use the appropriate HTTP method
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-    
-          if (response.ok) {
-
-            console.log('User logged out successfully');
-
-            try {
-                await AsyncStorage.removeItem('jwt');
-              } catch (error) {
-                console.error('Error clearing user token from AsyncStorage:', error);
-                console.log("here here in logout catch")
-            }
-
-            navigation.navigate('login');
-
-          } else {
-            // Handle logout failure
-            console.error('Logout failed.');
-          }
-        } catch (error) {
-          console.error('Error during logout:', error);
-        }
-    };
-
     const handleSort = () => {
       navigation.navigate('userSortScreen', { onApplySorting: onApplySorting });
     }
@@ -266,11 +228,6 @@ async function schedulePushNotification(notification) {
     const handleListMySpace = () => {
       console.log("List my Space Clicked")
       navigation.navigate('listMySpace');
-    }
-
-    const handleLocation = () => {
-      console.log("Location clicked")
-      navigation.navigate('location');
     }
 
     const handleSpaces = () => {
@@ -288,82 +245,62 @@ async function schedulePushNotification(notification) {
       handleCompatibility();
     }
 
-    const handleBlockedUsers = () => {
-      navigation.navigate('BlockedUsers');
-    }
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
 
-          <Text style={styles.nameText}>Hello, {userName}</Text>
-          {/* <Text style={styles.nameText}>Hello, {userName}</Text> */}
+          <Ionicons 
+            onPress={() => navigation.navigate("Notifications")}
+            name="notifications" size={24} color="black" style={styles.notificationIcon}
+          />
+
+          <View style={styles.header}>
+            <View>
+              <Text style={styles.nameText}>Hello, {userName}!</Text>
+              <Text style={styles.tagline}>Let's find the perfect room-mate for you ?</Text>
+            </View>
+            {/* <Image
+              source={{ uri: userData.user.profilePhoto[0]}} 
+              style={styles.image} blurRadius={20}
+            /> */}
+          </View>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-          {/* <Ionicons 
-            onPress={() => navigation.navigate("Chats")}
-            name="chatbox-ellipses-outline" size={24} color="black" /> */}
 
-            <Ionicons 
-            onPress={() => navigation.navigate("Notifications")}
-            name="notifications" size={24} color="black" />
             </View>
 
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
-            </TouchableOpacity>
-
-        
-          <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLocation}>Location</Text>
-            </TouchableOpacity>
-        
-
-           {/* <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleListMySpace}>List My Space</Text>
-            </TouchableOpacity> */}
-
-          {/* <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleSpaces}>Spaces</Text>
-            </TouchableOpacity> */}
             <Button
             title="Sort"
             onPress={()=> handleSort(onApplySorting)}
           />   
-       <TextInput
-              value={searchValue}
-              onChangeText={text => setSearchValue(text)}
-            />
-        <Button
+          <TextInput
+            value={searchValue}
+            onChangeText={text => setSearchValue(text)}
+          />
+          <Button
             title="Search"
             onPress={handleSearch}
-        /> 
-        <Button
+          /> 
+          <Button
             title="Reset"
             onPress={handleReset}
-        /> 
-        <Text>Welcome to the Home Screen</Text>
+          />
 
-      {
-        filteredData == "" ? (
-          compatibilityData.map((userData, index) => (
-            <UserCard key={index} userData={userData} />
-          ))
-         ) : (
-          filteredData.map((userData, index) => (
-            <UserCard key={index} userData={userData} />
-          ))
-          )
-      }
+          {
+            filteredData == "" ? (
+              compatibilityData.map((userData, index) => (
+                <UserCard key={index} userData={userData} />
+              ))
+            ) : (
+              filteredData.map((userData, index) => (
+                <UserCard key={index} userData={userData} />
+              ))
+              )
+          }
 
-      {/* <BottomTabBar /> */}
-        
-
-
-    </ScrollView>
-      
-        </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
     </View>
   )
 }
@@ -380,45 +317,57 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     fontWeight: 'bold'
-},
-button: {
+  },
+  notificationIcon: {
+    alignSelf: "flex-end",
+    marginRight: 10,
+  },
+  button: {
     backgroundColor: '#007AFF',
     color: '#fff',
     margin: 10,
     padding: 10,
     borderRadius: 8,
-},
-text: {
-  fontSize: 17,
-  marginTop: 20,
-  textAlign: 'center'
-},
-nameText: {
-  fontSize: 17,
-  marginBottom: 10,
-  marginTop: 20
-},
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 17,
+    marginTop: 20,
+    textAlign: 'center'
+  },
+  nameText: {
+    fontSize: 20,
+    marginTop: 20
+  },
+  tagline: {
+    fontSize: 13,
+    color: '#797979',
+  },
   buttonText: {
     color: '#fff',
     textAlign: 'center',
     fontSize: 17,
     fontWeight: 'bold'
-},
-button: {
-    backgroundColor: '#007AFF',
-    color: '#fff',
-    margin: 10,
-    padding: 10,
-    borderRadius: 8,
-},
-text: {
-  fontSize: 17,
-  marginTop: 20,
-  textAlign: 'center'
-},
-nameText: {
-  fontSize: 17,
-  marginBottom: 10,
-  marginTop: 20
-}
+  },
+  button: {
+      backgroundColor: '#007AFF',
+      color: '#fff',
+      margin: 10,
+      padding: 10,
+      borderRadius: 8,
+  },
+  text: {
+    fontSize: 17,
+    marginTop: 20,
+    textAlign: 'center'
+  },
+  nameText: {
+    fontSize: 17,
+    marginBottom: 10,
+    marginTop: 20
+  }
 })

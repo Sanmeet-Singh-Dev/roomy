@@ -5,6 +5,7 @@ import Home from '../screens/Home';
 import Spaces from '../screens/Spaces';
 import ListMySpace from '../screens/ListMySpace';
 import ChatsScreen from '../screens/ChatsScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +16,7 @@ const BottomTabBar = () => {
       <Tab.Screen name="Spaces" component={Spaces} />
       <Tab.Screen name="listMySpace" component={ListMySpace} />
       <Tab.Screen name="Chats" component={ChatsScreen} />
+      <Tab.Screen name="profileScreen" component={ProfileScreen} options={{headerShown: false}} />
     </Tab.Navigator>
   )
 }

@@ -44,7 +44,7 @@ export default function App() {
     <UserContext >
       <NavigationContainer>
 
-      <stack.Navigator initialRouteName='loginOptions'>
+        <stack.Navigator initialRouteName='loginOptions'>
         <stack.Screen name="home" component={BottomTabBar} options={{headerShown: false}} />
         <stack.Screen name="loginOptions" component={LoginOptions} options={{headerShown: false}} />
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />

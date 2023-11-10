@@ -233,7 +233,7 @@ const UserSingleScreen = ({ route }) => {
                 style={styles.image} />
             ) : (
               <Image
-                source={{ uri: user.user.profilePhoto[0] }}
+                // source={{ uri: user.user.profilePhoto[0] }}
                 style={styles.image} blurRadius={20} />
             )}
             <Text style={styles.userName}>{user.user.name}, {userAge}</Text>
