@@ -33,6 +33,7 @@ import BlockedUserScreen from './screens/BlockedUserScreen';
 import RoomDetails from './screens/RoomDetails';
 import RoomAttributes from './screens/RoomAttributes';
 import SingleSpace from './screens/SingleSpace';
+import ListingOne from './screens/ListingOne';
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,7 +61,8 @@ export default function App() {
         <stack.Screen name='userSortScreen' component={UserSortScreen} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
         <stack.Screen name="newChat" component={NewChatScreen} />
-        <stack.Screen name="Messages" component={ChatMessagesScreen} />       
+        <stack.Screen name="Messages" component={ChatMessagesScreen} />  
+        <stack.Screen name="listingOne" component={ListingOne}/>
         <stack.Screen name="listMySpace" component={ListMySpace}/>
         <stack.Screen name="room-attributes" component={RoomAttributes}/>
         <stack.Screen name="single-space" component={SingleSpace} options={{ headerShown: false }}/>
