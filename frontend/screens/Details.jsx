@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -76,7 +76,12 @@ const Details = () => {
         }
     };
   
+    const handlePressOutside = () => {
+      Keyboard.dismiss();
+    };
+
     return (
+      <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
       <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
@@ -164,7 +169,7 @@ const Details = () => {
         </SafeAreaView>
         
       </View>
-
+      </TouchableWithoutFeedback>
     );
 };
   
@@ -219,9 +224,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   selectedOption: {
-    backgroundColor: 'blue', // Change to your desired highlight color
-    borderColor: 'blue',
-    color:'#fff' // Change to your desired highlight color
+    backgroundColor: '#FF8F66', 
+    color:'white'
   },
   optionText: {
     color: 'black', // Change to your desired text color
