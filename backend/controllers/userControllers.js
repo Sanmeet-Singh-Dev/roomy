@@ -129,6 +129,24 @@ const saveListMySpaceData = asyncHandler(async (req, res) => {
     }
   });
 
+  const getUserSpaces = async (req, res) => {
+    const userId = req.params.userId; // Get the user ID from the request parameters
+  
+    try {
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const userSpaces = user.listMySpace; // Get the list of spaces from the user object
+  
+      res.status(200).json(userSpaces);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 //   const getAllListsMySpace = asyncHandler(async (req, res) => {
 //     try {
 //       // Find all users in the database
@@ -543,5 +561,6 @@ export {
     getBlockedUsers,
     getUserNotifications,
     getUserByListMySpaceId,
-    getUserById
+    getUserById,
+    getUserSpaces
 };
