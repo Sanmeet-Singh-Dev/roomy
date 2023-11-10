@@ -1,10 +1,11 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
 import UserChat from '../components/UserChat';
 import { Entypo } from '@expo/vector-icons';
 import { IPADDRESS } from "@env"
+import { ImageBackground } from 'react-native';
 
 const ChatsScreen = () => {
 
@@ -33,6 +34,7 @@ const ChatsScreen = () => {
     },[])
 
   return (
+    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
     <View>
     <ScrollView showsVerticalScrollIndicator={false}>
         <Pressable>
@@ -43,13 +45,27 @@ const ChatsScreen = () => {
     </ScrollView>
     <Pressable
     onPress={() => navigation.navigate("newChat")} 
-        style={{ position:"absolute" , right:0,top:550, padding:50, marginBottom:"20%" }}>
-        <Entypo name="new-message" size={24} color="black" />
+        style={{ position:"absolute" , right:-40 ,top:600, padding:50, marginBottom:"20%" }}>
+        <Image
+          source={require('../assets/newmessage-icon.png')}
+          style={styles.icon}
+        />
     </Pressable>
     </View>
+    </ImageBackground>
   )
 }
 
 export default ChatsScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        resizeMode: 'cover',
+      },
+      icon: {
+        width: 90, 
+        height: 90, 
+        marginBottom: 20,
+      },
+})
