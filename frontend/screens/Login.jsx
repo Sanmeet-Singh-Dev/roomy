@@ -44,7 +44,7 @@ const Login = () => {
             console.log('Login failed. Please check your credentials.')
         }
     } catch (error) {
-        console.error('Fetch error:', error);
+        console.error('Fetch:', error);
         setError('An error occurred. Please  try again later.');
         console.log('An error occurred. Please  try again later.')
     }

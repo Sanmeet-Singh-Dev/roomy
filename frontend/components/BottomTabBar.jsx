@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 const BottomTabBar = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="homePage" component={Home} />
+      <Tab.Screen name="homePage" component={Home} options={{headerShown: false}} />
       <Tab.Screen name="Spaces" component={Spaces} />
       <Tab.Screen name="listMySpace" component={ListMySpace} />
       <Tab.Screen name="Chats" component={ChatsScreen} />

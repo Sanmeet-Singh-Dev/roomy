@@ -1,4 +1,4 @@
-import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native'
+import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -31,6 +31,7 @@ const Home = () => {
     const [searchValue ,  setSearchValue ] = useState("");
     const [filteredData , setFilteredData ] = useState("");
     const { userId, setUserId } = useContext(UserType);
+    const [userData, setUserData] = useState({});
     const { expoPushToken, setExpoPushToken } = useContext(UserType);
     const  [notifications , setNotifications ] = useState([]);
 
@@ -117,8 +118,8 @@ const Home = () => {
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
       setUserId(userId);
-  };
-
+    };
+  
   //fucntion to fetch all users and compatibility percentage
   const fetchCompatibleUsers = async () => {
     try {
@@ -158,6 +159,25 @@ const Home = () => {
   fetchCompatibleUsers();
   
 }
+
+const fetchUserData = async () => {
+  try {
+    const response = await fetch(`http://${ipAdress}:6000/api/users/users/${userId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+    const userData = await response.json();
+    setUserData(userData);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+};
+
+if(userId !== null && userId !== undefined && userId !== ""){
+  fetchUserData();
+}
+
+  // console.log("User data profile photo is: ",userData.profilePhoto?.[0])
 
   const fetchNotifications = async (userId) => {
     try {
@@ -260,44 +280,64 @@ async function schedulePushNotification(notification) {
               <Text style={styles.nameText}>Hello, {userName}!</Text>
               <Text style={styles.tagline}>Let's find the perfect room-mate for you ?</Text>
             </View>
-            {/* <Image
-              source={{ uri: userData.user.profilePhoto[0]}} 
-              style={styles.image} blurRadius={20}
-            /> */}
+            {userData.profilePhoto?.[0] ? (
+              <Image
+                source={{ uri: userData.profilePhoto?.[0]}} 
+                style={styles.image}
+              />              
+            ) : ( <Text>profile picture N/A</Text> )}
+
           </View>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
 
             </View>
 
-            <Button
-            title="Sort"
-            onPress={()=> handleSort(onApplySorting)}
-          />   
-          <TextInput
-            value={searchValue}
-            onChangeText={text => setSearchValue(text)}
-          />
-          <Button
-            title="Search"
-            onPress={handleSearch}
-          /> 
-          <Button
-            title="Reset"
-            onPress={handleReset}
-          />
+          <View style={styles.searchSortContainer}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={searchValue}
+                onChangeText={text => setSearchValue(text)}
+                placeholder="Search"
+              />
 
-          {
-            filteredData == "" ? (
-              compatibilityData.map((userData, index) => (
-                <UserCard key={index} userData={userData} />
-              ))
-            ) : (
-              filteredData.map((userData, index) => (
-                <UserCard key={index} userData={userData} />
-              ))
-              )
-          }
+              <TouchableOpacity onPress={handleSearch}>
+                <Image
+                  source={require('../assets/search-zoom-in.png')}
+                  style={styles.searchIcon}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity onPress={()=> handleSort(onApplySorting)} style={styles.iconContainer}>
+                <Image
+                  source={require('../assets/filter-add.png')}
+                  style={styles.sortIcon}
+                />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleReset} style={styles.iconContainer}>
+                <Image
+                  source={require('../assets/filter-add.png')}
+                  style={styles.sortIcon}
+                />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.cardsContainer}>
+            {
+              filteredData == "" ? (
+                compatibilityData.map((userData, index) => (
+                  <UserCard key={index} userData={userData} />
+                ))
+              ) : (
+                filteredData.map((userData, index) => (
+                  <UserCard key={index} userData={userData} />
+                ))
+                )
+            }
+          </View>
 
         </ScrollView>
       </SafeAreaView>
@@ -332,7 +372,10 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 15,
   },
   text: {
     fontSize: 17,
@@ -340,8 +383,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   nameText: {
-    fontSize: 20,
-    marginTop: 20
+    fontSize: 23,
+    marginTop: 20,
   },
   tagline: {
     fontSize: 13,
@@ -365,9 +408,61 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center'
   },
-  nameText: {
-    fontSize: 17,
-    marginBottom: 10,
-    marginTop: 20
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+    marginLeft: 20,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 8,
+    paddingHorizontal: 0,
+    backgroundColor: '#FFFFFF',
+    width: '60%',
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 2,
+    backgroundColor: 'transparent',
+  },
+  searchIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  searchSortContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 16,
+    marginBottom: 16,
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+  },
+  iconContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    marginLeft: 5,
+    marginRight: 5,
+    padding: 13,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4, // Android shadow
+  },
+  cardsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: 10,
   }
 })

@@ -39,21 +39,23 @@ if(userFriends.includes(userData.user._id)){
   return (
     <View style={styles.cardContainer}>
       <TouchableWithoutFeedback onPress={handlePress}>
-        <View>
-       { userFriends.includes(userData.user._id) ? (
-        <Image
-        // source={{ uri: userData.user.profilePhoto[0]}} 
-       style={styles.image} />
-       ) : (
-        <Image
-        // source={{ uri: userData.user.profilePhoto[0]}}
-       style={styles.image} blurRadius={20}/>
-       ) }
-          <View style={styles.userInfo}>
-              <Text style={styles.userName}>{userData.user.name}</Text>
-              <Text style={styles.userScore}>{userData.score}%</Text>
-              <Text style={styles.userScore}>Budget: ${userData.user.budget} / month</Text>
+        <View style={styles.cardInnerContainer}>
+          { userFriends.includes(userData.user._id) ? (
+            <Image
+            source={{ uri: userData.user.profilePhoto[0]}} 
+          style={styles.image} />
+          ) : (
+            <Image
+            source={{ uri: userData.user.profilePhoto[0]}}
+          style={styles.image} blurRadius={20}/>
+          ) }
+          <View style={styles.userScore}>
+            <Text style={styles.userScoreText}>{userData.score}%</Text>
           </View>
+              <View style={styles.userInfo}>
+                <Text style={styles.userName}>{userData.user.name}</Text>
+                <Text style={styles.userBudget}>Budget: ${userData.user.budget} / month</Text>
+              </View>
         </View>
       </TouchableWithoutFeedback>
     </View>
@@ -65,30 +67,51 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    padding: 10,
-    margin: 10,
+    margin: 6,
+    marginHorizontal: 0,
     borderRadius: 8,
     elevation: 3,
     shadowColor: '#333',
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
+    width: '47%',
+    paddingBottom: 20,
+    paddingRight: 0,
+  },
+  cardInnerContainer: {
+    position: 'relative',
+    overflow: 'hidden',
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
+    width: 174,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    height: 150,
+    margin: 0,
   },
   userInfo: {
+    marginTop: 15,
     marginLeft: 10,
+    position: 'relative',
   },
   userName: {
     fontSize: 18,
     fontWeight: 'bold',
   },
   userScore: {
+    position: 'absolute',
+    top: 120,
+    right: 5,
+    backgroundColor: '#fff',
+    paddingVertical: 18,
+    paddingHorizontal: 10,
+    borderRadius: 100,
+  },
+  userScoreText: {
     fontSize: 16,
-    marginBottom: 10
+    fontWeight: 'bold',
+    color: '#FF8F66',
   },
 });
 
