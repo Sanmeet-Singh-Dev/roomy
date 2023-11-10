@@ -12,6 +12,8 @@ const Details = () => {
     const [budget, setBudget] = useState('');
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
+    const currentStep = 0;
+    const steps = 6;
 
     const onChange = (event, selectedDate) => {
       const currentDate = selectedDate || dateOfBirth; // Use the selected date or the current value of dateOfBirth
@@ -76,8 +78,22 @@ const Details = () => {
   
     return (
       <View style={styles.container}>
+      <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
+
         <SafeAreaView>
-          <Text  style={styles.label}>Full Name</Text>
+          <Text  style={styles.label}>First Name</Text>
           <TextInput
             placeholder="Full Name"
             value={fullName}
@@ -85,7 +101,7 @@ const Details = () => {
             style={styles.textInput}
           />
 
-          <Text style={styles.label}>Gender:</Text>
+          <Text style={styles.label}>Gender</Text>
 
           <View style={styles.optionsContainer}>
 
@@ -121,6 +137,7 @@ const Details = () => {
 
           </View>
 
+          <Text style={styles.label}>Date of Birth</Text>
           <DateTimePicker
           testID="dateTimePicker"
           value={date}
@@ -131,6 +148,7 @@ const Details = () => {
           onChange={onChange}
           />
 
+          <Text style={styles.label}>Budget</Text>
           <TextInput
             keyboardType="numeric"
             placeholder="Budget"
@@ -140,7 +158,7 @@ const Details = () => {
           />
           
           <TouchableOpacity style={styles.button}>  
-          <Text style={styles.buttonText} onPress={handleSaveProfile}>Save Profile</Text>
+          <Text style={styles.buttonText} onPress={handleSaveProfile}>Next </Text>
           </TouchableOpacity>
 
         </SafeAreaView>
@@ -156,8 +174,32 @@ export default Details
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
     backgroundColor: 'white'
+  },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '27%'
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width:15,
+    height: 15,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+  },
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgray',
+    marginHorizontal: 1,
   },
   label: {
     fontSize: 16,
@@ -165,7 +207,8 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    marginLeft: 20,
+    gap: 30,
     marginTop: 10,
     marginBottom: 10
   },
@@ -191,10 +234,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FF8F66',
     color: '#fff',
     margin: 10,
-    padding: 10,
+    marginTop: 60,
+    marginLeft: 96,
+    marginRight: 96,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 14,
+    paddingBottom: 14,
     borderRadius: 8,
   },
   text: {
@@ -210,22 +259,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 16,
     margin: 10,
+    marginLeft: 20,
+    marginRight: 20,
     padding: 10,
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10
   },
   dateTimePicker: {
     // backgroundColor: '#fff',
     borderColor: 'gray',
-    // borderWidth: 1, 
-    // borderRadius: 8, 
-    paddingHorizontal: 10,
+    marginTop: 10,
     marginBottom: 16, 
-    alignSelf: 'center',
+    marginLeft: 10,
+    alignSelf: 'start',
     
   },
 });

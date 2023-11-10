@@ -50,12 +50,12 @@ export default function App() {
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />
         <stack.Screen name='register' component={Register} options={{ headerShown: false }} />
         {/* <stack.Screen name='home' component={Home} options={{ headerShown: false }} /> */}
-        <stack.Screen name="location" component={CurrentLocation}/>
+        <stack.Screen name="location" component={CurrentLocation} options={{ title:'Get your profile started' ,headerShown: true }}/>
         <stack.Screen name='details' component={Details} options={{ title:'Get your profile started' ,headerShown: true }} />
-        <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ headerShown: false }} />
-        <stack.Screen name='livinghabits' component={Livinghabits} options={{ headerShown: false }} />
-        <stack.Screen name='interests' component={Interests} options={{ headerShown: false }} />
-        <stack.Screen name='personalTraits' component={PersonalTraits} options={{ headerShown: false }} />
+        <stack.Screen name='imageAndBio' component={ImageAndBio} options={{ title:'Image and Bio' ,headerShown: true }} />
+        <stack.Screen name='livinghabits' component={Livinghabits} options={{ title:'Your Personal and living habits' ,headerShown: true }} />
+        <stack.Screen name='interests' component={Interests} options={{ title:'Your Interests' ,headerShown: true }} />
+        <stack.Screen name='personalTraits' component={PersonalTraits} options={{ title:'Your Personal traits' ,headerShown: true }} />
         <stack.Screen name='userSingleScreen' component={UserSingleScreen} options={{title:"Roommate Profile" , headerShown: true }} />
         <stack.Screen name='userSortScreen' component={UserSortScreen} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen}/>
