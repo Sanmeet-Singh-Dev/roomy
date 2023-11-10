@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginOptions from './screens/LoginOptions';
 import Login from './screens/Login';
 import Register from './screens/Register';
-import Home from './screens/Home';
 import Details from './screens/Details';
 import ImageAndBio from './screens/ImageAndBio';
 import Livinghabits from './screens/Livinghabits';
@@ -14,7 +12,6 @@ import ChatsScreen from './screens/ChatsScreen';
 import { UserContext } from './UserContext';
 
 import ListMySpace from './screens/ListMySpace';
-import { Camera } from './Camera/Camera';
 import Interests from './screens/Interests';
 import CalendarScreen from './screens/CalendarScreen'
 import CreateMeeting from './screens/CreateMeeting';
@@ -28,13 +25,17 @@ import UserSingleScreen from './screens/UserSingleScreen';
 import ShowNotificationScreen from './screens/ShowNotificationScreen';
 import UserSortScreen from './screens/UserSortScreen';
 import BottomTabBar from './components/BottomTabBar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import BlockedUserScreen from './screens/BlockedUserScreen';
 import RoomDetails from './screens/RoomDetails';
 import RoomAttributes from './screens/RoomAttributes';
 import SingleSpace from './screens/SingleSpace';
 import ListingOne from './screens/ListingOne';
 import Splash from './screens/Splash';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

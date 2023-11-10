@@ -54,7 +54,7 @@ if(userId !== null && userId !== undefined && userId !== ""){
         const response = await fetch(`http://${iPAdress}:6000/api/users/list-spaces`);
         if (response.ok) {
           const data = await response.json();
-          console.log('Fetched listMySpaces data:', data);
+
 
           // Geocoding logic
           const updatedListMySpaces = {};
@@ -68,7 +68,6 @@ if(userId !== null && userId !== undefined && userId !== ""){
 
               if (coordinates && coordinates.length === 2) {
                 const [latitude, longitude] = coordinates;
-                console.log('Geocoding coordinates:', latitude, longitude);
 
                 try {
                   const [addressData] = await Location.reverseGeocodeAsync({

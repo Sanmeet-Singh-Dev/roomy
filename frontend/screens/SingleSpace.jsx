@@ -10,7 +10,6 @@ const SpaceDetails = ({ route }) => {
   const { space } = route.params;
   let iPAdress = IPADDRESS;
   let user;
-  // console.log(space)
   const [userData, setUserData] = useState({});
   const [ userFriends , setUserFriends ] = useState([]);
   

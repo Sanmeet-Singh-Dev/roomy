@@ -1,14 +1,45 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { SafeAreaView, StyleSheet, View, Image, Text } from 'react-native'
+import React, { useContext , useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from "@env"
+import { UserType } from '../UserContext';
+import jwt_decode from "jwt-decode";
+import { ImageBackground } from 'react-native';
 
 const ProfileScreen = () => {
+
+  const { userId, setUserId } = useContext(UserType);
+    const [userData, setUserData] = useState({});
 
     const navigation = useNavigation();
 
     let ipAdress = IPADDRESS;
+
+    const fetchUsers = async () => {
+      const token = await AsyncStorage.getItem("jwt");
+      const decodedToken = jwt_decode(token);
+      const userId = decodedToken.userId;
+      setUserId(userId);
+    };
+
+    useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(`http://${ipAdress}:6000/api/users/users/${userId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch user data');
+          }
+          const userData = await response.json();
+          setUserData(userData);
+          // console.log("PROFILEPIC",userData.profilePhoto)
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+    
+      fetchUserData();
+    }, []);
 
     //function to handle logout
     const handleLogout = async () => {
@@ -53,9 +84,9 @@ const ProfileScreen = () => {
     };
 
   return (
-    <View>
-        <SafeAreaView>
-            <ScrollView>
+    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
+        <SafeAreaView style={styles.container}>
+            {/* <ScrollView>
                 <Text>ProfileScreen</Text>
 
                 <TouchableOpacity style={styles.button}>  
@@ -69,27 +100,110 @@ const ProfileScreen = () => {
                 <TouchableOpacity style={styles.button}>  
                     <Text style={styles.buttonText} onPress={handleLogout}>Logout</Text>
                 </TouchableOpacity>
-
-            </ScrollView>
+            </ScrollView> */}
+            <View style={styles.profileNameContainer}>
+            {userData.profilePhoto?.[0] ? (
+              <Image
+                source={{ uri: userData.profilePhoto?.[0]}} 
+                style={styles.image}
+              />              
+            ) : ( <Text>profile picture N/A</Text> )}
+            <Text style={styles.profileText}>{userData.name}</Text>
+            </View>
+          <View style={styles.profileButton}>
+          <Image
+              source={require('../assets/edit-icon.png')}
+              style={styles.icon}
+            />
+            <Text>Edit Personal Info</Text>
+          </View>
+          <View style={styles.profileButton}>
+          <Image
+              source={require('../assets/mylisting-icon.png')}
+              style={styles.icon}
+            />
+            <Text>My Listing</Text>
+          </View>
+          <View style={styles.profileButton}  onPress={handleBlockedUsers}>
+          <Image
+              source={require('../assets/setting-icon.png')}
+              style={styles.icon}
+            />
+            <Text>Settings</Text>
+          </View>
+          <View style={styles.profileButton}>
+          <Image
+              source={require('../assets/calender.png')}
+              style={styles.icon}
+            />
+            <Text>Appointments</Text>
+          </View>
+          <View style={styles.logoutButton}  onPress={handleLogout}>
+          <Image
+              source={require('../assets/logout-icon.png')}
+              style={styles.icon}
+            />
+            <Text>Log Out</Text>
+          </View>
         </SafeAreaView>
-    </View>
+    </ImageBackground>
   )
 }
 
 export default ProfileScreen
 
 const styles = StyleSheet.create({
-    buttonText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 17,
-        fontWeight: 'bold'
+    background: {
+      flex: 1,
+      resizeMode: 'cover', // or 'contain', based on your preference
+      // Other image background styles
     },
-    button: {
-        backgroundColor: '#007AFF',
-        color: '#fff',
-        margin: 10,
-        padding: 10,
-        borderRadius: 8,
+    profileButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignContent:'center',
+      backgroundColor: '#FFFF',
+      padding:15,
+      width:350,
+      borderRadius: 10,
+      margin: 10,
     },
+    logoutButton:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignContent:'center',
+      backgroundColor: '#FFFF',
+      padding:15,
+      width:350,
+      borderRadius: 10,
+      marginTop: 70,
+    },
+    container: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1,
+    },
+    icon: {
+      marginRight: 20,
+    },
+    image: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      marginLeft: 20,
+      borderWidth: 3,
+      borderColor: "#FF8F66"
+    },
+    profileNameContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    profileText: {
+      marginTop:7,
+      textAlign: 'right',
+      fontWeight: 'bold',
+      marginLeft: 15
+    }
+
 })
