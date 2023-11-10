@@ -13,6 +13,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { ImageBackground } from 'react-native';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -266,6 +267,7 @@ async function schedulePushNotification(notification) {
     }
 
   return (
+    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
@@ -277,7 +279,7 @@ async function schedulePushNotification(notification) {
 
           <View style={styles.header}>
             <View>
-              <Text style={styles.nameText}>Hello, {userName}!</Text>
+              <Text style={styles.nameText}>Hello, {userData.name}!</Text>
               <Text style={styles.tagline}>Let's find the perfect room-mate for you ?</Text>
             </View>
             {userData.profilePhoto?.[0] ? (
@@ -342,12 +344,18 @@ async function schedulePushNotification(notification) {
         </ScrollView>
       </SafeAreaView>
     </View>
+    </ImageBackground>
   )
 }
 
 export default Home
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // or 'contain', based on your preference
+    // Other image background styles
+  },
   container: {
     flex: 1,
     padding: 30,

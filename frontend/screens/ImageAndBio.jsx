@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   selectedOption: {
-    backgroundColor: 'FF8F66', 
+    backgroundColor: '#FF8F66', 
     color: 'white'
   },
   optionText: {

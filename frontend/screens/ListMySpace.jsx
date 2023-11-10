@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from '@env';
 import SpaceCard from '../components/SpaceCard';
+import { ImageBackground } from 'react-native';
 
 
 const ListMySpace = () => {
@@ -55,6 +56,7 @@ const ListMySpace = () => {
   };
 
   return (
+    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView>
     <View style={styles.container}>
@@ -63,15 +65,21 @@ const ListMySpace = () => {
         <Text style={styles.buttonText}>List My Space</Text>
       </TouchableOpacity>
       <Text style={styles.listingText}>My Listing</Text>
-        {spaces && <SpaceCard space={spaces} />}
+        {/* {spaces && <SpaceCard space={spaces} />} */}
+        {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} />}
     </View>
     </ScrollView>
     </SafeAreaView>
-    
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // or 'contain', based on your preference
+    // Other image background styles
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -80,7 +88,6 @@ const styles = StyleSheet.create({
 
   },
   safeAreaView: {
-    backgroundColor: '#FFFF',
     flex: 1,
   },
   button: {
