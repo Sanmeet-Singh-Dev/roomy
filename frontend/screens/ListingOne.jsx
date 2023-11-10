@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet , TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet , TouchableOpacity, TouchableWithoutFeedback, Modal} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,10 @@ import { uploadToFirebase, listFiles } from '../firebase-config';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location'
 import { manipulateAsync } from 'expo-image-manipulator';
+import { StatusBar } from 'expo-status-bar';
+import { ImageBackground } from 'react-native';
+const currentStep = 0;
+const steps = 3;
 
 
 
@@ -22,11 +26,13 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const { userId, setUserId } = useContext(UserType);
   const [permission, requestPermission] = ImagePicker.useCameraPermissions();
+  const [showModal, setShowModal] = useState(false);
 
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState(null);
   const iPAdress = IPADDRESS;
 
+  
   useEffect(() => {
     const fetchUsers = async () => {
       const token = await AsyncStorage.getItem("jwt");
@@ -169,6 +175,8 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
   };
 
    const handleClickImage = async () => {
+   
+
     try {
       const cameraResp = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
@@ -198,19 +206,37 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
       Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
     }
 
-  if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
-    return (
-      <View style={styles.container}>
-        <Text>Permission Not Granted {permission?.status}</Text>
-        <StatusBar style="auto" />
-        <Button title="Request Camera Permission" onPress={requestPermission}></Button>
-      </View>
-    )
-  }
+
+
  }
+
+ if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
+  return (
+    <View style={styles.container}>
+      <Text>Permission Not Granted {permission?.status}</Text>
+      <StatusBar style="auto" />
+      <Button title="Request Camera Permission" onPress={requestPermission}></Button>
+    </View>
+  )
+}
+
+
 
   return (
     <View>
+      <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
       <TextInput
         placeholder="Title"
         value={title}
@@ -260,7 +286,9 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
       <TouchableOpacity style={styles.button}>   
             <Text style={styles.buttonText} onPress={handleUpload}>Next</Text>
           </TouchableOpacity>
+
     </View>
+    
   );
 };
 
@@ -314,4 +342,29 @@ const styles = StyleSheet.create({
       marginLeft: 10,
       marginRight: 10,
   },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '90%'
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width:15,
+    height: 15,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+  },
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgray',
+    marginHorizontal: 1,
+  }
 })

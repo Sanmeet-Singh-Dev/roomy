@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
 import { IPADDRESS } from "@env"
+import { ImageBackground } from 'react-native';
 
 const Login = () => {
 
@@ -51,6 +52,7 @@ const Login = () => {
     };
 
     return (
+      <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
             <SafeAreaView style={styles.container}>
             <Text style={styles.text}>Welcome Back Roomy</Text>
 
@@ -74,14 +76,20 @@ const Login = () => {
             <TouchableOpacity style={styles.button}>  
             <Text style={styles.buttonText} onPress={handleLogin}>Login</Text>
             </TouchableOpacity>
-            </SafeAreaView>     
+            </SafeAreaView> 
+            </ImageBackground>    
     )
 }
 
 export default Login
 
 const styles = StyleSheet.create({
-    container: {
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // or 'contain', based on your preference
+    // Other image background styles
+  },
+  container: {
       flex: 1,
       padding: 50,
       
