@@ -14,6 +14,7 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ImageBackground } from 'react-native';
+import UserInfo from '../components/UserInfo';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -32,7 +33,6 @@ const Home = () => {
     const [searchValue ,  setSearchValue ] = useState("");
     const [filteredData , setFilteredData ] = useState("");
     const { userId, setUserId } = useContext(UserType);
-    const [userData, setUserData] = useState({});
     const { expoPushToken, setExpoPushToken } = useContext(UserType);
     const  [notifications , setNotifications ] = useState([]);
 
@@ -161,25 +161,6 @@ const Home = () => {
   
 }
 
-const fetchUserData = async () => {
-  try {
-    const response = await fetch(`http://${ipAdress}:6000/api/users/users/${userId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch user data');
-    }
-    const userData = await response.json();
-    setUserData(userData);
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  }
-};
-
-if(userId !== null && userId !== undefined && userId !== ""){
-  fetchUserData();
-}
-
-  // console.log("User data profile photo is: ",userData.profilePhoto?.[0])
-
   const fetchNotifications = async (userId) => {
     try {
         const response = await fetch(`http://${ipAdress}:6000/api/users/notification/${userId}`)
@@ -276,17 +257,7 @@ async function schedulePushNotification(notification) {
           />
 
           <View style={styles.header}>
-            <View>
-              <Text style={styles.nameText}>Hello, {userData.name}!</Text>
-              <Text style={styles.tagline}>Let's find the perfect room-mate for you ?</Text>
-            </View>
-            {userData.profilePhoto?.[0] ? (
-              <Image
-                source={{ uri: userData.profilePhoto?.[0]}} 
-                style={styles.image}
-              />              
-            ) : ( <Text>profile picture N/A</Text> )}
-
+           <UserInfo userId={userId}/>
           </View>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>

@@ -9,6 +9,7 @@ import { UserType } from '../UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from "jwt-decode";
 import { ImageBackground } from 'react-native';
+import UserInfo from '../components/UserInfo';
 
 
 const Spaces = () => {
@@ -19,34 +20,6 @@ const Spaces = () => {
   const { userId, setUserId } = useContext(UserType);
   const [searchValue ,  setSearchValue ] = useState("");
   const [filteredData , setFilteredData ] = useState("");
-
-
-
-const fetchUserData = async () => {
-  const fetchUsers = async () => {
-    const token = await AsyncStorage.getItem("jwt");
-    const decodedToken = jwt_decode(token);
-    const userId = decodedToken.userId;
-    setUserId(userId);
-  };
-
-  fetchUsers();
-  try {
-    const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch user data');
-    }
-    const userData = await response.json();
-    setUserData(userData);
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  }
-};
-
-if(userId !== null && userId !== undefined && userId !== ""){
-  fetchUserData();
-}
-
 
   useEffect(() => {
     const fetchDataAndGeocode = async () => {
@@ -127,17 +100,7 @@ if(userId !== null && userId !== undefined && userId !== ""){
     <SafeAreaView style={styles.container}>
       <ScrollView>
       <View style={styles.header}>
-            <View>
-              <Text style={styles.nameText}>Hello, {userData.name}!</Text>
-              <Text style={styles.tagline}>Let's find the perfect room for you ?</Text>
-            </View>
-            {userData.profilePhoto?.[0] ? (
-              <Image
-                source={{ uri: userData.profilePhoto?.[0]}} 
-                style={styles.image}
-              />              
-            ) : ( <Text>profile picture N/A</Text> )}
-
+      <UserInfo userId={userId}/>
           </View>
 
           <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
