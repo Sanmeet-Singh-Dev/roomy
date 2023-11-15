@@ -41,8 +41,6 @@ const BottomTabBar = () => {
 
           return <Image source={iconPath} style={{ width: size, height: size }} />;
         },
-      })}
-      tabBarOptions={{
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
         style: {
@@ -50,7 +48,7 @@ const BottomTabBar = () => {
           borderRadius: 50,
           padding: 40, 
         },
-      }}
+      })}
     >
     
       <Tab.Screen name="homePage" component={Home} options={{headerShown: false}} />
