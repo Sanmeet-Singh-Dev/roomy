@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet , TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Carousel from 'react-native-snap-carousel';
+import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from '@env'
 
@@ -13,17 +13,11 @@ const SpaceDetails = ({ route }) => {
   const [userData, setUserData] = useState({});
   const [ userFriends , setUserFriends ] = useState([]);
   
-
+  // data={space.images}
   const renderImageCarousel = () => (
-    <Carousel
-      data={space.images}
-      renderItem={({ item }) => (
-        <Image source={{ uri: item }} style={styles.image} />
-      )}
-      sliderWidth={500} // Adjust the width to your preference
-      itemWidth={500} // Adjust the width to your preference
-      layout={'stack'} // You can choose from 'default', 'stack', 'tinder', or '3D'
-    />
+  
+    <SliderBox images={space.images}/>
+
   );
 
   useEffect(() => {
