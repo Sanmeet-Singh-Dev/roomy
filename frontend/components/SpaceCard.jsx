@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal,Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
+
+const SpaceCard = ({ space,showOptions }) => {
+    const navigation = useNavigation();
     const {
         images,
         title,
@@ -19,7 +22,7 @@ const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
     
     const handleEdit = () => {
         setModalVisible(false);
-        onEdit(space);
+        navigation.navigate('edit-listing');
     };
 
     const handleDelete = () => {
@@ -48,7 +51,6 @@ const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
                     style={styles.optionsButton}
                     onPress={() => setModalVisible(true)}
                 >
-                    {/* <Text style={styles.optionsText}>...</Text> */}
                         <Text style={styles.optionsText}>.</Text>
                         <Text style={styles.optionsText}>.</Text>
                         <Text style={styles.optionsText}>.</Text>
@@ -177,13 +179,13 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         position: 'absolute',
-        top: 380,  // Adjust this value to position the modal just below the three dots
+        top: 380,
         right: 17,
         padding: 15,
         backgroundColor: 'white',
         borderRadius: 8,
-        elevation: 5,  // Add elevation for a shadow effect (Android)
-        shadowColor: 'black',  // Add shadow color (iOS)
+        elevation: 5, 
+        shadowColor: 'black',  
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
