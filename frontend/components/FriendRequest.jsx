@@ -27,7 +27,7 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
                 setFriendRequests(friendRequests.filter((request) => request._id !== friendRequestId));
                 const message = "name has accepted your friend request";
                  handleSend(userId, friendRequestId, message);
-                 navigation.navigate('homePage' , {isReload:true});
+                 navigation.navigate('homePage' , {isReload:"tru"});
             }
         }
         catch (error) {

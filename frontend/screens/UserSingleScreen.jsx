@@ -160,7 +160,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
         console.log("Successfully blocked user");
         const message = "name has blocked you"
         handleSend(currentUserId, selectedUserId, message);
-        navigation.navigate('homePage', {isReload:true} );
+        navigation.navigate('homePage', {isReload:"false"} );
       }
       else {
         console.log("error ", response.status);
