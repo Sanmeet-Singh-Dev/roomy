@@ -9,10 +9,6 @@ const BlockedUserCard = ({ userData }) => {
   const { userId, setUserId } = useContext(UserType);
   const ipAdress = IPADDRESS;
 
-  const handlePress = () => {
-    navigation.navigate('userSingleScreen', { user: userData });
-  }
-
   const handleUnblockUser = async ( currentUserId, selectedUserId ) => {
     try{
       const response = await fetch(`http://${ipAdress}:6000/api/users/unblock-user`,{
@@ -27,7 +23,7 @@ const BlockedUserCard = ({ userData }) => {
           console.log("Successfully Unblocked user");
           const message = "name has unblocked you"
           handleSend(currentUserId , selectedUserId , message);
-          navigation.goBack();
+          navigation.navigate('homePage' , {isReload:true});
       }
       else {
           console.log("error ", response.status);
