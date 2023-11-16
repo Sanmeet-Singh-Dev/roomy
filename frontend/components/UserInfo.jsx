@@ -42,7 +42,7 @@ export default UserInfo
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 23,
+        fontSize: 20,
         marginTop: 20,
     },
     tagline: {

@@ -259,11 +259,7 @@ async function schedulePushNotification(notification) {
           <View style={styles.header}>
            <UserInfo userId={userId}/>
           </View>
-
-          <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-
-            </View>
-
+          
           <View style={styles.searchSortContainer}>
             <View style={styles.inputContainer}>
               <TextInput
@@ -326,7 +322,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 30,
+    padding: 15,
   },
   buttonText: {
     color: '#fff',

@@ -13,11 +13,9 @@ const SpaceDetails = ({ route }) => {
   const [userData, setUserData] = useState({});
   const [ userFriends , setUserFriends ] = useState([]);
   
-  // data={space.images}
-  const renderImageCarousel = () => (
-  
-    <SliderBox images={space.images}/>
 
+  const renderImageCarousel = () => (
+ <SliderBox images={space.images} style={styles.image} />
   );
 
   useEffect(() => {
@@ -184,7 +182,7 @@ const SpaceDetails = ({ route }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    padding: 16,
+    padding: 12,
     marginBottom: 16,
     margin:5,
     borderRadius: 8,
@@ -211,6 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    marginTop: 15,
   },
   description: {
     fontSize: 16,
