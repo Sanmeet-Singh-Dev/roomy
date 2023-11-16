@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal,Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { IPADDRESS } from '@env'
+import { UserType } from '../UserContext';
 
 const SpaceCard = ({ space,showOptions }) => {
     const navigation = useNavigation();
+    const { userId, setUserId } = useContext(UserType);
+    const iPAdress = IPADDRESS;
     const {
         images,
         title,
@@ -12,7 +15,10 @@ const SpaceCard = ({ space,showOptions }) => {
         attributes,
         budget,
         availability,
+        id
     } = space;
+
+   
 
     const displayedAttributes = attributes?.slice(0, 3) || [];
     const remainingAttributesCount = (attributes || []).length - displayedAttributes.length;
@@ -24,19 +30,47 @@ const SpaceCard = ({ space,showOptions }) => {
         setModalVisible(false);
         navigation.navigate('edit-listing');
     };
-
     const handleDelete = () => {
         setModalVisible(false);
+      
         Alert.alert(
-            'Confirm Deletion',
-            'Are you sure you want to delete this listing?',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Delete', onPress: () => onDelete(space.id) },
-            ],
-            { cancelable: true }
+          'Confirm Deletion',
+          'Are you sure you want to delete this listing?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            {
+              text: 'Delete',
+              onPress: async () => {
+                try {
+                  const response = await fetch(`http://${iPAdress}:6000/api/users/listings/${userId}/${space.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+
+                    },
+                  });
+      
+                  if (!response.ok) {
+                   
+                    console.error('Failed to delete listing:', response.status, response.statusText);
+                    return;
+                  }
+      
+
+                  const responseData = await response.json();
+                  console.log('Listing deleted successfully:', responseData);
+                  
+                  // Add any additional logic you need after successful deletion
+                } catch (error) {
+                  // Handle fetch or other errors
+                  console.error('Error deleting listing:', error);
+                }
+              },
+            },
+          ],
+          { cancelable: true }
         );
-    };
+      };
 
     return (
         <View style={styles.card}>

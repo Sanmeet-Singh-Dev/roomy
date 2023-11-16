@@ -537,6 +537,37 @@ const setLocation = asyncHandler(async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   });
+
+  const deleteListing = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const spaceId = req.params.spaceId;
+  
+      // Find the user by userId
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Check if the spaceId exists in listMySpace
+      if (!user.listMySpace || !user.listMySpace.id || user.listMySpace.id.toString() !== spaceId) {
+        return res.status(404).json({ message: 'Listing not found for the user' });
+      }
+  
+      // Remove the listing with the given spaceId from the user's listMySpace object
+      user.listMySpace = {};
+  
+      // Save the updated user
+      await user.save();
+  
+      return res.status(200).json({ message: 'Listing deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting listing:', error);
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  
   
 
 export {
@@ -562,5 +593,6 @@ export {
     getUserNotifications,
     getUserByListMySpaceId,
     getUserById,
-    getUserSpaces
+    getUserSpaces,
+    deleteListing
 };

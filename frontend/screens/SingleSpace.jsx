@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: 358,
+    width: '92%',
     height: 308,
     marginRight: 8,
     borderRadius: 20,
