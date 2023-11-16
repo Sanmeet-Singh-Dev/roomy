@@ -21,7 +21,7 @@ const BottomTabBar = () => {
             iconPath = focused
               ? require('../assets/roommate-icon.png')
               : require('../assets/roommate-unfocused-icon.png');
-          } else if (route.name === 'Spaces') {
+          } else if (route.name === 'spaces') {
             iconPath = focused
               ? require('../assets/spaces-icon.png')
               : require('../assets/spaces-unfocused-icon.png');
@@ -52,7 +52,7 @@ const BottomTabBar = () => {
     >
     
       <Tab.Screen name="homePage" component={Home} options={{headerShown: false}} />
-      <Tab.Screen name="Spaces" component={Spaces} />
+      <Tab.Screen name="spaces" component={Spaces} />
       <Tab.Screen name="listMySpace" component={ListMySpace} />
       <Tab.Screen name="Chats" component={ChatsScreen} />
       <Tab.Screen name="profileScreen" component={ProfileScreen} options={{headerShown: false}} />
