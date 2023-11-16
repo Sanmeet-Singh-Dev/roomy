@@ -5,10 +5,8 @@ import { IPADDRESS } from "@env"
 import { useNavigation } from '@react-navigation/native'
 
 
-const UserSingleScreen = ({ route }) => {
+const UserSingleScreen = ({ route, onUnblockUser }) => {
   const { user } = route.params;
-
-  // console.log("User is", user);
 
   const { userId, setUserId } = useContext(UserType);
   const [requestSent, setRequestSent] = useState(false);
@@ -159,10 +157,10 @@ const UserSingleScreen = ({ route }) => {
       })
 
       if (response.ok) {
-        // setUserFriends(data);
         console.log("Successfully blocked user");
         const message = "name has blocked you"
         handleSend(currentUserId, selectedUserId, message);
+        navigation.navigate('homePage', {isReload:true} );
       }
       else {
         console.log("error ", response.status);

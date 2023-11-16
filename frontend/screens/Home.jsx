@@ -27,6 +27,7 @@ Notifications.setNotificationHandler({
 const Home = () => {
     const route = useRoute();
     const userName = route.params?.userName;
+    let reloadPage = route.params?.isReload;
     const navigation = useNavigation();
     let ipAdress = IPADDRESS;
     const [compatibilityData, setCompatibilityData] = useState([]);
@@ -111,7 +112,7 @@ const Home = () => {
 
     useEffect(() => {
      handleCompatibility();
-    }, []);
+    }, [reloadPage]);
 
   const handleCompatibility = () => {
     const fetchUsers = async () => {
