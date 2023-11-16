@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal,Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { IPADDRESS } from '@env'
+import { UserType } from '../UserContext';
 
-const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
+const SpaceCard = ({ space,showOptions }) => {
+    const navigation = useNavigation();
+    const { userId, setUserId } = useContext(UserType);
+    const iPAdress = IPADDRESS;
     const {
         images,
         title,
@@ -9,7 +15,10 @@ const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
         attributes,
         budget,
         availability,
+        id
     } = space;
+
+   
 
     const displayedAttributes = attributes?.slice(0, 3) || [];
     const remainingAttributesCount = (attributes || []).length - displayedAttributes.length;
@@ -19,21 +28,49 @@ const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
     
     const handleEdit = () => {
         setModalVisible(false);
-        onEdit(space);
+        navigation.navigate('edit-listing');
     };
-
     const handleDelete = () => {
         setModalVisible(false);
+      
         Alert.alert(
-            'Confirm Deletion',
-            'Are you sure you want to delete this listing?',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Delete', onPress: () => onDelete(space.id) },
-            ],
-            { cancelable: true }
+          'Confirm Deletion',
+          'Are you sure you want to delete this listing?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            {
+              text: 'Delete',
+              onPress: async () => {
+                try {
+                  const response = await fetch(`http://${iPAdress}:6000/api/users/listings/${userId}/${space.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+
+                    },
+                  });
+      
+                  if (!response.ok) {
+                   
+                    console.error('Failed to delete listing:', response.status, response.statusText);
+                    return;
+                  }
+      
+
+                  const responseData = await response.json();
+                  console.log('Listing deleted successfully:', responseData);
+                  
+                  // Add any additional logic you need after successful deletion
+                } catch (error) {
+                  // Handle fetch or other errors
+                  console.error('Error deleting listing:', error);
+                }
+              },
+            },
+          ],
+          { cancelable: true }
         );
-    };
+      };
 
     return (
         <View style={styles.card}>
@@ -48,7 +85,6 @@ const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
                     style={styles.optionsButton}
                     onPress={() => setModalVisible(true)}
                 >
-                    {/* <Text style={styles.optionsText}>...</Text> */}
                         <Text style={styles.optionsText}>.</Text>
                         <Text style={styles.optionsText}>.</Text>
                         <Text style={styles.optionsText}>.</Text>
@@ -177,13 +213,13 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         position: 'absolute',
-        top: 380,  // Adjust this value to position the modal just below the three dots
+        top: 380,
         right: 17,
         padding: 15,
         backgroundColor: 'white',
         borderRadius: 8,
-        elevation: 5,  // Add elevation for a shadow effect (Android)
-        shadowColor: 'black',  // Add shadow color (iOS)
+        elevation: 5, 
+        shadowColor: 'black',  
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,

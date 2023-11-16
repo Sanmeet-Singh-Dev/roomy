@@ -45,7 +45,7 @@ const ChatsScreen = () => {
     </ScrollView>
     <Pressable
     onPress={() => navigation.navigate("newChat")} 
-        style={{ position:"absolute" , right:-40 ,top:600, padding:50, marginBottom:"20%" }}>
+        style={{ position:"absolute" , right:-40 ,top:500, padding:50, marginBottom:"20%" }}>
         <Image
           source={require('../assets/newmessage-icon.png')}
           style={styles.icon}

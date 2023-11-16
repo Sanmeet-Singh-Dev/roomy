@@ -23,7 +23,8 @@ import {
     getUserNotifications,
     getUserByListMySpaceId,
     getUserById,
-    getUserSpaces
+    getUserSpaces,
+    deleteListing
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -106,5 +107,6 @@ router.post('/deleteNotification', deleteNotification);
 router.get('/getUserByListMySpace/:listMySpaceId', getUserByListMySpaceId);
 router.get('/users/:userId', getUserById);
 router.get('/users/:userId/spaces', getUserSpaces);
+router.delete('/listings/:userId/:spaceId', deleteListing);
 
 export default router;

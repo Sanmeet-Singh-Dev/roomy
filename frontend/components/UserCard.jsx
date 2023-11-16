@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     height: 150,
-    margin: 0,
   },
   userInfo: {
     marginTop: 15,

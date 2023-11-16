@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
 import { useNavigation } from '@react-navigation/native'
+const currentStep = 2;
+const steps = 3;
 
 const RoomAttributes = () => {
     const [selectedAttributes, setSelectedAttributes] = useState([]);
@@ -80,6 +82,19 @@ const RoomAttributes = () => {
 
     return (
         <View style={styles.containerMain}>
+            <View style={styles.progressBar}>
+        {[...Array(steps).keys()].map((step) => (
+          <View key={step} style={styles.stepContainer}>
+            <View
+              style={[
+                styles.dot,
+                { backgroundColor: step <= currentStep ? '#FF8F66' : 'lightgray' },
+              ]}
+            />
+            {step < steps - 1 && <View style={styles.line} />}
+          </View>
+        ))}
+      </View>
             <ScrollView>
                 <Text style={styles.text}>About the Space</Text>
 
@@ -186,15 +201,30 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 10,
         padding: 10,
-      }
+      },
+      progressBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        marginTop: 10,
+        marginBottom: 40,
+        width: '52%'
+      },
+      stepContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      dot: {
+        width: 15,
+        height: 15,
+        borderRadius: 50,
+        backgroundColor: 'lightgray',
+      },
+      line: {
+        flex: 1,
+        height: 2,
+        backgroundColor: 'lightgray',
+        marginHorizontal: 1,
+      },
 });
-
-
-// option: {
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     paddingVertical: 5,
-//     paddingHorizontal: 10,
-//     borderRadius: 5,
-//     margin: 5,
-// }

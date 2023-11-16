@@ -33,6 +33,7 @@ import ListingOne from './screens/ListingOne';
 import Splash from './screens/Splash';
 import { LogBox } from 'react-native';
 import ignoreWarnings from 'ignore-warnings';
+import EditListing from './screens/EditListing';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
@@ -85,6 +86,7 @@ export default function App() {
         <stack.Screen name="Spaces" component={Spaces}/>
         <stack.Screen name="Notifications" component={ShowNotificationScreen} />
         <stack.Screen name="BlockedUsers" component={BlockedUserScreen} />
+        <stack.Screen name="edit-listing" component={EditListing} />
       </stack.Navigator>
       
     </NavigationContainer>
