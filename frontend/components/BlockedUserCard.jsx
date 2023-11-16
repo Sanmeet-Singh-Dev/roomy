@@ -23,7 +23,7 @@ const BlockedUserCard = ({ userData }) => {
           console.log("Successfully Unblocked user");
           const message = "name has unblocked you"
           handleSend(currentUserId , selectedUserId , message);
-          navigation.navigate('homePage' , {isReload:true});
+          navigation.navigate('homePage' , {isReload:"true"});
       }
       else {
           console.log("error ", response.status);
