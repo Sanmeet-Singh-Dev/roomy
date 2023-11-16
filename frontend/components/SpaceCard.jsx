@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal,Alert } from 'react-native';
 
-const SpaceCard = ({ space }) => {
+const SpaceCard = ({ space, onDelete, onEdit,showOptions }) => {
     const {
         images,
         title,
@@ -14,6 +14,27 @@ const SpaceCard = ({ space }) => {
     const displayedAttributes = attributes?.slice(0, 3) || [];
     const remainingAttributesCount = (attributes || []).length - displayedAttributes.length;
 
+
+    const [modalVisible, setModalVisible] = useState(false);
+    
+    const handleEdit = () => {
+        setModalVisible(false);
+        onEdit(space);
+    };
+
+    const handleDelete = () => {
+        setModalVisible(false);
+        Alert.alert(
+            'Confirm Deletion',
+            'Are you sure you want to delete this listing?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'Delete', onPress: () => onDelete(space.id) },
+            ],
+            { cancelable: true }
+        );
+    };
+
     return (
         <View style={styles.card}>
             <View style={styles.imageContainer}>
@@ -22,6 +43,38 @@ const SpaceCard = ({ space }) => {
                 ) : (
                     <Text>No Image Available</Text>
                 )}
+                  {showOptions && (
+                 <TouchableOpacity
+                    style={styles.optionsButton}
+                    onPress={() => setModalVisible(true)}
+                >
+                    {/* <Text style={styles.optionsText}>...</Text> */}
+                        <Text style={styles.optionsText}>.</Text>
+                        <Text style={styles.optionsText}>.</Text>
+                        <Text style={styles.optionsText}>.</Text>
+                </TouchableOpacity>
+                  )}
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <View style={styles.modalContainer}>
+                        <TouchableOpacity style={styles.modalOption} onPress={handleEdit}>
+                            <Text>Edit</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.modalOption} onPress={handleDelete}>
+                            <Text>Delete</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.modalOptionCancel}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text>Cancel</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
             </View>
             <View style={styles.detailsContainer}>
                 <Text style={styles.title}>{title}</Text>
@@ -55,11 +108,27 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'lightgray',
         borderRadius: 8,
-        width: 390,
+        width: '100%',
         height: 350,
         backgroundColor:'#FFF',
         marginBottom: 15,
         
+    },
+    optionsButton: {
+        
+        position: 'absolute',
+        top: -15,
+        right: 7,
+        backgroundColor: 'transparent',
+        flexDirection: 'column',
+        alignItems: 'center',
+        
+      
+    },
+    optionsText: {
+        fontSize: 65,
+        color: '#FFF',
+        marginVertical: -30
     },
     imageContainer: {
         flex: 6,
@@ -106,6 +175,20 @@ const styles = StyleSheet.create({
     budget: {
         fontWeight: 'bold',
     },
+    modalContainer: {
+        position: 'absolute',
+        top: 380,  // Adjust this value to position the modal just below the three dots
+        right: 17,
+        padding: 15,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        elevation: 5,  // Add elevation for a shadow effect (Android)
+        shadowColor: 'black',  // Add shadow color (iOS)
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        alignItems:'center'
+    }
 });
 
 export default SpaceCard;

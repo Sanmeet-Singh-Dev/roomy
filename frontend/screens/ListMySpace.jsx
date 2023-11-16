@@ -34,7 +34,6 @@ const ListMySpace = () => {
         const token = await AsyncStorage.getItem("jwt");
         const decodedToken = jwt_decode(token);
         const userId = decodedToken.userId;
-        console.log(userId)
         const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
         if (!response.ok) {
           throw new Error('Failed to fetch');
@@ -43,7 +42,6 @@ const ListMySpace = () => {
         const responseData = await response.json();
         const spacesData = responseData;
         setSpaces(spacesData);
-        console.log(spacesData)
       } catch (error) {
         console.error('Error fetching user spaces:', error);
       }
@@ -58,7 +56,7 @@ const ListMySpace = () => {
   return (
     <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
     <SafeAreaView style={styles.safeAreaView}>
-      <ScrollView>
+    <ScrollView>
     <View style={styles.container}>
       <Text style={styles.listingText}>I want to List My Space</Text>
       <TouchableOpacity style={styles.button} onPress={handleListMySpace}>
@@ -66,7 +64,7 @@ const ListMySpace = () => {
       </TouchableOpacity>
       <Text style={styles.listingText}>My Listing</Text>
         {/* {spaces && <SpaceCard space={spaces} />} */}
-        {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} />}
+        {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} showOptions={true} />}
     </View>
     </ScrollView>
     </SafeAreaView>
@@ -85,6 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:20,
+    padding:15
 
   },
   safeAreaView: {
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF8F66',
     padding: 10,
     borderRadius: 5,
-    width:390,
+    width:"100%",
     height:60,
     marginBottom:20,
   },
@@ -108,7 +107,6 @@ const styles = StyleSheet.create({
   listingText: {
     alignSelf: 'flex-start',
     marginTop: 25,
-    paddingLeft: 25,
     fontSize: 20,
     fontWeight: 'semibold',
     marginBottom: 15,

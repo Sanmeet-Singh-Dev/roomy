@@ -18,8 +18,8 @@ const Spaces = () => {
   const navigation = useNavigation();
   const [userData, setUserData] = useState({});
   const { userId, setUserId } = useContext(UserType);
-  const [searchValue ,  setSearchValue ] = useState("");
-  const [filteredData , setFilteredData ] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredData, setFilteredData] = useState("");
 
   useEffect(() => {
     const fetchDataAndGeocode = async () => {
@@ -97,56 +97,54 @@ const Spaces = () => {
 
   return (
     <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-      <View style={styles.header}>
-      <UserInfo userId={userId}/>
-          </View>
-
-          <View style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-
+      <View style={styles.container}>
+        <SafeAreaView>
+          <ScrollView >
+            <View style={styles.header}>
+              <UserInfo userId={userId} />
             </View>
 
-          <View style={styles.searchSortContainer}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                value={searchValue}
-                onChangeText={text => setSearchValue(text)}
-                placeholder="Search"
-              />
+            <View style={styles.searchSortContainer}>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  value={searchValue}
+                  onChangeText={text => setSearchValue(text)}
+                  placeholder="Search"
+                />
 
-              <TouchableOpacity>
+                <TouchableOpacity>
+                  <Image
+                    source={require('../assets/search-zoom-in.png')}
+                    style={styles.searchIcon}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity style={styles.iconContainer}>
                 <Image
-                  source={require('../assets/search-zoom-in.png')}
-                  style={styles.searchIcon}
+                  source={require('../assets/filter-add.png')}
+                  style={styles.sortIcon}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.iconContainer}>
+                <Image
+                  source={require('../assets/filter-add.png')}
+                  style={styles.sortIcon}
                 />
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.iconContainer}>
-                <Image
-                  source={require('../assets/filter-add.png')}
-                  style={styles.sortIcon}
-                />
-            </TouchableOpacity>
+            {Object.values(listMySpaces).map((space, index) => (
+              <TouchableOpacity key={index} onPress={() => navigateToSpaceDetails(space)}>
 
-            <TouchableOpacity style={styles.iconContainer}>
-                <Image
-                  source={require('../assets/filter-add.png')}
-                  style={styles.sortIcon}
-                />
-            </TouchableOpacity>
-          </View>
-
-        {Object.values(listMySpaces).map((space, index) => (
-          <TouchableOpacity key={index} onPress={() => navigateToSpaceDetails(space)}>
-
-            <SpaceCard key={index} space={space} />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+                <SpaceCard key={index} space={space} />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      </View>
     </ImageBackground>
   );
 };
@@ -156,12 +154,11 @@ export default Spaces;
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // or 'contain', based on your preference
-    // Other image background styles
-  }, container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    resizeMode: 'cover',
+  },
+  container: {
     flex: 1,
+    padding: 15,
   },
   iconContainer: {
     backgroundColor: '#FFFFFF',
@@ -173,7 +170,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 4, 
+    elevation: 4,
   },
   sortIcon: {
     width: 30,
@@ -187,7 +184,7 @@ const styles = StyleSheet.create({
   searchSortContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+
     alignItems: 'center',
     alignContent: 'center',
     marginTop: 16,
@@ -203,17 +200,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 8,
-    paddingHorizontal: 0,
+    paddingHorizontal: 10,
     backgroundColor: '#FFFFFF',
     width: '60%',
-  },
-  image: {
-    width: 80,
-    height: 80,
-    borderRadius: 50,
-    marginLeft: 20,
-    borderWidth: 3,
-    borderColor: "#FF8F66"
+    maxWidth: 400
   },
   header: {
     display: 'flex',
@@ -223,4 +213,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 15,
   },
+
+
 });

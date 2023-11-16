@@ -89,7 +89,7 @@ const RoomAttributes = () => {
                     placeholder="Enter number of bedrooms"
                     value={numBedrooms}
                     onChangeText={setNumBedrooms}
-                    style={styles.input}
+                    style={styles.textInput}
                 />
 
                 <Text style={styles.text}>Number of Bathrooms</Text>
@@ -97,11 +97,13 @@ const RoomAttributes = () => {
                     placeholder="Enter number of bathrooms"
                     value={numBathrooms}
                     onChangeText={setNumBathrooms}
-                    style={styles.input}
+                    style={styles.textInput}
                 />
 
+                   
+            <View>
+             <Text style={styles.text}>Room Attributes</Text>
                 <View style={styles.container}>
-
                     {availableAttributes.map((attributes) => (
                         <TouchableOpacity
                             key={attributes}
@@ -116,12 +118,10 @@ const RoomAttributes = () => {
                     ))}
 
                 </View>
-
-
-                <Button
-                    title="Next"
-                    onPress={handleSaveAttributes}
-                />
+             </View>       
+                <TouchableOpacity style={styles.button} onPress={handleSaveAttributes}>
+          <Text style={styles.buttonText}>Submit {'>'}</Text>
+        </TouchableOpacity>
 
             </ScrollView>
 
@@ -135,23 +135,24 @@ const styles = StyleSheet.create({
     containerMain: {
         flex: 1,
         padding: 30,
+        backgroundColor:"#fff"
     },
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
+        gap:10
     },
     option: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderRadius: 5,
-        margin: 5,
+        padding: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 5,
+    backgroundColor: '#EEEEEE'
     },
     selectedOption: {
-        backgroundColor: 'blue',
-        borderColor: 'blue',
+        backgroundColor: '#FF8F66',
+        color: '#fff',
     },
     optionText: {
         color: 'black',
@@ -160,5 +161,40 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 17,
         marginTop: 30,
+        fontWeight:'500',
+        marginBottom:10,
     },
+    button: {
+        backgroundColor: '#FF8F66',
+        color: '#fff',
+        margin: 10,
+        padding: 20,
+        borderRadius: 8,
+        width: '55%',
+        alignSelf: 'center',
+        marginTop:40
+      },
+      buttonText: {
+        color: '#fff',
+        textAlign: 'center',
+        fontSize: 17,
+      },
+      textInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        padding: 10,
+      }
 });
+
+
+// option: {
+//     borderWidth: 1,
+//     borderColor: '#ccc',
+//     paddingVertical: 5,
+//     paddingHorizontal: 10,
+//     borderRadius: 5,
+//     margin: 5,
+// }

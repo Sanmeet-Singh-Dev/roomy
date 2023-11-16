@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View, Image, Text } from 'react-native'
+import { SafeAreaView, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
 import React, { useContext , useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -6,6 +6,7 @@ import { IPADDRESS } from "@env"
 import { UserType } from '../UserContext';
 import jwt_decode from "jwt-decode";
 import { ImageBackground } from 'react-native';
+
 
 const ProfileScreen = () => {
 
@@ -124,13 +125,13 @@ const ProfileScreen = () => {
             />
             <Text>My Listing</Text>
           </View>
-          <View style={styles.profileButton}  onPress={handleBlockedUsers}>
+          <TouchableOpacity style={styles.profileButton}  onPress={handleBlockedUsers}>
           <Image
               source={require('../assets/setting-icon.png')}
               style={styles.icon}
             />
             <Text>Settings</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.profileButton}>
           <Image
               source={require('../assets/calender.png')}
@@ -138,13 +139,13 @@ const ProfileScreen = () => {
             />
             <Text>Appointments</Text>
           </View>
-          <View style={styles.logoutButton}  onPress={handleLogout}>
+          <TouchableOpacity style={styles.logoutButton}  onPress={handleLogout}>
           <Image
               source={require('../assets/logout-icon.png')}
               style={styles.icon}
             />
             <Text>Log Out</Text>
-          </View>
+          </TouchableOpacity>
         </SafeAreaView>
     </ImageBackground>
   )
