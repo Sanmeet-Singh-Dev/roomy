@@ -67,7 +67,7 @@ const RoomAttributes = () => {
           if (response.ok) {
             // Handle a successful response
             const data = await response.json();
-            navigation.navigate('Spaces');
+            navigation.navigate('spaces');
           } else {
             // Handle an unsuccessful response (e.g., show an error message)
             console.error('Error updating room attributes.');

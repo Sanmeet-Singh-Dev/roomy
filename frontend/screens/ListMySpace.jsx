@@ -48,9 +48,27 @@ const ListMySpace = () => {
     };
 
     fetchUserSpaces();
-  }, []);
+  }, [spaces]);
   const handleListMySpace = () => {
     navigation.navigate('listingOne');
+  };
+
+  const fetchUserSpaces = async () => {
+    try {
+      const token = await AsyncStorage.getItem("jwt");
+      const decodedToken = jwt_decode(token);
+      const userId = decodedToken.userId;
+      const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch');
+      }
+
+      const responseData = await response.json();
+      const spacesData = responseData;
+      setSpaces(spacesData);
+    } catch (error) {
+      console.error('Error fetching user spaces:', error);
+    }
   };
 
   return (
@@ -64,7 +82,7 @@ const ListMySpace = () => {
       </TouchableOpacity>
       <Text style={styles.listingText}>My Listing</Text>
         {/* {spaces && <SpaceCard space={spaces} />} */}
-        {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} showOptions={true} />}
+        {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} showOptions={true} onReload={() => fetchUserSpaces()}/>}
     </View>
     </ScrollView>
     </SafeAreaView>

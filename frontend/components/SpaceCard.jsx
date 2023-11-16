@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from '@env'
 import { UserType } from '../UserContext';
 
-const SpaceCard = ({ space,showOptions }) => {
+const SpaceCard = ({ space,showOptions, onReload }) => {
     const navigation = useNavigation();
     const { userId, setUserId } = useContext(UserType);
     const iPAdress = IPADDRESS;
@@ -59,6 +59,7 @@ const SpaceCard = ({ space,showOptions }) => {
 
                   const responseData = await response.json();
                   console.log('Listing deleted successfully:', responseData);
+                  onReload();
                   
                   // Add any additional logic you need after successful deletion
                 } catch (error) {
