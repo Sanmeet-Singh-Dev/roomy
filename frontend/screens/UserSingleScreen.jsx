@@ -4,6 +4,24 @@ import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import { useNavigation } from '@react-navigation/native'
 
+ //function to calculate age
+ const calculateAge = (dateOfBirth) => {
+  const birthDate = new Date(dateOfBirth);
+  const currentDate = new Date();
+
+  const age = currentDate.getFullYear() - birthDate.getFullYear();
+
+  // Check if the user's birthday has occurred this year
+  if (
+    currentDate.getMonth() < birthDate.getMonth() ||
+    (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+};
+
 
 const UserSingleScreen = ({ route, onUnblockUser }) => {
   const { user } = route.params;
@@ -196,29 +214,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
     }
   }
 
-  //function to calculate age
-  const calculateAge = (dateOfBirth) => {
-    const birthDate = new Date(dateOfBirth);
-    const currentDate = new Date();
-
-    const age = currentDate.getFullYear() - birthDate.getFullYear();
-
-    // Check if the user's birthday has occurred this year
-    if (
-      currentDate.getMonth() < birthDate.getMonth() ||
-      (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-
-    return age;
-  };
+ 
     const navigateToSpaceDetails = (space) => {
       navigation.navigate('single-space', { space });
     };
 
+    // console.log('Component is rendering...');
+
   //storing user age in a variable
   const userAge = calculateAge(user.user.dateOfBirth);
+
+  // console.log('user age is: ', userAge);
 
   return (
     <View>
