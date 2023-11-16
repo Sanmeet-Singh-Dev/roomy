@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { UserType } from '../UserContext';
@@ -56,6 +56,8 @@ const ShowNotificationScreen = () => {
     }
 
   return (
+    <SafeAreaView>
+    <ScrollView>
     <View>
     <View style={{padding:10,marginHorizontal:12}}>
         <Text>Your Friend Requests! </Text>
@@ -78,6 +80,8 @@ const ShowNotificationScreen = () => {
             ))}
 </View>
 </View>
+</ScrollView>
+</SafeAreaView>
   )
 }
 

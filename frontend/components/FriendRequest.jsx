@@ -25,12 +25,40 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
 
             if (response.ok) {
                 setFriendRequests(friendRequests.filter((request) => request._id !== friendRequestId));
+                const message = "name has accepted your friend request";
+                 handleSend(userId, friendRequestId, message);
+                 navigation.navigate('homePage' , {isReload:true});
             }
         }
         catch (error) {
             console.log("Error accepting the friend request ", error);
         }
     }
+
+    const handleSend = async (currentUserId, selectedUserId, message) => {
+        try {
+          const data = {
+            senderId: currentUserId,
+            recepientId: selectedUserId,
+            message: message
+          };
+    
+          const response = await fetch(`http://${ipAddress}:6000/api/users/request-notification`, {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          })
+    
+          if (response.ok) {
+            console.log("Request notification sent successfully.");
+          }
+        }
+        catch (error) {
+          console.log("Error in sending notification", error);
+        }
+      }
     return (
         <Pressable style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: 10 }}>
             <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={{ uri: item.image }} />
