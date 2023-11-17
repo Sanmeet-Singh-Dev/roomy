@@ -55,17 +55,17 @@ const styles = StyleSheet.create({
     right: 17,
     height: 60,
     width: 60,
-    backgroundColor: '#2E66E7',
+    backgroundColor: '#51367B',
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#2E66E7',
+    shadowColor: '#BB97DB',
     shadowOffset: {
-      width: 0,
-      height: 5
+      width: 1,
+      height: 1
     },
-    shadowRadius: 30,
-    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    shadowOpacity: 1,
     elevation: 5,
     zIndex: 999
   },
@@ -511,7 +511,6 @@ useEffect(() => {
             height: Dimensions.get('window').height - 170
           }}
         >
-          <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
           <ScrollView
             contentContainerStyle={{
               paddingBottom: 20
