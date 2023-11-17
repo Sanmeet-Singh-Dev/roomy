@@ -3,6 +3,7 @@ import {
   Alert,
   Dimensions,
   Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Switch,
@@ -23,6 +24,10 @@ import { IPADDRESS } from "@env"
 const { width: vw } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover'
+  },
   createTaskButton: {
     width: 252,
     height: 48,
@@ -100,7 +105,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     width: 350,
     height: 350,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    backgroundColor: "rgba(255,248,246, 0.9)",
   },
   newTask: {
     alignSelf: 'center',
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#eaeef7'
+    backgroundColor: "rgba(255,248,246, 0.9)",
   }
 });
 
@@ -131,7 +137,7 @@ const CreateMeeting = ({ route }) => {
       'DD'
     )}`]: {
       selected: true,
-      selectedColor: '#2E66E7'
+      selectedColor: '#FF8F66'
     }
   });
   const [currentDay, setCurrentDay] = useState(moment().format());
@@ -263,8 +269,8 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
         dots: [
           {
             key: generateUniqueId(),
-            color: '#2E66E7',
-            selectedDotColor: '#2E66E7'
+            color: '#FF8F66',
+            selectedDotColor: '#FF8F66'
           }
         ]
       }
@@ -291,12 +297,13 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
         onCancel={hideDateTimePicker}
         mode="time"
         date={new Date()}
+        isDarkModeEnabled
       />
 
       <SafeAreaView style={styles.container}>
         <View
           style={{
-            height: visibleHeight
+            height: visibleHeight,
           }}
         >
           <ScrollView
@@ -304,6 +311,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
               paddingBottom: 100
             }}
           >
+            <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
             <View style={styles.backButton}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
@@ -322,7 +330,8 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
               <CalendarList
                 style={{
                   width: 350,
-                  height: 350
+                  height: 350,
+                  borderRadius: 20,
                 }}
                 current={currentDay}
                 minDate={moment().format()}
@@ -334,7 +343,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                   setSelectedDay({
                     [day.dateString]: {
                       selected: true,
-                      selectedColor: '#2E66E7'
+                      selectedColor: '#FF8F66'
                     }
                   });
                   setCurrentDay(day.dateString);
@@ -344,11 +353,9 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                 hideArrows
                 markingType="custom"
                 theme={{
-                  selectedDayBackgroundColor: '#2E66E7',
-                  selectedDayTextColor: '#ffffff',
-                  todayTextColor: '#2E66E7',
-                  backgroundColor: '#eaeef7',
-                  calendarBackground: '#eaeef7',
+                  selectedDayBackgroundColor: '#FF8F66',
+                  selectedDayTextColor: 'white',
+                  todayTextColor: 'black',
                   textDisabledColor: '#d9dbe0'
                 }}
                 markedDates={selectedDay}
@@ -406,7 +413,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                 styles.createTaskButton,
                 {
                   backgroundColor:
-                    taskText === '' ? 'rgba(46, 102, 231,0.5)' : '#2E66E7'
+                    taskText === '' ? 'rgba(255,143,102,0.5)' : '#FF8F66'
                 }
               ]}
               onPress={async () => {

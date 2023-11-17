@@ -54,7 +54,7 @@ const BottomTabBar = () => {
       <Tab.Screen name="homePage" component={Home} options={{headerShown: false}} />
       <Tab.Screen name="spaces" component={Spaces} />
       <Tab.Screen name="listMySpace" component={ListMySpace} />
-      <Tab.Screen name="Chats" component={ChatsScreen} />
+      <Tab.Screen name="Chats" component={ChatsScreen} options={{title:'Messages' ,headerShown: true}}/>
       <Tab.Screen name="profileScreen" component={ProfileScreen} options={{headerShown: false}} />
     </Tab.Navigator>
   )

@@ -11,7 +11,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  StatusBar
+  StatusBar,
+  ImageBackground
 } from 'react-native';
 import moment from 'moment';
 
@@ -24,6 +25,10 @@ import { IPADDRESS } from "@env"
 import { UserType } from '../UserContext';
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 10,
+    resizeMode: 'cover'
+  },
   taskListContent: {
     height: 100,
     width: 327,
@@ -307,6 +312,7 @@ useEffect(() => {
             onCancel={hideDateTimePicker}
             mode="time"
             date={new Date()}
+            isDarkModeEnabled
           />
           <View style={styles.taskContainer}>
             <TextInput
@@ -428,9 +434,11 @@ useEffect(() => {
       )}
       <SafeAreaView
         style={{
-          flex: 1
+          flex:1,
+          backgroundColor: "rgba(255,248,246, 0.9)",
         }}
       >
+        <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
         <CalendarStrip
           calendarAnimation={{ type: 'sequence', duration: 30 }}
           daySelectionAnimation={{
@@ -440,14 +448,18 @@ useEffect(() => {
           style={{
             height: 150,
             paddingTop: 20,
-            paddingBottom: 20
+            paddingBottom: 20,
+            background: "url('../assets/Account.jpg') center / contain no-repeat",
+            // backgroundColor: 'white',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover'
           }}
           calendarHeaderStyle={{ color: '#000000' }}
           dateNumberStyle={{ color: '#000000', paddingTop: 10 }}
           dateNameStyle={{ color: '#BBBBBB' }}
           highlightDateNumberStyle={{
             color: '#fff',
-            backgroundColor: '#2E66E7',
+            backgroundColor: '#FF8F66',
             marginTop: 10,
             height: 35,
             width: 35,
@@ -476,6 +488,7 @@ useEffect(() => {
             setCurrentDate(selectedDate);
           }}
         />
+        <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
         <TouchableOpacity   
             onPress={() =>
               navigation.navigate('CreateMeeting', {
@@ -498,90 +511,98 @@ useEffect(() => {
             height: Dimensions.get('window').height - 170
           }}
         >
+          <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
           <ScrollView
             contentContainerStyle={{
               paddingBottom: 20
             }}
           >
-            {todoList.map((item) => (
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedTask(item);
-                  setModalVisible(true);
-                }}
-                key={item.key}
-                style={styles.taskListContent}
-              >
-                <View
-                  style={{
-                    marginLeft: 13
+            { todoList ? (
+              todoList.map((item) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedTask(item);
+                    setModalVisible(true);
                   }}
+                  key={item.key}
+                  style={styles.taskListContent}
                 >
                   <View
                     style={{
-                      flexDirection: 'row',
-                      alignItems: 'center'
+                      marginLeft: 13
                     }}
                   >
                     <View
                       style={{
-                        height: 12,
-                        width: 12,
-                        borderRadius: 6,
-                        backgroundColor: item.color,
-                        marginRight: 8
-                      }}
-                    />
-                    <Text
-                      style={{
-                        color: '#554A4C',
-                        fontSize: 20,
-                        fontWeight: '700'
-                      }}
-                    >
-                      {item.title}
-                    </Text>
-                  </View>
-                  <View>
-                    <View
-                      style={{
                         flexDirection: 'row',
-                        marginLeft: 20
+                        alignItems: 'center'
                       }}
                     >
+                      <View
+                        style={{
+                          height: 12,
+                          width: 12,
+                          borderRadius: 6,
+                          backgroundColor: item.color,
+                          marginRight: 8
+                        }}
+                      />
                       <Text
                         style={{
-                          color: '#BBBBBB',
-                          fontSize: 14
+                          color: '#554A4C',
+                          fontSize: 20,
+                          fontWeight: '700'
                         }}
                       >
-                        {item.notes}
+                        {item.title}
                       </Text>
                     </View>
-                  </View>
-                </View>
-                <View>
-                   <Text
+                    <View>
+                      <View
                         style={{
-                          color: '#BBBBBB',
-                          fontSize: 14
+                          flexDirection: 'row',
+                          marginLeft: 20
                         }}
                       >
-                        {moment(item.alarm.time || moment()).format(
-                    'h:mm A'
-                  )}
-                      </Text>
-                </View>
-                <View
-                  style={{
-                    height: 80,
-                    width: 5,
-                    backgroundColor: item.color,
-                    borderRadius: 5
-                  }}
-                />
-              </TouchableOpacity>
-            ))}
+                        <Text
+                          style={{
+                            color: '#BBBBBB',
+                            fontSize: 14
+                          }}
+                        >
+                          {item.notes}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View>
+                     <Text
+                          style={{
+                            color: '#BBBBBB',
+                            fontSize: 14
+                          }}
+                        >
+                          {moment(item.alarm.time || moment()).format(
+                      'h:mm A'
+                    )}
+                        </Text>
+                  </View>
+                  <View
+                    style={{
+                      height: 80,
+                      width: 5,
+                      backgroundColor: item.color,
+                      borderRadius: 5
+                    }}
+                  />
+                </TouchableOpacity>
+              ))
+            ) : ( 
+              <View>
+            <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
+            <Text> No Meetings Scheduled </Text> 
+            </View>
+            )} 
           </ScrollView>
         </View>
       </SafeAreaView>
