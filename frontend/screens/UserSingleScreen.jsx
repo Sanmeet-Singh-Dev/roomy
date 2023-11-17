@@ -301,8 +301,8 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                 <Text style={styles.heading}>{firstName}'s Interests</Text>
                 <View style={styles.optionContainer}>
                   {user.user.interests.map((interest, index) => (
-                    <View style={styles.optionInnerContainer}>
-                      <Text style={styles.option} key={index}>
+                    <View style={styles.optionInnerContainer} key={index}>
+                      <Text style={styles.option } >
                         {interest.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                       </Text>
                     </View>
@@ -311,8 +311,8 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                 <Text style={styles.heading}>{firstName}'s Traits</Text>
                 <View style={styles.optionContainer}>
                   {user.user.traits.map((trait, index) => (
-                    <View style={styles.optionInnerContainer}>
-                      <Text style={styles.option} key={index}>
+                    <View style={styles.optionInnerContainer} key={index}>
+                      <Text style={styles.option}>
                         {trait.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                       </Text>
                     </View>
@@ -322,24 +322,11 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                 <View>
                   <Text style={styles.heading}>{firstName}'s listings</Text>
 
+                 {user.user.listMySpace && Object.keys(user.user.listMySpace).length > 4 && user.user.listMySpace.title ? (
                   <SpaceCard space={user.user.listMySpace} />
-
-
-
-
-                  {/* {user.user.listMySpace.description ? (
-                    <View>
-                      <Image
-                        source={{ uri: user.user.listMySpace.images[0] }}
-                        style={styles.image} />
-                      <Text style={styles.title}>{user.user.listMySpace.title}</Text>
-                      <Text style={styles.description}>{user.user.listMySpace.description}</Text>
-                      <Text style={styles.rent}>Rent</Text>
-                      <Text style={styles.budget}>{user.user.listMySpace.budget} cad/month</Text>
-                    </View>
-                  ) : (
-                    <Text>{firstName} has not listed any spaces yet.</Text>
-                  )} */}
+                 ) : (
+                  <Text style={{fontSize: 16}}>Listings Not available!</Text>
+                 )}
                 </View>
                     </TouchableOpacity>
               </View>
