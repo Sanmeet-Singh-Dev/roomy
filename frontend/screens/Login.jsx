@@ -76,8 +76,8 @@ const Login = () => {
             style={styles.textInput}
             />
 
-            <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleLogin}>Login</Text>
+            <TouchableOpacity style={styles.button}  onPress={handleLogin}>  
+            <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             </SafeAreaView> 
             </ImageBackground>    
