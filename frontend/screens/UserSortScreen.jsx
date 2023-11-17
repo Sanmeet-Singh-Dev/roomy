@@ -46,7 +46,7 @@ const UserSortScreen = ( ) => {
   return (
     <ImageBackground source={require('../assets/Filter_roommates.jpg')} style={styles.background}>
 
-      <TouchableOpacity style={styles.iconContainer} onPress={handleBack}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
         <Image
           source={require('../assets/back.png')}
           style={styles.sortIcon}
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
   },
-  iconContainer: {
+  backIconContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

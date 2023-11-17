@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet , TouchableOpacity} from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet , TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
@@ -63,147 +63,178 @@ const SpaceDetails = ({ route }) => {
    
     navigation.navigate('userSingleScreen', { user: user });
   }
+
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.card}>
-          {renderImageCarousel()}
-          <Text style={styles.title}>{space.title}</Text>
-          <Text style={styles.budget}>${space.budget}/Month</Text>
-          <View style={styles.locationContainer}>
-            <Image
-              source={require('../assets/location.png')}
-              style={styles.icon}
-            />
-            <Text style={styles.location}>
-              {space.fullAddress || 'Address not available'}
-            </Text>
-          </View>
+    <View style={styles.mainContainer}>
+      <ImageBackground source={require('../assets/userSingleScreen.jpg')} style={styles.background}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Room Listing</Text>
+      </TouchableOpacity>
 
-          <Text style={styles.description}>Description</Text>
-          <Text style={styles.descriptionText}> {space.description}</Text>
-
-          <Text style={styles.availability}>Availability</Text>
-          <View style={styles.locationContainer}>
-          <Image
-              source={require('../assets/calender.png')}
-              style={styles.calendarIcon}
-            />
-          <Text style={styles.location}>
-            {space.availability || 'N/A'}
-          </Text>
-          </View>
-      
-
-          <Text style={styles.petFriendly}>Pet Friendly</Text>
-          <View style={styles.customOptionContainer}>
-          <Text style={styles.customOption}>
-            {space.petFriendly || 'N/A'}
-          </Text>
-          </View>
-
-
-
-
-          <Text style={styles.roomSuitability}>Room Suitability</Text>
-          <View style={styles.customOptionContainer}>
-          <Text style={styles.customOption}>
-            {space.roomSuitability || 'N/A'}
-          </Text>
-          </View>
-
-
-          <Text style={styles.furnished}>Furnished</Text>
-          <View style={styles.customOptionContainer}>
-          <Text style={styles.customOption}>
-            {space.furnished || 'N/A'}
-          </Text>
-          </View>
-
-
-          <Text style={styles.numOfBedrooms}>Number of Bedrooms</Text>
-          <View style={styles.customOptionContainer}>
-          <Text style={styles.customOption}>
-            {space.numOfBedrooms || 'N/A'}
-          </Text>
-          </View>
-
-          <Text style={styles.numOfBathroom}>Number of Bathrooms</Text>
-          <View style={styles.customOptionContainer}>
-            <Text style={styles.customOption}>
-            {space.numOfBathroom || 'N/A'}
-            </Text>
-          </View>
-
-            <Text style={styles.description}>Attributes:</Text>
-          <View style={styles.customOptionContainer}>
-            {space.attributes.map((attribute, index) => (
-              <Text style={styles.customOption} key={index}>
-                {attribute}
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles.card}>
+            {renderImageCarousel()}
+            <Text style={styles.title}>{space.title}</Text>
+            <Text style={styles.budget}>${space.budget}/Month</Text>
+            <View style={styles.locationContainer}>
+              <Image
+                source={require('../assets/location.png')}
+                style={styles.icon}
+              />
+              <Text style={styles.location}>
+                {space.fullAddress || 'Address not available'}
               </Text>
-            ))}
-          </View>
-     {userData.profilePhoto ? (
-            <View style={styles.sellerCard}>
-              <Text style={styles.sellerTitle}>Seller Description</Text>
-              <View style={styles.sellerInfo}>
-                <View style={styles.profileContainer}>
-                { userFriends.includes(userData._id) ? (
-                  <Image
-                    source={{
-                      uri: userData.profilePhoto[0] || 'Seller Profile Pic',
-                    }}
-                    style={styles.profileImage}
-                  />
-                ) : (
-                  <Image
-                    source={{
-                      uri: userData.profilePhoto[0] || 'Seller Profile Pic',
-                    }}
-                    style={styles.profileImage} blurRadius={20}
-                  />
-                ) }
-                </View>
-                <View style={styles.sellerDetails}>
-                  <Text style={styles.userName}>{userData.name || 'User Name'}</Text>
-                  <TouchableOpacity onPress={onViewProfile}>
-                    <Text style={styles.viewProfileButton}>View Profile</Text>
-                  </TouchableOpacity>
+            </View>
+            <Text style={styles.description}>Description</Text>
+            <Text style={styles.descriptionText}> {space.description}</Text>
+            <Text style={styles.availability}>Availability</Text>
+            <View style={styles.locationContainer}>
+            <Image
+                source={require('../assets/calender.png')}
+                style={styles.calendarIcon}
+              />
+            <Text style={styles.location}>
+              {space.availability || 'N/A'}
+            </Text>
+            </View>
+      
+            <Text style={styles.petFriendly}>Pet Friendly</Text>
+            <View style={styles.customOptionContainer}>
+            <Text style={styles.customOption}>
+              {space.petFriendly || 'N/A'}
+            </Text>
+            </View>
+            <Text style={styles.roomSuitability}>Room Suitability</Text>
+            <View style={styles.customOptionContainer}>
+            <Text style={styles.customOption}>
+              {space.roomSuitability || 'N/A'}
+            </Text>
+            </View>
+            <Text style={styles.furnished}>Furnished</Text>
+            <View style={styles.customOptionContainer}>
+            <Text style={styles.customOption}>
+              {space.furnished || 'N/A'}
+            </Text>
+            </View>
+            <Text style={styles.numOfBedrooms}>Number of Bedrooms</Text>
+            <View style={styles.customOptionContainer}>
+            <Text style={styles.customOption}>
+              {space.numOfBedrooms || 'N/A'}
+            </Text>
+            </View>
+            <Text style={styles.numOfBathroom}>Number of Bathrooms</Text>
+            <View style={styles.customOptionContainer}>
+              <Text style={styles.customOption}>
+              {space.numOfBathroom || 'N/A'}
+              </Text>
+            </View>
+              <Text style={styles.description}>Attributes:</Text>
+            <View style={styles.customOptionContainer}>
+              {space.attributes.map((attribute, index) => (
+                <Text style={styles.customOption} key={index}>
+                  {attribute}
+                </Text>
+              ))}
+            </View>
+       {userData.profilePhoto ? (
+              <View style={styles.sellerCard}>
+                <Text style={styles.sellerTitle}>Seller Description</Text>
+                <View style={styles.sellerInfo}>
+                  <View style={styles.profileContainer}>
+                  { userFriends.includes(userData._id) ? (
+                    <Image
+                      source={{
+                        uri: userData.profilePhoto[0] || 'Seller Profile Pic',
+                      }}
+                      style={styles.profileImage}
+                    />
+                  ) : (
+                    <Image
+                      source={{
+                        uri: userData.profilePhoto[0] || 'Seller Profile Pic',
+                      }}
+                      style={styles.profileImage} blurRadius={20}
+                    />
+                  ) }
+                  </View>
+                  <View style={styles.sellerDetails}>
+                    <Text style={styles.userName}>{userData.name || 'User Name'}</Text>
+                    <TouchableOpacity onPress={onViewProfile}>
+                      <Text style={styles.viewProfileButton}>View Profile</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
-          ) : null}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            ) : null}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+      </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingBottom: "15%",
+  },
   card: {
     backgroundColor: '#fff',
-    padding: 12,
-    marginBottom: 16,
+    padding: 14,
+    marginBottom: 30,
     margin:5,
-    borderRadius: 8,
+    marginHorizontal: 0,
+    borderRadius: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
-    marginTop: 15,
+    paddingBottom: 20,
+  },
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+    marginBottom: "1%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
   locationContainer: {
-    flexDirection: 'row', // Align items horizontally
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20, // Center items vertically
+    marginBottom: 20,
   },
   icon: {
-    width: 15, // Adjust the width as needed
-    height: 28, // Adjust the height as needed
+    width: 15,
+    height: 28,
   },
   calendarIcon: {
-    width: 24, // Adjust the width as needed
+    width: 24,
     height: 24,
   },
   title: {

@@ -9,6 +9,7 @@ import SpaceCard from '../components/SpaceCard';
  const calculateAge = (dateOfBirth) => {
   const birthDate = new Date(dateOfBirth);
   const currentDate = new Date();
+  const navigation = useNavigation();
 
   const age = currentDate.getFullYear() - birthDate.getFullYear();
 
@@ -219,156 +220,174 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   }
 
  
-    const navigateToSpaceDetails = (space) => {
-      navigation.navigate('single-space', { space });
-    };
+  const navigateToSpaceDetails = (space) => {
+    navigation.navigate('single-space', { space });
+  };
 
-    // console.log('Component is rendering...');
-
-  //storing user age in a variable
   const userAge = calculateAge(user.user.dateOfBirth);
 
-  // console.log('user age is: ', userAge);
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
-    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
-      <View>
-        <View style={styles.contentContainer}>
-          <SafeAreaView>
-            <ScrollView>
-              <View style={styles.imageOuterContainer}>
-                <View style={styles.imageContainer}>
-                  {userFriends.includes(user.user._id) ? (
-                    <Image
-                      source={{ uri: user.user.profilePhoto[0] }}
-                      style={styles.image} />
-                  ) : (
-                    <Image
-                      source={{ uri: user.user.profilePhoto[0] }}
-                      style={styles.image} blurRadius={20} />
-                  )}
-                  <Text style={styles.userName}>{firstName}, {userAge}</Text>
-                </View>
-                <View style={styles.CompatibilityContainer}>
-                  <Text style={styles.Compatibility}>Compatibility: {user.score}%</Text>
-                </View>
-              </View>
-              <View style={styles.innerContentContainer}>
-                <Text style={styles.overviewHeading}>Desired room overview</Text>
-                <Text style={styles.userScore}>Budget: ${user.user.budget} / month</Text>
-                <Text style={styles.heading}>Bio</Text>
-                <Text style={styles.userBio}>{user.user.bio}</Text>
-                <View>
-                  {userFriends.includes(user.user._id) ? (
-                    <View style={styles.btnsContainer}>
-                      <Pressable
-                        style={styles.friendsBtn}
-                      >
-                        <Text style={styles.btnText}>Friends</Text>
-                      </Pressable>
-                      <Pressable
-                        onPress={() => unfriendUser(userId, user.user._id)}
-                        style={styles.unfriendBtn}
-                      >
-                        <Text style={styles.btnText}>Unfriend</Text>
-                      </Pressable>
-                    </View>
-                  ) : requestSent || friendRequests.some((friend) => friend._id === user.user._id) ? (
-                    <Pressable
-                      style={styles.requestSentBtn}
-                    >
-                      <Text style={styles.btnText}>Request Sent</Text>
-                    </Pressable>
-                  ) : recievedRequest.some((friend) => friend._id === user.user._id) ? (
-                    <Pressable
-                      onPress={() => acceptRequest(user.user._id)}
-                      style={styles.acceptBtn}>
-                      <Text style={styles.btnText}>Accept</Text>
-                    </Pressable>
-                  ) : (
-                    <Pressable
-                      onPress={() => sendFriendRequest(userId, user.user._id)}
-                      style={styles.addFriendBtn}>
-                      <Text style={styles.btnText}>Add Friend</Text>
-                    </Pressable>
-                  )}
-                  <Pressable
-                    onPress={() => handleBlockUser(userId, user.user._id)}
-                    style={styles.blockBtn}>
-                    <Text style={styles.btnText}>Block User</Text>
-                  </Pressable>
-                </View>
-                <Text style={styles.heading}>{firstName}'s Interests</Text>
-                <View style={styles.optionContainer}>
-                  {user.user.interests.map((interest, index) => (
-                    <View style={styles.optionInnerContainer}>
-                      <Text style={styles.option} key={index}>
-                        {interest.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-                <Text style={styles.heading}>{firstName}'s Traits</Text>
-                <View style={styles.optionContainer}>
-                  {user.user.traits.map((trait, index) => (
-                    <View style={styles.optionInnerContainer}>
-                      <Text style={styles.option} key={index}>
-                        {trait.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-                    <TouchableOpacity   onPress={() => navigation.navigate('single-space', { space: user.user.listMySpace })}>
-                <View>
-                  <Text style={styles.heading}>{firstName}'s listings</Text>
-
-                  <SpaceCard space={user.user.listMySpace} />
-
-
-
-
-                  {/* {user.user.listMySpace.description ? (
-                    <View>
+    
+    <View style={styles.mainContainer}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Roommate Profile</Text>
+      </TouchableOpacity>
+      <View style={styles.innerBgContainer}>
+        <ImageBackground source={require('../assets/userSingleScreen.jpg')} style={styles.background}>
+          <View style={styles.contentContainer}>
+            <SafeAreaView>
+              <ScrollView>
+                <View style={styles.imageOuterContainer}>
+                  <View style={styles.imageContainer}>
+                    {userFriends.includes(user.user._id) ? (
                       <Image
-                        source={{ uri: user.user.listMySpace.images[0] }}
+                        source={{ uri: user.user.profilePhoto[0] }}
                         style={styles.image} />
-                      <Text style={styles.title}>{user.user.listMySpace.title}</Text>
-                      <Text style={styles.description}>{user.user.listMySpace.description}</Text>
-                      <Text style={styles.rent}>Rent</Text>
-                      <Text style={styles.budget}>{user.user.listMySpace.budget} cad/month</Text>
-                    </View>
-                  ) : (
-                    <Text>{firstName} has not listed any spaces yet.</Text>
-                  )} */}
+                    ) : (
+                      <Image
+                        source={{ uri: user.user.profilePhoto[0] }}
+                        style={styles.image} blurRadius={20} />
+                    )}
+                    <Text style={styles.userName}>{firstName}, {userAge}</Text>
+                  </View>
+                  <View style={styles.CompatibilityContainer}>
+                    <Text style={styles.Compatibility}>Compatibility: {user.score}%</Text>
+                  </View>
                 </View>
-                    </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </SafeAreaView>
-        </View>
+                <View style={styles.innerContentContainer}>
+                  <Text style={styles.overviewHeading}>Desired room overview</Text>
+                  <Text style={styles.userScore}>Budget: ${user.user.budget} / month</Text>
+                  <Text style={styles.heading}>Bio</Text>
+                  <Text style={styles.userBio}>{user.user.bio}</Text>
+                  <View>
+                    {userFriends.includes(user.user._id) ? (
+                      <View style={styles.btnsContainer}>
+                        <Pressable
+                          style={styles.friendsBtn}
+                        >
+                          <Text style={styles.btnText}>Friends</Text>
+                        </Pressable>
+                        <Pressable
+                          onPress={() => unfriendUser(userId, user.user._id)}
+                          style={styles.unfriendBtn}
+                        >
+                          <Text style={styles.btnText}>Unfriend</Text>
+                        </Pressable>
+                      </View>
+                    ) : requestSent || friendRequests.some((friend) => friend._id === user.user._id) ? (
+                      <Pressable
+                        style={styles.requestSentBtn}
+                      >
+                        <Text style={styles.btnText}>Request Sent</Text>
+                      </Pressable>
+                    ) : recievedRequest.some((friend) => friend._id === user.user._id) ? (
+                      <Pressable
+                        onPress={() => acceptRequest(user.user._id)}
+                        style={styles.acceptBtn}>
+                        <Text style={styles.btnText}>Accept</Text>
+                      </Pressable>
+                    ) : (
+                      <Pressable
+                        onPress={() => sendFriendRequest(userId, user.user._id)}
+                        style={styles.addFriendBtn}>
+                        <Text style={styles.btnText}>Add Friend</Text>
+                      </Pressable>
+                    )}
+                    <Pressable
+                      onPress={() => handleBlockUser(userId, user.user._id)}
+                      style={styles.blockBtn}>
+                      <Text style={styles.btnText}>Block User</Text>
+                    </Pressable>
+                  </View>
+                  <Text style={styles.heading}>{firstName}'s Interests</Text>
+                  <View style={styles.optionContainer}>
+                    {user.user.interests.map((interest, index) => (
+                      <View style={styles.optionInnerContainer}>
+                        <Text style={styles.option} key={index}>
+                          {interest.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                  <Text style={styles.heading}>{firstName}'s Traits</Text>
+                  <View style={styles.optionContainer}>
+                    {user.user.traits.map((trait, index) => (
+                      <View style={styles.optionInnerContainer}>
+                        <Text style={styles.option} key={index}>
+                          {trait.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                      <TouchableOpacity   onPress={() => navigation.navigate('single-space', { space: user.user.listMySpace })}>
+                  <View>
+                    <Text style={styles.heading}>{firstName}'s listings</Text>
+                    <SpaceCard space={user.user.listMySpace} />
+                  </View>
+                      </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </SafeAreaView>
+          </View>
+        </ImageBackground>
       </View>
-    </ImageBackground>
+    </View>
   )
 }
 
 export default UserSingleScreen
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   contentContainer: {
     margin: 20,
-    borderRadius: 8,
+    borderRadius: 15,
     backgroundColor: '#fff',
   },
   containerMain: {
     flex: 1,
     padding: 30,
   },
+  innerBgContainer: {
+    flex: 1,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
   innerContentContainer: {
     padding: 20,
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+    marginBottom: "5%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
   background: {
     flex: 1,
     resizeMode: 'cover',
+    borderRadius: 15,
   },
   container: {
     flexDirection: 'row',

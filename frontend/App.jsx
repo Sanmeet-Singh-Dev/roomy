@@ -71,7 +71,7 @@ export default function App() {
         <stack.Screen name='livinghabits' component={Livinghabits} options={{ title:'Your Personal and living habits' ,headerShown: true }} />
         <stack.Screen name='interests' component={Interests} options={{ title:'Your Interests' ,headerShown: true }} />
         <stack.Screen name='personalTraits' component={PersonalTraits} options={{ title:'Your Personal traits' ,headerShown: true }} />
-        <stack.Screen name='userSingleScreen' component={UserSingleScreen} options={{title:"Roommate Profile" , headerShown: true }} />
+        <stack.Screen name='userSingleScreen' component={UserSingleScreen} options={{title:"Roommate Profile" , headerShown: false }} />
         <stack.Screen name='userSortScreen' component={UserSortScreen} options={{ headerShown: false }} />
         <stack.Screen name="Chats" component={ChatsScreen} options={{title:'Messages' ,headerShown: true}}/>
         <stack.Screen name="newChat" component={NewChatScreen} options={{title:'New Messages' ,headerShown: true}}/>
