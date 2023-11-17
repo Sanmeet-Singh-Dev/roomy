@@ -231,8 +231,15 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   }
 
   return (
-    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
+    <ImageBackground source={require('../assets/userSingleScreen.jpg')} style={styles.background}>
       <View>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Room Listing</Text>
+      </TouchableOpacity>
         <View style={styles.contentContainer}>
           <SafeAreaView>
             <ScrollView>
@@ -349,6 +356,7 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 15,
     backgroundColor: '#fff',
+    marginBottom: "60%",
   },
   containerMain: {
     flex: 1,
