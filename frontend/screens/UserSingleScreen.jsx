@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   contentContainer: {
-    margin: 20,
+    margin: 19,
     borderRadius: 15,
     backgroundColor: '#fff',
     marginBottom: "60%",
