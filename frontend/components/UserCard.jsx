@@ -78,16 +78,19 @@ const styles = StyleSheet.create({
     width: '47%',
     paddingBottom: 20,
     paddingRight: 0,
+    
   },
   cardInnerContainer: {
     position: 'relative',
     overflow: 'hidden',
+    flex:1
   },
   image: {
-    width: 174,
+   width:'100%',
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     height: 150,
+    resizeMode:"cover"
   },
   userInfo: {
     marginTop: 15,
