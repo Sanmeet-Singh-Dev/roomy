@@ -43,10 +43,18 @@ const BottomTabBar = () => {
         },
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
-        style: {
-          backgroundColor: 'white',
-          borderRadius: 50,
-          padding: 40, 
+        tabBarStyle: {
+          backgroundColor: "#fff",
+          borderTopLeftRadius: 30, // Adjust this value based on your preference
+          borderTopRightRadius: 30, // Adjust this value based on your preference
+          paddingVertical:15, // Adjust the vertical padding based on your preference
+          elevation: 5,
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 1,
+          shadowRadius: 4,
+          height: 90
+        
         },
       })}
     >

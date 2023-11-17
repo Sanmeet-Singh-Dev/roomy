@@ -81,7 +81,7 @@ const SpaceDetails = ({ route }) => {
           </View>
 
           <Text style={styles.description}>Description</Text>
-          <Text style={styles.description}> {space.description}</Text>
+          <Text style={styles.descriptionText}> {space.description}</Text>
 
           <Text style={styles.availability}>Availability</Text>
           <View style={styles.locationContainer}>
@@ -145,7 +145,7 @@ const SpaceDetails = ({ route }) => {
           </View>
      {userData.profilePhoto ? (
             <View style={styles.sellerCard}>
-              <Text style={styles.sellerTitle}>Seller Information</Text>
+              <Text style={styles.sellerTitle}>Seller Description</Text>
               <View style={styles.sellerInfo}>
                 <View style={styles.profileContainer}>
                 { userFriends.includes(userData._id) ? (
@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     flexDirection: 'row', // Align items horizontally
-    alignItems: 'center', // Center items vertically
+    alignItems: 'center',
+    marginBottom: 20, // Center items vertically
   },
   icon: {
     width: 15, // Adjust the width as needed
@@ -214,39 +215,49 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     marginBottom: 8,
+    fontWeight:"500"
+  },
+  descriptionText: {
+    fontSize: 16,
+    marginBottom: 20,
   },
   budget: {
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 20,
   },
   location: {
     fontSize: 16,
-    marginBottom: 8,
     marginLeft: 5,
   },
   numOfBedrooms: {
     fontSize: 16,
     marginBottom: 8,
+    fontWeight:"500"
   },
   numOfBathroom: {
     fontSize: 16,
     marginBottom: 8,
+    fontWeight:"500"
   },
   availability: {
     fontSize: 16,
     marginBottom: 8,
+    fontWeight:"500"
   },
   roomSuitability: {
     fontSize: 16,
     marginBottom: 8,
+    fontWeight:"500"
   },
   petFriendly: {
     fontSize: 16,
     marginBottom: 8,
+    fontWeight:"500"
   },
   furnished: {
     fontSize: 16,
     marginBottom: 8,
+    fontWeight:"500"
   },
   imageLabel: {
     fontSize: 16,
@@ -265,15 +276,18 @@ const styles = StyleSheet.create({
   customOptionContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap', 
-    borderRadius: 20
+    borderRadius: 20,
+    marginBottom:25,
+    gap:10
 
   },
   customOption: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    fontSize: 16,
     backgroundColor: '#FF8F66',
     borderRadius: 7,
-    margin: 5,
     overflow: 'hidden',
     color:'#FFFFFF'
   },
@@ -289,7 +303,7 @@ const styles = StyleSheet.create({
   },
   sellerCard: {
     backgroundColor: '#fff',
-    padding: 16,
+    padding: 20,
     marginBottom: 16,
     borderRadius: 8,
     shadowColor: '#000',
@@ -300,8 +314,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   sellerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: "500",
     marginBottom: 8,
   },
   sellerInfo: {
@@ -320,13 +334,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userName: {
-    fontSize: 16,
+    fontSize: 20,
     marginBottom: 8,
+    fontWeight:"bold"
   },
   viewProfileButton: {
-    color: '#007AFF', // Customize the button color
+    color: '#FF8F66',
     fontSize: 16,
-    textDecorationLine: 'underline',
+    borderColor: "#FF8F66",
+    borderWidth: "1",
+    borderRadius: 20,
+    textAlign:"center",
+    width:150,
+    paddingVertical:7
   },
 });
 
