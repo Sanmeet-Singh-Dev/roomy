@@ -324,7 +324,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                     <Pressable
                       onPress={() => sendFriendRequest(userId, user.user._id)}
                       style={styles.addFriendBtn}>
-                      <Text style={styles.btnText}>Add Friend</Text>
+                      <Text style={styles.btnText}>Send Request</Text>
                     </Pressable>
                   )}
                 </View>
@@ -525,6 +525,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontSize: 16,
+    fontWeight:"bold"
   },
   friendsBtn: {
     backgroundColor: "#82CD47",
@@ -547,13 +548,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   acceptBtn: {
-    backgroundColor: "#0066b2",
+    backgroundColor: "#FF8F66",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
   },
   addFriendBtn: {
-    backgroundColor: "#567189",
+    backgroundColor: "#3E206D",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
