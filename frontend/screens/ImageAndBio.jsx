@@ -51,7 +51,7 @@ const ImageAndBio = () => {
 
         const compressedImage = await manipulateAsync(
           uri,
-          [{ resize: { width: 800, height: 600 } }],
+          [{ resize: { width: 800, height: 800 } }],
           { format: 'jpeg', compress: 0.6 }
         );
 
@@ -148,7 +148,7 @@ const ImageAndBio = () => {
       ))}
     </View>
 
-        <Text style={styles.label}>Add your Images/Videos</Text>
+        <Text style={styles.label}>Add your Images</Text>
 
         <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
           {selectedImages.map((uri, index) => (
