@@ -37,7 +37,7 @@ const ChatsScreen = () => {
     <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
     <View>
     <ScrollView showsVerticalScrollIndicator={false}>
-        <Pressable>
+        <Pressable style={{margin:10, borderRadius: 20, marginLeft: 20, marginRight: 20}}>
             {acceptedFriends.map((item,index)=> (
                 <UserChat key={index} item={item}/>
             ))}
