@@ -9,6 +9,7 @@ import SpaceCard from '../components/SpaceCard';
  const calculateAge = (dateOfBirth) => {
   const birthDate = new Date(dateOfBirth);
   const currentDate = new Date();
+  const navigation = useNavigation();
 
   const age = currentDate.getFullYear() - birthDate.getFullYear();
 
@@ -219,16 +220,15 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   }
 
  
-    const navigateToSpaceDetails = (space) => {
-      navigation.navigate('single-space', { space });
-    };
+  const navigateToSpaceDetails = (space) => {
+    navigation.navigate('single-space', { space });
+  };
 
-    // console.log('Component is rendering...');
-
-  //storing user age in a variable
   const userAge = calculateAge(user.user.dateOfBirth);
 
-  // console.log('user age is: ', userAge);
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
     <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
@@ -341,21 +341,48 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
 export default UserSingleScreen
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   contentContainer: {
     margin: 20,
-    borderRadius: 8,
+    borderRadius: 15,
     backgroundColor: '#fff',
   },
   containerMain: {
     flex: 1,
     padding: 30,
   },
+  innerBgContainer: {
+    flex: 1,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
   innerContentContainer: {
     padding: 20,
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+    marginBottom: "5%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
   background: {
     flex: 1,
     resizeMode: 'cover',
+    borderRadius: 15,
   },
   container: {
     flexDirection: 'row',
