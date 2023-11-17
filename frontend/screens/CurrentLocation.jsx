@@ -1,7 +1,7 @@
 
 import React, { useContext,useState, useEffect } from 'react';
-import { Button, SafeAreaView, Text, TextInput, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Button, SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity } from 'react-native';
+import { useNavigation , useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { IPADDRESS } from '@env'
 import { UserType } from '../UserContext';
@@ -14,15 +14,14 @@ const CurrentLocation = () => {
   const [location, setLocation] = useState(null);
   const navigation = useNavigation();
   const ipAdress=IPADDRESS;
-  const { userId, setUserId } = useContext(UserType);
-
-  console.log("User id", userId);
+  const route = useRoute();
+  const userId = route.params?.userId;
+  const currentStep = 1;
+    const steps = 6;
 
   const geoCode = async () => {
     // Use the address entered by the user
     const geoCodedLocation = await Location.geocodeAsync(address);
-    console.log('Geocoded Address:');
-    console.log(geoCodedLocation);
 
     // Send this custom location data to your backend
     sendLocationDataToBackend({
@@ -59,9 +58,7 @@ const getCurrentLocation = async () => {
 
   const sendLocationDataToBackend = async (locationData) => {
     try {
-        console.log(ipAdress);
         const token = await AsyncStorage.getItem('jwt');
-        console.log(token);
         if (!token) {
           // Handle the case where the token is not available
           console.error('No authentication token available.');
@@ -81,7 +78,7 @@ const getCurrentLocation = async () => {
 
       if (response.ok) {
         // Handle a successful response (e.g., navigate to the next screen)
-        navigation.navigate('imageAndBio');
+        navigation.navigate('imageAndBio' , {userId : userId});
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
       console.error('Error saving location. Response:', response.status , response.statusText)
@@ -126,23 +123,42 @@ const saveLocation = () => {
 
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
-      console.log('Location:', currentLocation);
     };
     getPermissions();
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
+       <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
       <SafeAreaView>
-        <Text>Select your current location or type manually the address and country name:</Text>
+        <Text style={styles.label}>Where are you looking to move to?</Text>
         <TextInput
           placeholder="Address"
           value={address}
           onChangeText={setAddress}
+          style={styles.textInput}
         />
+         <TouchableOpacity style={styles.currentButton}>  
+            <Text style={styles.buttonText} onPress={getCurrentLocation}>Set Current Location</Text>
+            </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>  
+            <Text style={styles.buttonText} onPress={geoCode}>Next</Text>
+            </TouchableOpacity>
 
-        <Button title="Save Location" onPress={geoCode} />
-        <Button title="Use Current Location" onPress={getCurrentLocation} />
+        {/* <Button title="Save Location" onPress={geoCode} />
+        <Button title="Use Current Location" onPress={getCurrentLocation} /> */}
         {/* <Button title="Save Location" onPress={saveLocation} /> */}
       </SafeAreaView>
     </View>
@@ -150,3 +166,92 @@ const saveLocation = () => {
 };
 
 export default CurrentLocation;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '27%'
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width: 15,
+    height: 15,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+  },
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgray',
+    marginHorizontal: 1,
+  },
+  buttonText: {
+      color: '#fff',
+      textAlign: 'center',
+      fontSize: 17,
+      fontWeight: 'bold'
+    },
+    currentButton: {
+      backgroundColor: '#51367B',
+    color: '#fff',
+    margin: 10,
+    marginTop: 10,
+    marginLeft: 80,
+    marginRight: 80,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 8,
+    },
+    button: {
+      backgroundColor: '#FF8F66',
+    color: '#fff',
+    margin: 10,
+    marginTop: 200,
+    marginLeft: 96,
+    marginRight: 96,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 8,
+    },
+    text: {
+      fontSize: 25,
+      marginBottom: 20,
+      textAlign: 'center'
+    },
+    textInput: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      marginBottom: 16,
+      marginTop: 12,
+      margin: 10,
+      marginLeft: 20,
+      marginRight: 20,
+      padding: 10,
+    },
+    label: {
+      fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10
+    },
+})

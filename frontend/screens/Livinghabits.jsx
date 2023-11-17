@@ -14,15 +14,17 @@ const Livinghabits = () => {
     const [food, setFood] = useState('');
 
     const navigation = useNavigation();
+    const currentStep = 3;
+    const steps = 6;
 
     const handleSaveHabits = async () => {
         let ipAdress = IPADDRESS;
-        console.log('handleSaveHabits run');
+     
           try {
             // Get the authentication token from AsyncStorage
-            console.log('in try');
+        
             const token = await AsyncStorage.getItem('jwt');
-            console.log(token);
+
             if (!token) {
               // Handle the case where the token is not available
               console.error('No authentication token available.');
@@ -51,22 +53,35 @@ const Livinghabits = () => {
             } else {
               // Handle an unsuccessful response (e.g., show an error message)
               console.error('Error updating profile.');
-              console.log("here 2");
+        
             }
           } catch (error) {
             // Handle fetch or AsyncStorage errors
             console.error('Error:', error);
-            console.log("here 3")
+       
           }
       };
 
   return (
     <View style={styles.container}>
+        <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
         <SafeAreaView>
         <ScrollView>
-        <Text>Personal and Living Habits</Text>
 
-        <Text>Smoking</Text>
+        <Text style={{ marginLeft: 20 , marginBottom: 5}}>Smoking</Text>
+        <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
             styles.option,
@@ -94,8 +109,10 @@ const Livinghabits = () => {
         >
             <Text style={styles.optionText}>Never</Text>
         </TouchableOpacity>
+        </View>
 
-        <Text>Guests</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Guests</Text>
+        <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
             styles.option,
@@ -123,8 +140,10 @@ const Livinghabits = () => {
         >
             <Text style={styles.optionText}>Never</Text>
         </TouchableOpacity>
+        </View>
 
-        <Text>Drinking</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Drinking</Text>
+        <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
             styles.option,
@@ -152,8 +171,10 @@ const Livinghabits = () => {
         >
             <Text style={styles.optionText}>Never</Text>
         </TouchableOpacity>
+        </View>
 
-        <Text>Pets</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Pets</Text>
+        <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
             styles.option,
@@ -181,8 +202,10 @@ const Livinghabits = () => {
         >
             <Text style={styles.optionText}>May Have</Text>
         </TouchableOpacity>
+        </View>
 
-        <Text>Food Choice</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Food Choice</Text>
+        <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
             styles.option,
@@ -210,10 +233,13 @@ const Livinghabits = () => {
         >
             <Text style={styles.optionText}>Non-Vegetarian</Text>
         </TouchableOpacity>
+        </View>
 
         
+        <TouchableOpacity style={styles.button}>  
+          <Text style={styles.buttonText} onPress={handleSaveHabits}>Next </Text>
+          </TouchableOpacity>
 
-        <Button title="Save Habits" onPress={handleSaveHabits} />
         </ScrollView>
         </SafeAreaView>
     </View>
@@ -225,18 +251,63 @@ export default Livinghabits
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 30,
+        backgroundColor: 'white'
     },
+    progressBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        marginTop: 50,
+        marginBottom: 40,
+        width: '27%'
+      },
+      stepContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      dot: {
+        width:15,
+        height: 15,
+        borderRadius: 50,
+        backgroundColor: 'lightgray',
+      },
+      line: {
+        flex: 1,
+        height: 2,
+        backgroundColor: 'lightgray',
+        marginHorizontal: 1,
+      },
+      buttonText: {
+        color: '#fff',
+        textAlign: 'center',
+        fontSize: 17,
+        fontWeight: 'bold'
+      },
+      button: {
+        backgroundColor: '#FF8F66',
+        color: '#fff',
+        margin: 10,
+        marginTop: 60,
+        marginLeft: 96,
+        marginRight: 96,
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingTop: 14,
+        paddingBottom: 14,
+        borderRadius: 8,
+      },
     option: {
       borderWidth: 1,
       borderColor: '#ccc',
       padding: 10,
+      paddingHorizontal: 20,
       borderRadius: 5,
       marginVertical: 5,
     },
     selectedOption: {
-      backgroundColor: 'blue', // Change to your desired highlight color
-      borderColor: 'blue', // Change to your desired highlight color
+      backgroundColor: '#FF8F66',
+      color: 'white',
     },
     optionText: {
       color: 'black', // Change to your desired text color

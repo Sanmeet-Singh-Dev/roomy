@@ -10,6 +10,21 @@ import {
     saveListMySpaceData,
     getAllListsMySpace,
     setLocation,
+    getFriendRequests,
+    sendFriendRequest,
+    getUserFirends,
+    sentFriendRequests,
+    acceptRequest,
+    recievedFriendRequests,
+    blockUser,
+    unfriendUser,
+    unblockUser,
+    getBlockedUsers,
+    getUserNotifications,
+    getUserByListMySpaceId,
+    getUserById,
+    getUserSpaces,
+    deleteListing
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -19,6 +34,8 @@ import {
     updateUserHabits,
     updateUserInterests,
     updateUserTraits,
+    updateUserRoomAttributes,
+    saveRoomDetails
 } from '../controllers/profileController.js';
 import {
     // getUserPreferences,
@@ -27,15 +44,8 @@ import {
 } from '../controllers/compatibilityController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import multer from 'multer';
-import { getMeetings, setMeeting } from '../controllers/meetingController.js';
-
-// router.get('/:id/preferences', protect, getUserPreferences);
-// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
-// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
-
-// router.get('/:id/preferences', protect, getUserPreferences);
-// router.get('/:id/calculate-compatibility', protect, calculateCompatibility);
-// router.get('/:id/compatibility-scores', protect, getCompatibilityScores);
+import { deleteMeeting, getMeetings, setMeeting, updateMeeting } from '../controllers/meetingController.js';
+import { deleteNotification, getNotifications, setNotification } from '../controllers/notificationController.js';
 
 //Configure multer for handling file uploads 
 const storage = multer.diskStorage({
@@ -56,16 +66,30 @@ router.post('/auth', authUser);
 router.post('/logout', logoutUser);
 router.put('/profile', protect, updateUserProfile);
 router.get('/accepted-friends/:userId', getAcceptedFriends);
+router.get('/friends/:userId', getUserFirends)
+router.get('/friend-request/:userId', getFriendRequests);
+router.get('/notifications/:userId', getUserNotifications);
+router.post('/friend-request', sendFriendRequest);
+router.post('/block-user', blockUser);
+router.post('/unblock-user', unblockUser);
+router.post('/unfriend-user', unfriendUser);
+router.get('/friend-requests/sent/:userId', sentFriendRequests);
+router.get('/friend-requests/recieved/:userId', recievedFriendRequests);
+router.post('/friend-request/accept', acceptRequest);
 router.get('/messages/:senderId/:recepientId', getMessages);
 router.get('/meetings/:senderId/:recepientId', getMeetings);
 router.post('/messages' , upload.single('imageFile'),setMessage);
 router.post('/meetings' , setMeeting);
 router.get('/user/:userId', getUser);
 router.post('/deleteMessages' , deleteMessage);
+router.post('/deleteMeetings', deleteMeeting);
+router.put('/updateMeetings', updateMeeting);
 router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
 router.put('/interests', protect, updateUserInterests)
 router.put('/traits', protect, updateUserTraits)
+router.put('/update-room-attributes', protect, updateUserRoomAttributes)
+router.post('/update-room-details', protect, saveRoomDetails)
 router.get('/:id/preferences', protect, getUserPreferences)
 
 router.post('/save-list-my-space', saveListMySpaceData);
@@ -76,5 +100,13 @@ router.get('/all', getAllUsers);
 
 // router.get('/preferences', protect, getUserPreferences);
 router.get('/compatibility', protect, calculateCompatibilityWithAllUsers);
+router.get('/getBlockedUsers', protect, getBlockedUsers);
+router.post('/request-notification' , setNotification)
+router.get('/notification/:recepientId' , getNotifications);
+router.post('/deleteNotification', deleteNotification);
+router.get('/getUserByListMySpace/:listMySpaceId', getUserByListMySpaceId);
+router.get('/users/:userId', getUserById);
+router.get('/users/:userId/spaces', getUserSpaces);
+router.delete('/listings/:userId/:spaceId', deleteListing);
 
 export default router;

@@ -8,6 +8,8 @@ const PersonalTraits = () => {
   const [selectedTraits, setSelectedTraits] = useState([]);
 
   const navigation = useNavigation();
+  const currentStep = 5;
+    const steps = 6;
 
   const availableTraits = [
     'calm', 'friendly', 'organized', 'social',
@@ -34,12 +36,12 @@ const PersonalTraits = () => {
 
   const handleSaveTraits = async () => {
     let ipAddress = IPADDRESS;
-    console.log('handleSaveTraits run');
+   
     try {
       // Get the authentication token from AsyncStorage
-      console.log('in try');
+
       const token = await AsyncStorage.getItem('jwt');
-      console.log(token);
+
       if (!token) {
         // Handle the case where the token is not available
         console.error('No authentication token available.');
@@ -65,20 +67,33 @@ const PersonalTraits = () => {
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
         console.error('Error updating traits.');
-        console.log("here 2");
+      
       }
     } catch (error) {
       // Handle fetch or AsyncStorage errors
       console.error('Error:', error);
-      console.log("here 3");
+
     }
   };
   
 
   return (
     <View style={styles.containerMain}>
+      <View style={styles.progressBar}>
+      {[...Array(steps).keys()].map((step) => (
+        <View key={step} style={styles.stepContainer}>
+          <View
+            style={[
+              styles.dot,
+              { backgroundColor: step <= currentStep ? '#3E206D' : 'lightgray' },
+            ]}
+          />
+          {step < steps - 1 && <View style={styles.line} />}
+        </View>
+      ))}
+    </View>
       <ScrollView>
-      <Text>Select Your Personal Traits:</Text>
+      <Text style={styles.text}>Select Your Personal Traits:</Text>
       <View style={styles.container}>
 
         {availableTraits.map((traits) => (
@@ -90,16 +105,15 @@ const PersonalTraits = () => {
             ]}
             onPress={() => toggleTraits(traits)}
           >
-            <Text style={styles.optionText}>{traits}</Text>
+            <Text style={[styles.optionText, { color: selectedTraits.includes(traits) ? 'white' : 'black' }, ]}>{traits}</Text>
           </TouchableOpacity>
         ))}
 
       </View>
-      
-      <Button
-        title="Next"
-        onPress={handleSaveTraits}
-      />
+
+      <TouchableOpacity style={styles.button}>  
+          <Text style={styles.buttonText} onPress={handleSaveTraits}>Next </Text>
+          </TouchableOpacity>
 
     </ScrollView>
 
@@ -112,27 +126,80 @@ export default PersonalTraits
 const styles = StyleSheet.create({
   containerMain: {
     flex: 1,
-    padding: 30,
+    backgroundColor: 'white'
   },
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
+    marginTop: 10,
+    marginLeft: 14,
   },
-  option: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    margin: 5,
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '27%'
   },
-  selectedOption: {
-    backgroundColor: 'blue',
-    borderColor: 'blue',
+  stepContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width:15,
+    height: 15,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+  },
+  line: {
+    flex: 1,
+    height: 2,
+    backgroundColor: 'lightgray',
+    marginHorizontal: 1,
   },
   optionText: {
     color: 'black',
     textAlign: 'center',
+  },
+  option: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#EEEEEE',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    margin: 5,
+  },
+  selectedOption: {
+    backgroundColor: '#FF8F66',
+    color: 'white'
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: '#FF8F66',
+    color: '#fff',
+    margin: 10,
+    marginTop: 60,
+    marginLeft: 96,
+    marginRight: 96,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 8,
   },
 });

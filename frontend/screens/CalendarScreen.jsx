@@ -11,22 +11,24 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  StatusBar
+  StatusBar,
+  ImageBackground
 } from 'react-native';
 import moment from 'moment';
-import * as Calendar from 'expo-calendar';
-import * as Localization from 'expo-localization';
 
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Task from '../components/Task';
-import useStore from '../store/store';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation , useRoute} from '@react-navigation/native';
 import { IPADDRESS } from "@env"
 import { UserType } from '../UserContext';
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 10,
+    resizeMode: 'cover'
+  },
   taskListContent: {
     height: 100,
     width: 327,
@@ -53,17 +55,17 @@ const styles = StyleSheet.create({
     right: 17,
     height: 60,
     width: 60,
-    backgroundColor: '#2E66E7',
+    backgroundColor: '#51367B',
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#2E66E7',
+    shadowColor: '#BB97DB',
     shadowOffset: {
-      width: 0,
-      height: 5
+      width: 1,
+      height: 1
     },
-    shadowRadius: 30,
-    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    shadowOpacity: 1,
     elevation: 5,
     zIndex: 999
   },
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 19
   },
   taskContainer: {
-    height: 475,
+    height: 420,
     width: 327,
     alignSelf: 'center',
     borderRadius: 20,
@@ -142,9 +144,10 @@ const styles = StyleSheet.create({
       height: 3
     },
     shadowRadius: 20,
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.1,
     elevation: 5,
-    padding: 22
+    padding: 30,
+    paddingTop: 50
   }
 });
 
@@ -160,62 +163,6 @@ const CalendarScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const { recepientId } = route.params;
-
-  const stateCheck = useStore();
-
-  useEffect(() => {
-    const init = async () => {
-      await _askForCalendarPermissions();
-      await _askForReminderPermissions();
-      StatusBar.pushStackEntry({
-        animated: true,
-        barStyle: 'dark-content',
-      });
-    };
-    init();
-  }, []);
-
-  _askForCalendarPermissions = async () => {
-    const { status } = await Calendar.requestCalendarPermissionsAsync();
-    console.log("Status is ",status);
-    if (status === 'granted') {
-      const calendars = await Calendar.getCalendarsAsync(
-        Calendar.EntityTypes.EVENT
-      );
-    }
-    else {
-         status = await Calendar.requestCalendarPermissionsAsync();
-    }
-  };
-
-  _askForReminderPermissions = async () => {
-    if (Platform.OS === 'android') {
-      return true;
-    }
-
-    const { status } = await Calendar.requestRemindersPermissionsAsync();
-    if (status === 'granted') {
-      const calendars = await Calendar.getRemindersPermissionsAsync(
-        Calendar.EntityTypes.REMINDER
-      );
-    }
-    else {
-        status = await Calendar.requestRemindersPermissionsAsync();
-        console.log("Status in else ",status)
-    }
-  };
-
-  const updateSelectedTask = async ({date, meetings}) => {
-    // UPDATE LOGIC HERE
-    // console.log("Meeting to update ", meetings);
-    // console.log("Date is ", date);
-  }
-
-  const deleteSelectedTask = async ({date, meetings}) => {
-    // DELETE LOGIC HERE
-    // console.log("Meeting to delete ", meetings);
-    // console.log("Date is ", date);
-  }
 
   const { userId, setUserId } = useContext(UserType);
   const [meetings, setMeetings] = useState([]);
@@ -239,7 +186,6 @@ const CalendarScreen = () => {
 
         const createTodoList = [];
 
-// Loop through the data array to extract creatTodo objects
 data.forEach((item) => {
     if (item.creatTodo) {
         createTodoList.push(item.creatTodo);
@@ -260,51 +206,53 @@ data.forEach((item) => {
 
 useEffect(() => {
     fetchMeetings();
+    updateCurrentTask(currentDate);
 }, [meetings])
 
-  useEffect(() => {
-    handleDeletePreviousDayTask(meetings);
-  }, [meetings, currentDate]);
+  const updateSelectedTask = async ({date, meetings}) => {
 
-  const handleDeletePreviousDayTask = async (oldTodo) => {
     try {
-    if (oldTodo.length > 0) {
-        const todayDate = `${moment().format('YYYY')}-${moment().format(
-          'MM'
-        )}-${moment().format('DD')}`;
-        const checkDate = moment(todayDate);
 
-        const deletePromises = oldTodo
-          .filter((item) => {
-            const currDate = moment(item.date);
-            const checkedDate = checkDate.diff(currDate, 'days');
-            if (checkedDate > 0) {
-              return false;
-            }
-            return true;
-          })
-          .map(async (item) => {
-            await Promise.all(
-              item.todoList.map(async (listValue) => {
-                try {
-                  await Calendar.deleteEventAsync(
-                    listValue.alarm.createEventAsyncRes.toString()
-                  );
-                } catch (error) {
-                  console.log(error);
-                }
-              })
-            );
-          });
+        const response = await fetch(`http://${ipAdress}:6000/api/users/updateMeetings`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ meetings: meetings, date: date })
+        });
 
-        await Promise.all(deletePromises);
-
-        updateCurrentTask(currentDate);
-      }
+        if (response.ok) {
+            fetchMeetings();
+        }
+        else {
+            console.log("Error in updating meetings", response.status);
+        }
     } catch (error) {
-      // Error retrieving data
+        console.log("Error in updating meetings", error);
     }
-  };
+    
+  }
+
+  const deleteSelectedTask = async ({date, meetings}) => {
+    try {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/deleteMeetings`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ meetings: meetings, date: date })
+        });
+
+        if (response.ok) {
+            fetchMeetings();
+        }
+        else {
+            console.log("Error in deleting meetings", response.status);
+        }
+    } catch (error) {
+        console.log("Error in deleting meetings", error);
+    }
+  }
 
   const handleModalVisible = () => {
     setModalVisible(!isModalVisible);
@@ -322,7 +270,13 @@ useEffect(() => {
         });
         setMarkedDate(markDot);
         if (todoLists.length !== 0) {
-          setTodoList(todoLists[0].todoList);
+            const accumulatedTodoList = [];
+
+  for (let i = 0; i < todoLists.length; i++) {
+    accumulatedTodoList.push(...todoLists[i].todoList);
+  }
+
+  setTodoList(accumulatedTodoList);
         } else {
           setTodoList([]);
         }
@@ -347,101 +301,6 @@ useEffect(() => {
     hideDateTimePicker();
   };
 
-  const handleAlarmSet = () => {
-    let prevSelectedTask = JSON.parse(JSON.stringify(selectedTask));
-    prevSelectedTask.alarm.isOn = !prevSelectedTask.alarm.isOn;
-    setSelectedTask(prevSelectedTask);
-  };
-
-  const updateAlarm = async () => {
-    const calendarId = await createNewCalendar();
-    const event = {
-      title: selectedTask.title,
-      notes: selectedTask.notes,
-      startDate: moment(selectedTask?.alarm.time).add(0, 'm').toDate(),
-      endDate: moment(selectedTask?.alarm.time).add(5, 'm').toDate(),
-      timeZone: Localization.timezone
-    };
-
-    if (!selectedTask?.alarm.createEventAsyncRes) {
-      try {
-        const createEventAsyncRes = await Calendar.createEventAsync(
-          calendarId.toString(),
-          event
-        );
-        let updateTask = JSON.parse(JSON.stringify(selectedTask));
-        updateTask.alarm.createEventAsyncRes = createEventAsyncRes;
-        setSelectedTask(updateTask);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        await Calendar.updateEventAsync(
-          selectedTask?.alarm.createEventAsyncRes.toString(),
-          event
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const deleteAlarm = async () => {
-    try {
-      if (selectedTask?.alarm.createEventAsyncRes) {
-        await Calendar.deleteEventAsync(
-          selectedTask?.alarm.createEventAsyncRes
-        );
-      }
-      let updateTask = JSON.parse(JSON.stringify(selectedTask));
-      updateTask.alarm.createEventAsyncRes = '';
-      setSelectedTask(updateTask);
-    } catch (error) {
-      console.log('deleteAlarm', error.message);
-    }
-  };
-
-  const getEvent = async () => {
-    if (selectedTask?.alarm.createEventAsyncRes) {
-      try {
-        await Calendar.getEventAsync(
-          selectedTask?.alarm.createEventAsyncRes.toString()
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const createNewCalendar = async () => {
-    const defaultCalendarSource =
-      Platform.OS === 'ios'
-        ? await Calendar.getDefaultCalendarAsync(Calendar.EntityTypes.EVENT)
-        : { isLocalAccount: true, name: 'Google Calendar' };
-
-    const newCalendar = {
-      title: 'Personal',
-      entityType: Calendar.EntityTypes.EVENT,
-      color: '#2196F3',
-      sourceId: defaultCalendarSource?.sourceId || undefined,
-      source: defaultCalendarSource,
-      name: 'internal',
-      accessLevel: Calendar.CalendarAccessLevel.OWNER,
-      ownerAccount: 'personal'
-    };
-
-    let calendarId = null;
-
-    try {
-      calendarId = await Calendar.createCalendarAsync(newCalendar);
-    } catch (e) {
-      Alert.alert(e.message);
-    }
-
-    return calendarId;
-  };
-
   return (
     <Fragment>
       {
@@ -464,32 +323,8 @@ useEffect(() => {
                 setSelectedTask(prevSelectedTask);
               }}
               value={selectedTask.title}
-              placeholder="What do you need to do?"
+              placeholder="What is meeting about?"
             />
-            {/* <Text
-              style={{
-                fontSize: 14,
-                color: '#BDC6D8',
-                marginVertical: 10
-              }}
-            >
-              Suggestion
-            </Text>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={styles.readBook}>
-                <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                  Read book
-                </Text>
-              </View>
-              <View style={styles.design}>
-                <Text style={{ textAlign: 'center', fontSize: 14 }}>
-                  Design
-                </Text>
-              </View>
-              <View style={styles.learn}>
-                <Text style={{ textAlign: 'center', fontSize: 14 }}>Learn</Text>
-              </View>
-            </View> */}
             <View style={styles.notesContent} />
             <View>
               <Text
@@ -515,7 +350,7 @@ useEffect(() => {
                   setSelectedTask(prevSelectedTask);
                 }}
                 value={selectedTask.notes}
-                placeholder="Enter notes about the task."
+                placeholder="Enter Location"
               />
             </View>
             <View style={styles.separator} />
@@ -547,41 +382,6 @@ useEffect(() => {
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}
-            >
-              <View>
-                <Text
-                  style={{
-                    color: '#9CAAC4',
-                    fontSize: 16,
-                    fontWeight: '600'
-                  }}
-                >
-                  Alarm
-                </Text>
-                <View
-                  style={{
-                    height: 25,
-                    marginTop: 3
-                  }}
-                >
-                  <Text style={{ fontSize: 19 }}>
-                    {moment(selectedTask?.alarm?.time || moment()).format(
-                      'h:mm A'
-                    )}
-                  </Text>
-                </View>
-              </View>
-              <Switch
-                value={selectedTask?.alarm?.isOn || false}
-                onValueChange={handleAlarmSet}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
@@ -589,12 +389,6 @@ useEffect(() => {
               <TouchableOpacity
                 onPress={async () => {
                   handleModalVisible();
-                  console.log('isOn', selectedTask?.alarm.isOn);
-                  if (selectedTask?.alarm.isOn) {
-                    await updateAlarm();
-                  } else {
-                    await deleteAlarm();
-                  }
                   await updateSelectedTask({
                     date: currentDate,
                     meetings: selectedTask
@@ -616,7 +410,6 @@ useEffect(() => {
               <TouchableOpacity
                 onPress={async () => {
                   handleModalVisible();
-                  deleteAlarm();
                   await deleteSelectedTask({
                     date: currentDate,
                     meetings: selectedTask
@@ -641,9 +434,11 @@ useEffect(() => {
       )}
       <SafeAreaView
         style={{
-          flex: 1
+          flex:1,
+          backgroundColor: "rgba(255,248,246, 0.9)",
         }}
       >
+        <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
         <CalendarStrip
           calendarAnimation={{ type: 'sequence', duration: 30 }}
           daySelectionAnimation={{
@@ -653,14 +448,18 @@ useEffect(() => {
           style={{
             height: 150,
             paddingTop: 20,
-            paddingBottom: 20
+            paddingBottom: 20,
+            background: "url('../assets/Account.jpg') center / contain no-repeat",
+            // backgroundColor: 'white',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover'
           }}
           calendarHeaderStyle={{ color: '#000000' }}
           dateNumberStyle={{ color: '#000000', paddingTop: 10 }}
           dateNameStyle={{ color: '#BBBBBB' }}
           highlightDateNumberStyle={{
             color: '#fff',
-            backgroundColor: '#2E66E7',
+            backgroundColor: '#FF8F66',
             marginTop: 10,
             height: 35,
             width: 35,
@@ -679,8 +478,6 @@ useEffect(() => {
           iconLeft={require('../assets/left-arrow.png')}
           iconRight={require('../assets/right-arrow.png')}
           iconContainer={{ flex: 0.1 }}
-          // If you get this error => undefined is not an object (evaluating 'datesList[_this.state.numVisibleDays - 1].date')
-          // temp: https://github.com/BugiDev/react-native-calendar-strip/issues/303#issuecomment-864510769
           markedDates={markedDate}
           selectedDate={currentDate}
           onDateSelected={(date) => {
@@ -691,12 +488,10 @@ useEffect(() => {
             setCurrentDate(selectedDate);
           }}
         />
+        <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
         <TouchableOpacity   
             onPress={() =>
               navigation.navigate('CreateMeeting', {
-                updateCurrentTask: updateCurrentTask,
-                currentDate,
-                createNewCalendar: createNewCalendar,
                 recepientId: recepientId   
               })
           }
@@ -721,97 +516,92 @@ useEffect(() => {
               paddingBottom: 20
             }}
           >
-            {todoList.map((item) => (
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedTask(item);
-                  setModalVisible(true);
-                  getEvent();
-                }}
-                key={item.key}
-                style={styles.taskListContent}
-              >
-                <View
-                  style={{
-                    marginLeft: 13
+            { todoList ? (
+              todoList.map((item) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectedTask(item);
+                    setModalVisible(true);
                   }}
+                  key={item.key}
+                  style={styles.taskListContent}
                 >
                   <View
                     style={{
-                      flexDirection: 'row',
-                      alignItems: 'center'
+                      marginLeft: 13
                     }}
                   >
                     <View
                       style={{
-                        height: 12,
-                        width: 12,
-                        borderRadius: 6,
-                        backgroundColor: item.color,
-                        marginRight: 8
-                      }}
-                    />
-                    <Text
-                      style={{
-                        color: '#554A4C',
-                        fontSize: 20,
-                        fontWeight: '700'
-                      }}
-                    >
-                      {item.title}
-                    </Text>
-                  </View>
-                  <View>
-                    <View
-                      style={{
                         flexDirection: 'row',
-                        marginLeft: 20
+                        alignItems: 'center'
                       }}
                     >
-                      <Text
+                      <View
                         style={{
-                          color: '#BBBBBB',
-                          fontSize: 14,
-                          marginRight: 5
+                          height: 12,
+                          width: 12,
+                          borderRadius: 6,
+                          backgroundColor: item.color,
+                          marginRight: 8
                         }}
-                      >{`${moment(item.alarm.time).format('YYYY')}/${moment(
-                        item.alarm.time
-                      ).format('MM')}/${moment(item.alarm.time).format(
-                        'DD'
-                      )}`}</Text>
+                      />
                       <Text
                         style={{
-                          color: '#BBBBBB',
-                          fontSize: 14
+                          color: '#554A4C',
+                          fontSize: 20,
+                          fontWeight: '700'
                         }}
                       >
-                        {item.notes}
+                        {item.title}
                       </Text>
                     </View>
-                  </View>
-                </View>
-                <View>
-                   <Text
+                    <View>
+                      <View
                         style={{
-                          color: '#BBBBBB',
-                          fontSize: 14
+                          flexDirection: 'row',
+                          marginLeft: 20
                         }}
                       >
-                        {moment(item.alarm.time || moment()).format(
-                    'h:mm A'
-                  )}
-                      </Text>
-                </View>
-                <View
-                  style={{
-                    height: 80,
-                    width: 5,
-                    backgroundColor: item.color,
-                    borderRadius: 5
-                  }}
-                />
-              </TouchableOpacity>
-            ))}
+                        <Text
+                          style={{
+                            color: '#BBBBBB',
+                            fontSize: 14
+                          }}
+                        >
+                          {item.notes}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View>
+                     <Text
+                          style={{
+                            color: '#BBBBBB',
+                            fontSize: 14
+                          }}
+                        >
+                          {moment(item.alarm.time || moment()).format(
+                      'h:mm A'
+                    )}
+                        </Text>
+                  </View>
+                  <View
+                    style={{
+                      height: 80,
+                      width: 5,
+                      backgroundColor: item.color,
+                      borderRadius: 5
+                    }}
+                  />
+                </TouchableOpacity>
+              ))
+            ) : ( 
+              <View>
+            <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
+            <Text> No Meetings Scheduled </Text> 
+            </View>
+            )} 
           </ScrollView>
         </View>
       </SafeAreaView>

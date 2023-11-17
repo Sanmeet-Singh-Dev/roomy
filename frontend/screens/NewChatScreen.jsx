@@ -32,7 +32,7 @@ const ChatsScreen = () => {
     },[])
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor:"white"}}>
         <Pressable>
             {acceptedFriends.map((item,index)=> (
                 <NewChat key={index} item={item}/>

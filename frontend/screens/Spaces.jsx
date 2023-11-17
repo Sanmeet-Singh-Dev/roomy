@@ -1,18 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, View, Image } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Text, ScrollView, View, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location';
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import SpaceCard from '../components/SpaceCard';
+import { TextInput } from 'react-native-paper';
+import { UserType } from '../UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode from "jwt-decode";
+import { ImageBackground } from 'react-native';
+import UserInfo from '../components/UserInfo';
+
 
 const Spaces = () => {
   const [listMySpaces, setListMySpaces] = useState([]);
   const iPAdress = IPADDRESS
+  const navigation = useNavigation();
+  const [userData, setUserData] = useState({});
+  const { userId, setUserId } = useContext(UserType);
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredData, setFilteredData] = useState("");
+  const isFocused = useIsFocused(); 
+
   useEffect(() => {
     const fetchDataAndGeocode = async () => {
       try {
         const response = await fetch(`http://${iPAdress}:6000/api/users/list-spaces`);
         if (response.ok) {
           const data = await response.json();
-          console.log('Fetched listMySpaces data:', data);
+
 
           // Geocoding logic
           const updatedListMySpaces = {};
@@ -26,7 +42,6 @@ const Spaces = () => {
 
               if (coordinates && coordinates.length === 2) {
                 const [latitude, longitude] = coordinates;
-                console.log('Geocoding coordinates:', latitude, longitude);
 
                 try {
                   const [addressData] = await Location.reverseGeocodeAsync({
@@ -73,29 +88,132 @@ const Spaces = () => {
       }
     };
 
+
     fetchDataAndGeocode();
-  }, []);
+  }, [isFocused]);
+
+  const navigateToSpaceDetails = (space) => {
+    navigation.navigate('single-space', { space });
+  };
+
   return (
-  <ScrollView>
-  <Text>Spaces</Text>
-  {Object.values(listMySpaces).map((space, index) => (
-    <View key={index}>
-      <Text>Title: {space.title}</Text>
-      <Text>Description: {space.description}</Text>
-      <Text>Budget: {space.budget}</Text>
-      <Text>Location: {space.fullAddress || 'Address not available'}</Text>
-      <Text>Images:</Text>
-      {space.images.map((imageUrl, imgIndex) => (
-        <Image
-          key={imgIndex}
-          source={{ uri: imageUrl }}
-          style={{ width: 100, height: 100 }}
-        />
-      ))}
-    </View>
-  ))}
-</ScrollView>
-);
+    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
+      <View style={styles.container}>
+        <SafeAreaView>
+          <ScrollView >
+            <View style={styles.header}>
+              <UserInfo userId={userId} />
+            </View>
+
+            <View style={styles.searchSortContainer}>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  value={searchValue}
+                  onChangeText={text => setSearchValue(text)}
+                  placeholder="Search"
+                />
+
+                <TouchableOpacity>
+                  <Image
+                    source={require('../assets/search-zoom-in.png')}
+                    style={styles.searchIcon}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity style={styles.iconContainer}>
+                <Image
+                  source={require('../assets/filter-add.png')}
+                  style={styles.sortIcon}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.iconContainer}>
+                <Image
+                  source={require('../assets/filter-add.png')}
+                  style={styles.sortIcon}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {Object.values(listMySpaces).map((space, index) => (
+              <TouchableOpacity key={index} onPress={() => navigateToSpaceDetails(space)}>
+
+                <SpaceCard key={index} space={space} />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      </View>
+    </ImageBackground>
+  );
 };
 
 export default Spaces;
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  container: {
+    flex: 1,
+    padding: 15,
+  },
+  iconContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    marginLeft: 5,
+    marginRight: 5,
+    padding: 13,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 2,
+    backgroundColor: 'transparent',
+  },
+  searchSortContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 16,
+    marginBottom: 16,
+  },
+  searchIcon: {
+    width: 30,
+    height: 30,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: '#FFFFFF',
+    width: '60%',
+    maxWidth: 400
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 15,
+  },
+
+
+});

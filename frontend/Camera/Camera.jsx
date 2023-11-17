@@ -6,9 +6,10 @@ import { StatusBar } from 'expo-status-bar';
 
 
 
-export const Camera = ({ userId }) => {
+export const Camera = ({ userId , uploadResponse }) => {
     const [permission, requestPermission] = ImagePicker.useCameraPermissions();
     const [files, setFiles] = useState([])
+    const [selectedImages, setSelectedImages] = useState([]);
   
     useEffect(()=>{
       listFiles().then((listResponse)=>{
@@ -40,24 +41,34 @@ export const Camera = ({ userId }) => {
   
         console.log(cameraResp)
   
-        
-  
         if (!cameraResp.canceled) {
           const { uri } = cameraResp.assets[0];
           const fileName = uri.split('/').pop();
-          const uploadResponse = await uploadToFirebase(uri, fileName , userId);
-          // console.log(uploadResponse);
-          listFiles().then((listResponse)=>{
-  
-            const files = listResponse.map((value) => {
-              return { name : value.fullPath }
-            })
-            setFiles(files)
-          });
+          setSelectedImages([...selectedImages, uri]);
+          // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
+          // Alert.alert('Success Picture uploaded successfully');
         }
-      } catch (e) {
-        Alert.alert("Error Uploading Image " + e.message)
+      } catch (error) {
+        console.error('ImagePicker Error:', error);
+        Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
       }
+  
+        // if (!cameraResp.canceled) {
+        //   const { uri } = cameraResp.assets[0];
+        //   const fileName = uri.split('/').pop();
+        //   // const uploadResponse = await uploadToFirebase(uri, fileName , userId);
+        //   // console.log(uploadResponse);
+        //   listFiles().then((listResponse)=>{
+  
+        //     const files = listResponse.map((value) => {
+        //       return { name : value.fullPath }
+        //     })
+        //     setFiles(files)
+        //   });
+        // }
+      // } catch (e) {
+      //   Alert.alert("Error Uploading Image " + e.message)
+      // }
     };
   
   

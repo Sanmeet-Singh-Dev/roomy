@@ -1,29 +1,22 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, TextInput, Button, Alert, Text, Image, ScrollView } from 'react-native';
+import React ,{ useState, useContext, useEffect }  from 'react';
+import { View, Text, TouchableOpacity, StyleSheet,ScrollView,SafeAreaView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import jwt_decode from "jwt-decode";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import jwt_decode from "jwt-decode";
-import * as ImagePicker from 'expo-image-picker';
-import { Camera } from '../Camera/Camera';
 import { UserType } from '../UserContext';
-import { uploadToFirebase, listFiles } from '../firebase-config';
-import { IPADDRESS } from '@env'
-import * as Location from 'expo-location'
+import { IPADDRESS } from '@env';
+import SpaceCard from '../components/SpaceCard';
+import { ImageBackground } from 'react-native';
 
-const ListMySpace = ({ onUpload, onTakePhoto }) => {
+
+const ListMySpace = () => {
   const route = useRoute();
   const userName = route.params?.userName;
-  const navigation = useNavigation();
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [budget, setBudget] = useState('');
-  const [selectedImages, setSelectedImages] = useState([]);
   const { userId, setUserId } = useContext(UserType);
-
-  const [address, setAddress] = useState('');
-  const [location, setLocation] = useState(null);
-  const iPAdress = IPADDRESS;
+  const navigation = useNavigation();
+  const [spaces, setSpaces] = useState([]);
+  let iPAdress = IPADDRESS;
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -36,171 +29,106 @@ const ListMySpace = ({ onUpload, onTakePhoto }) => {
   }, []);
 
   useEffect(() => {
-    const getPermissions = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation);
-      console.log('Location:', currentLocation);
-    };
-    getPermissions();
-  }, []);
-
-  const getCurrentLocation = async () => {
-    if (location) {
+    const fetchUserSpaces = async () => {
       try {
-       
-        const [addressData] = await Location.reverseGeocodeAsync({
-          longitude: location.coords.longitude,
-          latitude: location.coords.latitude,
-        });
-  
-        // Extract the parts of the address you want (e.g., name, street, city, etc.)
-        const { name, street, city, postalCode, region, country } = addressData;
-  
-        // Create a full address string
-        const fullAddress = [name, street, city, postalCode, region, country]
-          .filter((part) => part)
-          .join(', ');
-  
-        // Update the address state with the full address
-        setAddress(fullAddress);
-
-        setLocation(location)
-      } catch (error) {
-        console.error('Error reverse-geocoding location:', error);
-        // Handle the error as needed
-      }
-    }
-  };
-
-
-  const handleUpload = async () => {
-    if (!title || !description || !budget || selectedImages.length === 0) {
-      Alert.alert('Please Check Input', 'Please enter all the details and select at least one image');
-      return;
-    }
-
-    try {
-      // Array to store Firebase image URLs
-      const firebaseImageURLs = [];
-
-      // Function to upload a single image to Firebase and collect the URL
-      const uploadImageToFirebase = async (uri) => {
-        const fileName = uri.split('/').pop();
-        const uploadResponse = await uploadToFirebase(uri, fileName, userId);
-        if (uploadResponse) {
-          firebaseImageURLs.push(uploadResponse.downloadUrl); 
-          console.log(firebaseImageURLs)// Store the Firebase URL
+        const token = await AsyncStorage.getItem("jwt");
+        const decodedToken = jwt_decode(token);
+        const userId = decodedToken.userId;
+        const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch');
         }
-        
-      };
 
-      // Upload all selected images to Firebase concurrently
-      await Promise.all(selectedImages.map(uploadImageToFirebase));
-      const locationData = location
-      ? {
-          type: 'Point',
-          coordinates: [location.coords.latitude, location.coords.longitude],
-        }
-      : null;
-
-      // After all images are uploaded, you can now save the data along with image URLs
-      const data = {
-        userId,
-        data: {
-          images: firebaseImageURLs, // Replace with Firebase image URLs
-          title,
-          description,
-          budget: parseFloat(budget),
-          location: locationData
-        },
-        
-      };
-
-      const response = await fetch(`http://${iPAdress}:6000/api/users/save-list-my-space`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        Alert.alert('Success', 'Details saved successfully');
-      } else {
         const responseData = await response.json();
-        Alert.alert('Error', responseData.message || 'Failed to save details.');
+        const spacesData = responseData;
+        setSpaces(spacesData);
+      } catch (error) {
+        console.error('Error fetching user spaces:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
-      Alert.alert('Error', 'Failed to save details: ' + error.message);
-    }
+    };
+
+    fetchUserSpaces();
+  }, [spaces]);
+  const handleListMySpace = () => {
+    navigation.navigate('listingOne');
   };
 
-  const handlePickImage = async () => {
+  const fetchUserSpaces = async () => {
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [4, 3],
-      });
-
-      if (!result.canceled) {
-        const { uri } = result.assets[0];
-        const fileName = uri.split('/').pop();
-        setSelectedImages([...selectedImages, uri]);
-        // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
-        // Alert.alert('Success Picture uploaded successfully');
+      const token = await AsyncStorage.getItem("jwt");
+      const decodedToken = jwt_decode(token);
+      const userId = decodedToken.userId;
+      const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch');
       }
+
+      const responseData = await response.json();
+      const spacesData = responseData;
+      setSpaces(spacesData);
     } catch (error) {
-      console.error('ImagePicker Error:', error);
-      Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
+      console.error('Error fetching user spaces:', error);
     }
   };
-
 
   return (
-    <View>
-      <TextInput
-        placeholder="Title"
-        value={title}
-        onChangeText={setTitle}
-      />
-      <TextInput
-        placeholder="Description"
-        value={description}
-        onChangeText={setDescription}
-      />
-      <TextInput
-        placeholder="Budget"
-        value={budget}
-        onChangeText={setBudget}
-      />
-
-      <ScrollView horizontal>
-        {selectedImages.map((uri, index) => (
-          <Image
-            key={index}
-            source={{ uri }}
-            style={{ width: 100, height: 100, marginRight: 10 }}
-          />
-        ))}
-      </ScrollView>
-      <Camera userId={userId} />
-      <Button title="Pick from Library" onPress={handlePickImage} />
-      <TextInput
-          placeholder="Address"
-          value={address}
-          onChangeText={setAddress}
-        />
-      <Button title="Use Current Location" onPress={getCurrentLocation} />
-      <Button title="Submit" onPress={handleUpload} />
+    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
+    <SafeAreaView style={styles.safeAreaView}>
+    <ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.listingText}>I want to List My Space</Text>
+      <TouchableOpacity style={styles.button} onPress={handleListMySpace}>
+        <Text style={styles.buttonText}>List My Space</Text>
+      </TouchableOpacity>
+      <Text style={styles.listingText}>My Listing</Text>
+        {/* {spaces && <SpaceCard space={spaces} />} */}
+        {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} showOptions={true} onReload={() => fetchUserSpaces()}/>}
     </View>
+    </ScrollView>
+    </SafeAreaView>
+    </ImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // or 'contain', based on your preference
+    // Other image background styles
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop:20,
+    padding:15
+
+  },
+  safeAreaView: {
+    flex: 1,
+  },
+  button: {
+    backgroundColor: '#FF8F66',
+    padding: 10,
+    borderRadius: 5,
+    width:"100%",
+    height:60,
+    marginBottom:20,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    textAlign:'center',
+    alignContent:'center',
+    paddingTop:8
+  },
+  listingText: {
+    alignSelf: 'flex-start',
+    marginTop: 25,
+    fontSize: 20,
+    fontWeight: 'semibold',
+    marginBottom: 15,
+  }
+});
 
 export default ListMySpace;
