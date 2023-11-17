@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Text, ScrollView, View, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { IPADDRESS } from '@env'
 import * as Location from 'expo-location';
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import SpaceCard from '../components/SpaceCard';
 import { TextInput } from 'react-native-paper';
 import { UserType } from '../UserContext';
@@ -20,6 +20,7 @@ const Spaces = () => {
   const { userId, setUserId } = useContext(UserType);
   const [searchValue, setSearchValue] = useState("");
   const [filteredData, setFilteredData] = useState("");
+  const isFocused = useIsFocused(); 
 
   useEffect(() => {
     const fetchDataAndGeocode = async () => {
@@ -89,7 +90,7 @@ const Spaces = () => {
 
 
     fetchDataAndGeocode();
-  }, []);
+  }, [isFocused]);
 
   const navigateToSpaceDetails = (space) => {
     navigation.navigate('single-space', { space });

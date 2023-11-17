@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     color: '#FF8F66',
     fontSize: 16,
     borderColor: "#FF8F66",
-    borderWidth: "1",
+    borderWidth: 1,
     borderRadius: 20,
     textAlign:"center",
     width:150,

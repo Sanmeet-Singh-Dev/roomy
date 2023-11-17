@@ -1,32 +1,14 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity, ImageBackground } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity, ImageBackground, Modal } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import { useNavigation } from '@react-navigation/native'
 import SpaceCard from '../components/SpaceCard';
 
- //function to calculate age
- const calculateAge = (dateOfBirth) => {
-  const birthDate = new Date(dateOfBirth);
-  const currentDate = new Date();
-  const navigation = useNavigation();
-
-  const age = currentDate.getFullYear() - birthDate.getFullYear();
-
-  // Check if the user's birthday has occurred this year
-  if (
-    currentDate.getMonth() < birthDate.getMonth() ||
-    (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate())
-  ) {
-    age--;
-  }
-
-  return age;
-};
-
 
 const UserSingleScreen = ({ route, onUnblockUser }) => {
   const { user } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Extract first name of user
   const firstName = user.user.name.split(" ")[0];
@@ -97,6 +79,27 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
 
     fetchUserFriends();
   }, [userFriends]);
+
+  //  function to calculate age
+ const calculateAge = (dateOfBirth) => {
+  const birthDate = new Date(dateOfBirth);
+  const currentDate = new Date();
+  const navigation = useNavigation();
+ 
+  const age = currentDate.getFullYear() - birthDate.getFullYear();
+
+
+  // Check if the user's birthday has occurred this year
+  if (
+    currentDate.getMonth() < birthDate.getMonth() ||
+    (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+};
+
 
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
@@ -233,6 +236,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   return (
     <ImageBackground source={require('../assets/userSingleScreen.jpg')} style={styles.background}>
       <View>
+        <View>
       <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
         <Image
           source={require('../assets/back.png')}
@@ -240,9 +244,43 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
         />
         <Text style={styles.sortText}>Room Listing</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+                    style={styles.optionsButton}
+                    onPress={() => setModalVisible(true)}
+                >
+                        <Text style={styles.optionsText}>...</Text>
+                  
+                </TouchableOpacity>
+                 <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <View style={styles.modalContainer}>
+                    {userFriends.includes(user.user._id) ? (
+                      <TouchableOpacity style={styles.modalOption} onPress={() => unfriendUser(userId, user.user._id)}>
+                      <Text style={styles.modalText}>Unfriend</Text>
+                  </TouchableOpacity>
+                    ) : (
+                      null
+                    )}
+                        <TouchableOpacity style={styles.modalOption} onPress={() => handleBlockUser(userId, user.user._id)}>
+                            <Text style={styles.modalText}>Block</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.modalOption}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text style={styles.modalText}>Cancel</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+        </View>
         <View style={styles.contentContainer}>
           <SafeAreaView>
             <ScrollView>
+
               <View style={styles.imageOuterContainer}>
                 <View style={styles.imageContainer}>
                   {userFriends.includes(user.user._id) ? (
@@ -254,7 +292,9 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                       source={{ uri: user.user.profilePhoto[0] }}
                       style={styles.image} blurRadius={20} />
                   )}
-                  <Text style={styles.userName}>{firstName}, {userAge}</Text>
+                  <Text style={styles.userName}>{firstName},
+                   {userAge}
+                   </Text>
                 </View>
                 <View style={styles.CompatibilityContainer}>
                   <Text style={styles.Compatibility}>Compatibility: {user.score}%</Text>
@@ -267,19 +307,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                 <Text style={styles.userBio}>{user.user.bio}</Text>
                 <View>
                   {userFriends.includes(user.user._id) ? (
-                    <View style={styles.btnsContainer}>
-                      <Pressable
-                        style={styles.friendsBtn}
-                      >
-                        <Text style={styles.btnText}>Friends</Text>
-                      </Pressable>
-                      <Pressable
-                        onPress={() => unfriendUser(userId, user.user._id)}
-                        style={styles.unfriendBtn}
-                      >
-                        <Text style={styles.btnText}>Unfriend</Text>
-                      </Pressable>
-                    </View>
+                     null
                   ) : requestSent || friendRequests.some((friend) => friend._id === user.user._id) ? (
                     <Pressable
                       style={styles.requestSentBtn}
@@ -296,14 +324,9 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                     <Pressable
                       onPress={() => sendFriendRequest(userId, user.user._id)}
                       style={styles.addFriendBtn}>
-                      <Text style={styles.btnText}>Add Friend</Text>
+                      <Text style={styles.btnText}>Send Request</Text>
                     </Pressable>
                   )}
-                  <Pressable
-                    onPress={() => handleBlockUser(userId, user.user._id)}
-                    style={styles.blockBtn}>
-                    <Text style={styles.btnText}>Block User</Text>
-                  </Pressable>
                 </View>
                 <Text style={styles.heading}>{firstName}'s Interests</Text>
                 <View style={styles.optionContainer}>
@@ -338,6 +361,20 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                     </TouchableOpacity>
               </View>
             </ScrollView>
+            {userFriends.includes(user.user._id) ? (
+                    <View >
+                      <Pressable
+                       onPress={() => navigation.navigate("Messages", {
+                        recepientId: user.user._id
+                    })}
+                    style={styles.fixedIconContainer}
+                      >
+                        <Image
+          source={require('../assets/mesageFriend-icon.png')}
+          style={styles.msgIcon}
+        />
+                      </Pressable>
+                    </View> ) : (null)}
           </SafeAreaView>
         </View>
       </View>
@@ -488,20 +525,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontSize: 16,
+    fontWeight:"bold"
   },
   friendsBtn: {
     backgroundColor: "#82CD47",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
-    width: "fit-content",
+    width: "45%",
   },
   unfriendBtn: {
     backgroundColor: "#d63838",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
-    width: "fit-content",
+    width: "45%",
   },
   requestSentBtn: {
     backgroundColor: "gray",
@@ -510,13 +548,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   acceptBtn: {
-    backgroundColor: "#0066b2",
+    backgroundColor: "#FF8F66",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
   },
   addFriendBtn: {
-    backgroundColor: "#567189",
+    backgroundColor: "#3E206D",
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
@@ -526,12 +564,59 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
-    width: "fit-content",
+    width: "100%",
   },
   btnsContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
     flexWrap: "wrap",
-  }
+    position: 'relative'
+  },
+  modalContainer: {
+    position: 'absolute',
+    top: 90,
+    right: 17,
+    padding: 15,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    elevation: 5, 
+    shadowColor: 'black',  
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    alignItems:'center'
+},
+optionsButton: {
+        
+  position: 'absolute',
+  top: 50,
+  right: 20,
+  backgroundColor: 'transparent',
+  flexDirection: 'column',
+  alignItems: 'center',
+  
+
+},
+optionsText: {
+  fontSize: 65,
+  color: '#3b3b3b',
+  marginVertical: -30
+},
+modalOption: {
+  padding: 5,
+},
+modalText: {
+  fontSize: 16
+},
+msgIcon: {
+  width: 80,
+  height: 80
+},
+fixedIconContainer: {
+  position: 'absolute',
+  bottom: 20,
+  right: 140,
+  zIndex: 1,
+},
 });
