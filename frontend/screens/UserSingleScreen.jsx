@@ -231,115 +231,110 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   }
 
   return (
-    
-    <View style={styles.mainContainer}>
-      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
-        <Image
-          source={require('../assets/back.png')}
-          style={styles.sortIcon}
-        />
-        <Text style={styles.sortText}>Roommate Profile</Text>
-      </TouchableOpacity>
-      <View style={styles.innerBgContainer}>
-        <ImageBackground source={require('../assets/userSingleScreen.jpg')} style={styles.background}>
-          <View style={styles.contentContainer}>
-            <SafeAreaView>
-              <ScrollView>
-                <View style={styles.imageOuterContainer}>
-                  <View style={styles.imageContainer}>
-                    {userFriends.includes(user.user._id) ? (
-                      <Image
-                        source={{ uri: user.user.profilePhoto[0] }}
-                        style={styles.image} />
-                    ) : (
-                      <Image
-                        source={{ uri: user.user.profilePhoto[0] }}
-                        style={styles.image} blurRadius={20} />
-                    )}
-                    <Text style={styles.userName}>{firstName}, {userAge}</Text>
-                  </View>
-                  <View style={styles.CompatibilityContainer}>
-                    <Text style={styles.Compatibility}>Compatibility: {user.score}%</Text>
-                  </View>
+    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
+      <View>
+        <View style={styles.contentContainer}>
+          <SafeAreaView>
+            <ScrollView>
+              <View style={styles.imageOuterContainer}>
+                <View style={styles.imageContainer}>
+                  {userFriends.includes(user.user._id) ? (
+                    <Image
+                      source={{ uri: user.user.profilePhoto[0] }}
+                      style={styles.image} />
+                  ) : (
+                    <Image
+                      source={{ uri: user.user.profilePhoto[0] }}
+                      style={styles.image} blurRadius={20} />
+                  )}
+                  <Text style={styles.userName}>{firstName}, {userAge}</Text>
                 </View>
-                <View style={styles.innerContentContainer}>
-                  <Text style={styles.overviewHeading}>Desired room overview</Text>
-                  <Text style={styles.userScore}>Budget: ${user.user.budget} / month</Text>
-                  <Text style={styles.heading}>Bio</Text>
-                  <Text style={styles.userBio}>{user.user.bio}</Text>
-                  <View>
-                    {userFriends.includes(user.user._id) ? (
-                      <View style={styles.btnsContainer}>
-                        <Pressable
-                          style={styles.friendsBtn}
-                        >
-                          <Text style={styles.btnText}>Friends</Text>
-                        </Pressable>
-                        <Pressable
-                          onPress={() => unfriendUser(userId, user.user._id)}
-                          style={styles.unfriendBtn}
-                        >
-                          <Text style={styles.btnText}>Unfriend</Text>
-                        </Pressable>
-                      </View>
-                    ) : requestSent || friendRequests.some((friend) => friend._id === user.user._id) ? (
+                <View style={styles.CompatibilityContainer}>
+                  <Text style={styles.Compatibility}>Compatibility: {user.score}%</Text>
+                </View>
+              </View>
+              <View style={styles.innerContentContainer}>
+                <Text style={styles.overviewHeading}>Desired room overview</Text>
+                <Text style={styles.userScore}>Budget: ${user.user.budget} / month</Text>
+                <Text style={styles.heading}>Bio</Text>
+                <Text style={styles.userBio}>{user.user.bio}</Text>
+                <View>
+                  {userFriends.includes(user.user._id) ? (
+                    <View style={styles.btnsContainer}>
                       <Pressable
-                        style={styles.requestSentBtn}
+                        style={styles.friendsBtn}
                       >
-                        <Text style={styles.btnText}>Request Sent</Text>
+                        <Text style={styles.btnText}>Friends</Text>
                       </Pressable>
-                    ) : recievedRequest.some((friend) => friend._id === user.user._id) ? (
                       <Pressable
-                        onPress={() => acceptRequest(user.user._id)}
-                        style={styles.acceptBtn}>
-                        <Text style={styles.btnText}>Accept</Text>
+                        onPress={() => unfriendUser(userId, user.user._id)}
+                        style={styles.unfriendBtn}
+                      >
+                        <Text style={styles.btnText}>Unfriend</Text>
                       </Pressable>
-                    ) : (
-                      <Pressable
-                        onPress={() => sendFriendRequest(userId, user.user._id)}
-                        style={styles.addFriendBtn}>
-                        <Text style={styles.btnText}>Add Friend</Text>
-                      </Pressable>
-                    )}
+                    </View>
+                  ) : requestSent || friendRequests.some((friend) => friend._id === user.user._id) ? (
                     <Pressable
-                      onPress={() => handleBlockUser(userId, user.user._id)}
-                      style={styles.blockBtn}>
-                      <Text style={styles.btnText}>Block User</Text>
+                      style={styles.requestSentBtn}
+                    >
+                      <Text style={styles.btnText}>Request Sent</Text>
                     </Pressable>
-                  </View>
-                  <Text style={styles.heading}>{firstName}'s Interests</Text>
-                  <View style={styles.optionContainer}>
-                    {user.user.interests.map((interest, index) => (
-                      <View style={styles.optionInnerContainer}>
-                        <Text style={styles.option} key={index}>
-                          {interest.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                  <Text style={styles.heading}>{firstName}'s Traits</Text>
-                  <View style={styles.optionContainer}>
-                    {user.user.traits.map((trait, index) => (
-                      <View style={styles.optionInnerContainer}>
-                        <Text style={styles.option} key={index}>
-                          {trait.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-                      <TouchableOpacity   onPress={() => navigation.navigate('single-space', { space: user.user.listMySpace })}>
-                  <View>
-                    <Text style={styles.heading}>{firstName}'s listings</Text>
-                    <SpaceCard space={user.user.listMySpace} />
-                  </View>
-                      </TouchableOpacity>
+                  ) : recievedRequest.some((friend) => friend._id === user.user._id) ? (
+                    <Pressable
+                      onPress={() => acceptRequest(user.user._id)}
+                      style={styles.acceptBtn}>
+                      <Text style={styles.btnText}>Accept</Text>
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      onPress={() => sendFriendRequest(userId, user.user._id)}
+                      style={styles.addFriendBtn}>
+                      <Text style={styles.btnText}>Add Friend</Text>
+                    </Pressable>
+                  )}
+                  <Pressable
+                    onPress={() => handleBlockUser(userId, user.user._id)}
+                    style={styles.blockBtn}>
+                    <Text style={styles.btnText}>Block User</Text>
+                  </Pressable>
                 </View>
-              </ScrollView>
-            </SafeAreaView>
-          </View>
-        </ImageBackground>
+                <Text style={styles.heading}>{firstName}'s Interests</Text>
+                <View style={styles.optionContainer}>
+                  {user.user.interests.map((interest, index) => (
+                    <View style={styles.optionInnerContainer} key={index}>
+                      <Text style={styles.option } >
+                        {interest.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+                <Text style={styles.heading}>{firstName}'s Traits</Text>
+                <View style={styles.optionContainer}>
+                  {user.user.traits.map((trait, index) => (
+                    <View style={styles.optionInnerContainer} key={index}>
+                      <Text style={styles.option}>
+                        {trait.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+                    <TouchableOpacity   onPress={() => navigation.navigate('single-space', { space: user.user.listMySpace })}>
+                <View>
+                  <Text style={styles.heading}>{firstName}'s listings</Text>
+
+                 {user.user.listMySpace && Object.keys(user.user.listMySpace).length > 4 && user.user.listMySpace.title ? (
+                  <SpaceCard space={user.user.listMySpace} />
+                 ) : (
+                  <Text style={{fontSize: 16}}>Listings Not available!</Text>
+                 )}
+                </View>
+                    </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </SafeAreaView>
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   )
 }
 
