@@ -1,9 +1,7 @@
-import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, ImageBackground, Image } from 'react-native'
+import React, { useState } from 'react'
 import { useRoute } from '@react-navigation/native';
-import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native'
-// import RangeSlider from 'react-native-range-slider';
 
 const UserSortScreen = ( ) => {
     const route = useRoute();
@@ -35,6 +33,10 @@ const UserSortScreen = ( ) => {
         setGender(gender);
     };
 
+    const handleBack = () => {
+      navigation.goBack();
+    }
+
     const handleSliderChange = (values) => {
         setBudgetRange(values);
         console.log(values);
@@ -42,178 +44,149 @@ const UserSortScreen = ( ) => {
     };
 
   return (
-    <View>
-      <SafeAreaView>
-          <ScrollView>
-            <Text>Sort By</Text>
+    <ImageBackground source={require('../assets/Filter_roommates.jpg')} style={styles.background}>
 
-            <Text>Roommate gender</Text>
+      <TouchableOpacity style={styles.iconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Filter & Sort</Text>
+      </TouchableOpacity>
 
-            <View style={styles.optionsContainer}>
-              <TouchableOpacity
-              style={[
-                  styles.option,
-                  gender === 'Male' && styles.selectedOption,
-              ]}
-              onPress={() => handleGenderSelection('Male')}
-              >
-              <Text style={styles.optionText}>Male</Text>
-              </TouchableOpacity>
+      <View style={styles.container}>
 
-              <TouchableOpacity
-              style={[
-                  styles.option,
-                  gender === 'Female' && styles.selectedOption,
-              ]}
-              onPress={() => handleGenderSelection('Female')}
-              >
-              <Text style={styles.optionText}>Female</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-              style={[
-                  styles.option,
-                  gender === 'Other' && styles.selectedOption,
-              ]}
-              onPress={() => handleGenderSelection('Other')}
-              >
-              <Text style={styles.optionText}>Other</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Budget Slider */}
-            <Text>Budget range</Text>
-            {/* <Slider
-                style={{ width: 200, height: 40 }}
-                minimumValue={0}
-                maximumValue={budgetRange[1]}
-                step={100}
-                values={budgetRange}
-                onValuesChange={handleSliderChange}
-            />
-              <Text>
-                  Current Range: {budgetRange[0]} - {budgetRange[1]}
-              </Text> */}
-
-                {/* <RangeSlider
-                    style={styles.rangeSlider}
-                    min={0}
-                    max={5000}
-                    step={100}
-                    low={budgetRange[0]}
-                    high={budgetRange[1]}
-                    selectionColor="#007AFF" // Color of selected range
-                    blankColor="#D3D3D3" // Color of unselected range
-                    onValueChanged={handleBudgetChange}
-                />
-                <Text>Min Budget: {budgetRange[0]}</Text>
-                <Text>Max Budget: {budgetRange[1]}</Text> */}
-
-                <TextInput
-                  keyboardType="numeric"
-                  placeholder="Max Budget"
-                  onChangeText={(text) => {
-                    const maxBudget = parseInt(text, 10);
-                    setBudget([0, maxBudget]);
-                  }}
-                  style={styles.textInput}
-                />
-
-            <View style={styles.optionsContainer}>
-            <Text>Profession</Text>
-              <TouchableOpacity
+        <SafeAreaView>
+            <ScrollView>
+              <Text style={styles.heading}>Sort By</Text>
+              <Text style={styles.heading}>Roommate gender</Text>
+              <View style={styles.optionsContainer}>
+                <TouchableOpacity
                 style={[
-                  styles.option,
-                  work === 'Working Professional' && styles.selectedOption,
+                    styles.option,
+                    gender === 'Male' && styles.selectedOption,
                 ]}
-                onPress={() => handleWorkSelection('Working Professional')}
+                onPress={() => handleGenderSelection('Male')}
                 >
-                <Text style={styles.optionText}>Working Professional</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
+                <Text style={[styles.optionText, gender === 'Male' && styles.selectedOptionText]}>Male</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                 style={[
-                  styles.option,
-                  work === 'Unemployed' && styles.selectedOption,
+                    styles.option,
+                    gender === 'Female' && styles.selectedOption,
                 ]}
-                onPress={() => handleWorkSelection('Unemployed')}
+                onPress={() => handleGenderSelection('Female')}
                 >
-                <Text style={styles.optionText}>Unemployed</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
+                <Text style={[styles.optionText, gender === 'Female' && styles.selectedOptionText]}>Female</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                 style={[
-                  styles.option,
-                  work === 'Student' && styles.selectedOption,
+                    styles.option,
+                    gender === 'Other' && styles.selectedOption,
                 ]}
-                onPress={() => handleWorkSelection('Student')}
+                onPress={() => handleGenderSelection('Other')}
                 >
-                <Text style={styles.optionText}>Student</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.option,
-                  work === 'Business' && styles.selectedOption,
-                ]}
-                onPress={() => handleWorkSelection('Business')}
-                >
-                <Text style={styles.optionText}>Business</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.option,
-                  work === 'Other' && styles.selectedOption,
-                ]}
-                onPress={() => handleWorkSelection('Other')}
-                >
-                <Text style={styles.optionText}>Other</Text>
-              </TouchableOpacity>
-
-            </View>
-
-            <View style={styles.optionsContainer}>
-              <Text>Pets</Text>
-              <TouchableOpacity
+                <Text style={[styles.optionText, gender === 'Other' && styles.selectedOptionText]}>Other</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.heading}>Budget range</Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Max Budget"
+                    onChangeText={(text) => {
+                      const maxBudget = parseInt(text, 10);
+                      setBudget([0, maxBudget]);
+                    }}
+                    style={styles.textInput}
+                  />
+              <Text style={styles.heading}>Profession</Text>
+              <View style={styles.optionsContainer}>
+                <TouchableOpacity
                   style={[
-                  styles.option,
-                  pets === 'Have' && styles.selectedOption,
+                    styles.option,
+                    work === 'Working Professional' && styles.selectedOption,
                   ]}
-                  onPress={() => setPets('Have')}
-              >
-                  <Text style={styles.optionText}>Have</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+                  onPress={() => handleWorkSelection('Working Professional')}
+                  >
+                  <Text style={[styles.optionText, work === 'Working Professional' && styles.selectedOptionText]}>Working Professional</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={[
-                  styles.option,
-                  pets === 'Dont Have' && styles.selectedOption,
+                    styles.option,
+                    work === 'Unemployed' && styles.selectedOption,
                   ]}
-                  onPress={() => setPets('Dont Have')}
-              >
-                  <Text style={styles.optionText}>Dont Have</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+                  onPress={() => handleWorkSelection('Unemployed')}
+                  >
+                  <Text style={[styles.optionText, work === 'Unemployed' && styles.selectedOptionText]}>Unemployed</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={[
-                  styles.option,
-                  pets === 'May Have' && styles.selectedOption,
+                    styles.option,
+                    work === 'Student' && styles.selectedOption,
                   ]}
-                  onPress={() => setPets('May Have')}
+                  onPress={() => handleWorkSelection('Student')}
+                  >
+                  <Text style={[styles.optionText, work === 'Student' && styles.selectedOptionText]}>Student</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.option,
+                    work === 'Business' && styles.selectedOption,
+                  ]}
+                  onPress={() => handleWorkSelection('Business')}
+                  >
+                  <Text style={[styles.optionText, work === 'Business' && styles.selectedOptionText]}>Business</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.option,
+                    work === 'Other' && styles.selectedOption,
+                  ]}
+                  onPress={() => handleWorkSelection('Other')}
+                  >
+                  <Text style={[styles.optionText, work === 'Other' && styles.selectedOptionText]}>Other</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.heading}>Pets</Text>
+              <View style={styles.optionsContainer}>
+                <TouchableOpacity
+                    style={[
+                    styles.option,
+                    pets === 'Have' && styles.selectedOption,
+                    ]}
+                    onPress={() => setPets('Have')}
+                >
+                    <Text style={[styles.optionText, pets === 'Have' && styles.selectedOptionText]}>Have</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[
+                    styles.option,
+                    pets === 'Dont Have' && styles.selectedOption,
+                    ]}
+                    onPress={() => setPets('Dont Have')}
+                >
+                    <Text style={[styles.optionText, pets === 'Dont Have' && styles.selectedOptionText]}>Dont Have</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[
+                    styles.option,
+                    pets === 'May Have' && styles.selectedOption,
+                    ]}
+                    onPress={() => setPets('May Have')}
+                >
+                    <Text style={[styles.optionText, pets === 'May Have' && styles.selectedOptionText]}>May Have</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleApplySorting}
               >
-                  <Text style={styles.optionText}>May Have</Text>
+                <Text style={styles.buttonText}>Apply all</Text>
               </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleApplySorting}
-            >
-              <Text style={styles.buttonText}>Apply</Text>
-            </TouchableOpacity>
-
-          </ScrollView>
-      </SafeAreaView>
-    </View>
+            </ScrollView>
+        </SafeAreaView>
+      </View>
+    </ImageBackground>
   )
 }
 
@@ -221,100 +194,131 @@ export default UserSortScreen
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 30,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    optionsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 10,
-      marginBottom: 10
-    },
-    option: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      borderRadius: 5,
-    },
-    selectedOption: {
-      backgroundColor: 'blue', // Change to your desired highlight color
-      borderColor: 'blue',
-      color:'#fff' // Change to your desired highlight color
-    },
-    optionText: {
-      color: 'black', // Change to your desired text color
-      textAlign: 'center',
-    },
-    buttonText: {
-      color: '#fff',
-      textAlign: 'center',
-      fontSize: 17,
-      fontWeight: 'bold'
-    },
-    button: {
-      backgroundColor: '#007AFF',
-      color: '#fff',
-      margin: 10,
-      padding: 10,
-      borderRadius: 8,
-    },
-    text: {
-      fontSize: 25,
-      marginBottom: 20,
-      textAlign: 'center'
-    },
-    textInput: {
-      height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      marginBottom: 16,
-      margin: 10,
-      padding: 10,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginLeft: 10,
-      marginRight: 10,
-    },
-    dateTimePicker: {
-      // backgroundColor: '#fff',
-      borderColor: 'gray',
-      // borderWidth: 1, 
-      // borderRadius: 8, 
-      paddingHorizontal: 10,
-      marginBottom: 16, 
-      alignSelf: 'center',
-      
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    optionsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 10,
-    },
-    option: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      borderRadius: 5,
-    },
-    selectedOption: {
-      backgroundColor: 'blue', // Change to your desired highlight color
-      borderColor: 'blue', // Change to your desired highlight color
-    },
-    optionText: {
-      color: 'black', // Change to your desired text color
-      textAlign: 'center',
-    },
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  iconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
+  },
+  container: {
+    padding: 15,
+    flex: 1,
+    backgroundColor: '#fff',
+    marginTop: "7%",
+    borderRadius: 40
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 10
+  },
+  option: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 5,
+  },
+  selectedOption: {
+    backgroundColor: 'blue',
+    borderColor: 'blue',
+    color:'#fff'
+  },
+  optionText: {
+    color: 'black',
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: '#3E206D',
+    color: '#fff',
+    margin: 15,
+    paddingVertical: 15,
+    borderRadius: 13,
+    width: "42%",
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 19,
+  },
+  heading: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 25,
+    marginBottom: 20,
+    textAlign: 'center'
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    fontSize: 16,
+    margin: 10,
+    marginBottom: 0,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  dateTimePicker: {
+    borderColor: 'gray',
+    paddingHorizontal: 10,
+    marginBottom: 16, 
+    alignSelf: 'center',
+    
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    marginTop: 10,
+  },
+  option: {
+    backgroundColor: '#EEEEEE',
+    borderRadius: 7,
+    margin: 5,
+  },
+  selectedOption: {
+    backgroundColor: '#FF8F66',
+  },
+  optionText: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    fontSize: 16,
+  },
+  selectedOptionText: {
+    color: '#fff',
+  }
 });

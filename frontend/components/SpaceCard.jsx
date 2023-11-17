@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Modal,Alert } from 're
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from '@env'
 import { UserType } from '../UserContext';
+import { Platform } from 'react-native';
 
 const SpaceCard = ({ space,showOptions, onReload }) => {
     const navigation = useNavigation();
@@ -142,14 +143,22 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
 const styles = StyleSheet.create({
     card: {
         flexDirection: 'column',
-        borderWidth: 1,
-        borderColor: 'lightgray',
         borderRadius: 8,
         width: '100%',
         height: 350,
         backgroundColor:'#FFF',
         marginBottom: 15,
-        
+        ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.2,
+              shadowRadius: 5,
+            },
+            android: {
+              elevation: 4,
+            },
+          }),
     },
     optionsButton: {
         
