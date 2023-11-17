@@ -2682,7 +2682,7 @@
   resolved "https://registry.npmjs.org/@react-native/js-polyfills/-/js-polyfills-0.72.1.tgz"
   integrity sha512-cRPZh2rBswFnGt5X5EUEPs0r+pAsXxYsifv/fgy9ZLQokuT52bPH+9xjDR+7TafRua5CttGW83wP4TntRcWNDA==
 
-"@react-native/normalize-color@^2.0.0", "@react-native/normalize-color@^2.1.0":
+"@react-native/normalize-color@*", "@react-native/normalize-color@^2.0.0", "@react-native/normalize-color@^2.1.0":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@react-native/normalize-color/-/normalize-color-2.1.0.tgz"
   integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
@@ -5385,6 +5385,15 @@ deprecated-react-native-prop-types@4.1.0:
     invariant "*"
     prop-types "*"
 
+deprecated-react-native-prop-types@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/deprecated-react-native-prop-types/-/deprecated-react-native-prop-types-2.3.0.tgz"
+  integrity sha512-pWD0voFtNYxrVqvBMYf5gq3NA2GCpfodS1yNynTPc93AYA/KEMGeWDqqeUB6R2Z9ZofVhks2aeJXiuQqKNpesA==
+  dependencies:
+    "@react-native/normalize-color" "*"
+    invariant "*"
+    prop-types "*"
+
 deprecated-react-native-prop-types@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/deprecated-react-native-prop-types/-/deprecated-react-native-prop-types-5.0.0.tgz"
@@ -6215,6 +6224,11 @@ expo-keep-awake@~12.3.0:
   resolved "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-12.3.0.tgz"
   integrity sha512-ujiJg1p9EdCOYS05jh5PtUrfiZnK0yyLy+UewzqrjUqIT8eAGMQbkfOn3C3fHE7AKd5AefSMzJnS3lYZcZYHDw==
 
+expo-linear-gradient@~12.3.0:
+  version "12.3.0"
+  resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-12.3.0.tgz#7abd8fedbf0138c86805aebbdfbbf5e5fa865f19"
+  integrity sha512-f9e+Oxe5z7fNQarTBZXilMyswlkbYWQHONVfq8MqmiEnW3h9XsxxmVJLG8uVQSQPUsbW+x1UUT/tnU6mkMWeLg==
+
 expo-localization@~14.3.0:
   version "14.3.0"
   resolved "https://registry.npmjs.org/expo-localization/-/expo-localization-14.3.0.tgz"
@@ -6707,7 +6721,7 @@ fs.realpath@^1.0.0:
 
 fsevents@^2.3.2, fsevents@~2.3.2:
   version "2.3.3"
-  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.1, function-bind@^1.1.2:
@@ -7210,7 +7224,7 @@ ieee754@^1.1.13:
 
 ignore-warnings@^0.2.1:
   version "0.2.1"
-  resolved "https://registry.yarnpkg.com/ignore-warnings/-/ignore-warnings-0.2.1.tgz#a260f7dabaf9d996b80f39f74ca47c2905a8f893"
+  resolved "https://registry.npmjs.org/ignore-warnings/-/ignore-warnings-0.2.1.tgz"
   integrity sha512-cAtUiwDrvUfhx3AiO1Dvh6+1Dzs51WuP2Gd0oBzan6766qqI0wCbbo3RQyoeCh6N/PkQtZdGEVkUXqk/rQjqYw==
   dependencies:
     newregexp "^1.0.1"
@@ -8487,7 +8501,7 @@ levn@^0.4.1:
 
 lightningcss-darwin-arm64@1.19.0:
   version "1.19.0"
-  resolved "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.19.0.tgz"
+  resolved "https://registry.yarnpkg.com/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.19.0.tgz#56ab071e932f845dbb7667f44f5b78441175a343"
   integrity sha512-wIJmFtYX0rXHsXHSr4+sC5clwblEMji7HHQ4Ub1/CznVRxtCFha6JIt5JZaNf8vQrfdZnBxLLC6R8pC818jXqg==
 
 lightningcss-darwin-x64@1.19.0:
@@ -8522,7 +8536,7 @@ lightningcss-linux-x64-musl@1.19.0:
 
 lightningcss-win32-x64-msvc@1.19.0:
   version "1.19.0"
-  resolved "https://registry.yarnpkg.com/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.19.0.tgz#0854dbd153035eca1396e2227c708ad43655a61c"
+  resolved "https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.19.0.tgz"
   integrity sha512-C+VuUTeSUOAaBZZOPT7Etn/agx/MatzJzGRkeV+zEABmPuntv1zihncsi+AyGmjkkzq3wVedEy7h0/4S84mUtg==
 
 lightningcss@~1.19.0:
@@ -9325,7 +9339,7 @@ nested-error-stacks@~2.0.1:
 
 newregexp@^1.0.1:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/newregexp/-/newregexp-1.3.0.tgz#6ea2a700c8f926214adb955d8399e204e325c128"
+  resolved "https://registry.npmjs.org/newregexp/-/newregexp-1.3.0.tgz"
   integrity sha512-7PjUzh64TSfZ07x+xoeCaJcs/RyUZewyCt+1pQoAXpR1NbdCJMlY+Ph0juPBROBIWHxmYmKPpAQF02uqPbZY6Q==
 
 nice-try@^1.0.4:
@@ -10566,6 +10580,11 @@ react-native-image-slider-box@^2.0.7:
   dependencies:
     react-native-snap-carousel latest
 
+react-native-linear-gradient@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz"
+  integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
+
 react-native-modal-datetime-picker@^17.1.0:
   version "17.1.0"
   resolved "https://registry.npmjs.org/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-17.1.0.tgz"
@@ -10581,6 +10600,13 @@ react-native-paper@^5.11.0:
     "@callstack/react-theme-provider" "^3.0.9"
     color "^3.1.2"
     use-latest-callback "^0.1.5"
+
+react-native-radial-gradient@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/react-native-radial-gradient/-/react-native-radial-gradient-1.1.3.tgz"
+  integrity sha512-csxOLG/ftBhUZdvs7L5TOsw9vrHZQ+wCs+ghitRhGtGhCOt//JNP0zjMktKoKwbxYOGEyLvXK4rbFkpEgcraBg==
+  dependencies:
+    deprecated-react-native-prop-types "^2.3.0"
 
 react-native-range-slider@^0.1.2:
   version "0.1.2"

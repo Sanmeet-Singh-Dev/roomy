@@ -16,13 +16,13 @@ const Details = () => {
     const steps = 6;
 
     const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate || dateOfBirth; // Use the selected date or the current value of dateOfBirth
       setShow(Platform.OS === 'ios');
-    
-      const formattedDate = currentDate.toLocaleDateString(); // Format the selected date
-    
-      setDateOfBirth(formattedDate); // Set the formatted date in your state
-    
+
+      const formattedDate = selectedDate.toLocaleDateString(); // Format the selected date
+
+      if (event.type === 'set' && selectedDate) {
+        setDateOfBirth(formattedDate);
+      }
     };
   
     const showDatepicker = () => {
@@ -65,6 +65,7 @@ const Details = () => {
             // Handle a successful response
             const data = await response.json();
             const userId = data._id;
+            console.log("Date of Birth is: ", data.dateOfBirth);
             navigation.navigate('location' , {userId: userId} );
           } else {
             // Handle an unsuccessful response (e.g., show an error message)
@@ -144,13 +145,13 @@ const Details = () => {
 
           <Text style={styles.label}>Date of Birth</Text>
           <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode="date" // Set to 'spinner' for spinner interface
-          // is24Hour={true}
-          display="default" 
-          style={styles.dateTimePicker}
-          onChange={onChange}
+            testID="dateTimePicker"
+            value={date}
+            mode="date" // Set to 'spinner' for spinner interface
+            // is24Hour={true}
+            display="default" 
+            style={styles.dateTimePicker}
+            onChange={onChange}
           />
 
           <Text style={styles.label}>Budget</Text>
