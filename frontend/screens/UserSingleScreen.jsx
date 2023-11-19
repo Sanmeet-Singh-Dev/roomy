@@ -292,8 +292,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                       source={{ uri: user.user.profilePhoto[0] }}
                       style={styles.image} blurRadius={20} />
                   )}
-                  <Text style={styles.userName}>{firstName},
-                   {userAge}
+                  <Text style={styles.userName}>{firstName},&nbsp;{userAge}
                    </Text>
                 </View>
                 <View style={styles.CompatibilityContainer}>
