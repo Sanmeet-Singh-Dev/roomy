@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, Image } from 'react-native'
+import { Pressable, StyleSheet, Text, View, Image, Platform  } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { UserType } from '../UserContext';
@@ -54,7 +54,7 @@ const UserChat = ({ item }) => {
             onPress={() => navigation.navigate("Messages", {
                 recepientId: item._id
             })}
-            style={{ flexDirection: "row", alignItems: "center", gap: 10, borderWidth: 0.7, borderColor: "#D0D0D0", borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, padding: 10, marginBottom: 10, backgroundColor:'white',borderRadius: 20}}>
+            style={styles.chatCardContainer}>
             <Image style={{ width: 50, height: 50, borderRadius: 10, resizeMode: "cover" }} source={{ uri: item?.image }} />
 
             <View style={{ flex: 1 }}>
@@ -76,4 +76,26 @@ const UserChat = ({ item }) => {
 
 export default UserChat
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    chatCardContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        padding: 10,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        ...Platform.select({
+            ios: {
+            shadowColor: 'black',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+            },
+            android: {
+            elevation: 4,
+            },
+        }),
+    },
+
+})

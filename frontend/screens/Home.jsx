@@ -247,7 +247,7 @@ async function schedulePushNotification(notification) {
     }
 
   return (
-    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
+    <ImageBackground source={require('../assets/spaces.jpg')} style={styles.background}>
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
@@ -285,11 +285,12 @@ async function schedulePushNotification(notification) {
                 />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleReset} style={styles.iconContainer}>
+            <TouchableOpacity onPress={handleReset} style={styles.resetIconContainer}>
                 <Image
-                  source={require('../assets/filter-add.png')}
-                  style={styles.sortIcon}
+                  source={require('../assets/clear.png')}
+                  style={styles.resetIcon}
                 />
+                <Text style={styles.resetText}>Reset</Text>
             </TouchableOpacity>
           </View>
 
@@ -417,9 +418,34 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
   },
+  resetIconContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    marginLeft: 5,
+    marginRight: 5,
+    paddingHorizontal: 13,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   sortIcon: {
     width: 30,
     height: 30,
+  },
+  resetIcon: {
+    width: 18,
+    height: 18,
+  },
+  resetText: {
+    fontSize: 12,
+    marginTop: 2,
+    color: '#51367B',
+    fontWeight: '500',
   },
   iconContainer: {
     backgroundColor: '#FFFFFF',
@@ -431,7 +457,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 4, // Android shadow
+    elevation: 4,
   },
   cardsContainer: {
     display: 'flex',

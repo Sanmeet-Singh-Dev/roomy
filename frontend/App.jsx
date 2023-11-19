@@ -58,9 +58,9 @@ export default function App() {
     <UserContext >
       <NavigationContainer>
 
-        <stack.Navigator initialRouteName='splash'>
+        <stack.Navigator initialRouteName='personalTraits'>
         <stack.Screen name="splash" component={Splash} options={{headerShown: false}} />
-        <stack.Screen name="home" component={BottomTabBar} options={{headerShown: false}} />
+        <stack.Screen name="home" component={BottomTabBar} options={{headerShown: false, headerTitle: ''}} />
         <stack.Screen name="loginOptions" component={LoginOptions} options={{headerShown: false}} />
         <stack.Screen name='login' component={Login} options={{ headerShown: false }} />
         <stack.Screen name='register' component={Register} options={{ headerShown: false }} />
@@ -73,17 +73,17 @@ export default function App() {
         <stack.Screen name='personalTraits' component={PersonalTraits} options={{ title:'Your Personal Traits' ,headerShown: true }} />
         <stack.Screen name='userSingleScreen' component={UserSingleScreen} options={{title:"Roommate Profile" , headerShown: false }} />
         <stack.Screen name='userSortScreen' component={UserSortScreen} options={{ headerShown: false }} />
-        <stack.Screen name="Chats" component={ChatsScreen} options={{title:'Messages' ,headerShown: true}}/>
-        <stack.Screen name="newChat" component={NewChatScreen} options={{title:'New Messages' ,headerShown: true}}/>
-        <stack.Screen name="Messages" component={ChatMessagesScreen} />  
+        <stack.Screen name="Chats" component={ChatsScreen} options={{headerShown: false}}/>
+        <stack.Screen name="newChat" component={NewChatScreen} options={{headerShown: false}}/>
+        <stack.Screen name="Messages" component={ChatMessagesScreen} options={{headerShown: true}}/>  
         <stack.Screen name="listingOne" component={ListingOne}/>
         <stack.Screen name="listMySpace" component={ListMySpace}/>
         <stack.Screen name="room-attributes" component={RoomAttributes}/>
         <stack.Screen name="single-space" component={SingleSpace} options={{ headerShown: false }}/>
         <stack.Screen name="room-details" component={RoomDetails}/>
-        <stack.Screen name="Calendar" component={CalendarScreen} />
+        <stack.Screen name="Calendar" component={CalendarScreen} options={{headerShown: false}}/>
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
-        <stack.Screen name="Spaces" component={Spaces}/>
+        <stack.Screen name="Spaces" component={Spaces} options={{ headerShown: false, headerTitle: '' }}/>
         <stack.Screen name="Notifications" component={ShowNotificationScreen} />
         <stack.Screen name="BlockedUsers" component={BlockedUserScreen} />
         <stack.Screen name="edit-listing" component={EditListing} />

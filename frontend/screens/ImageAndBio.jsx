@@ -160,9 +160,11 @@ const ImageAndBio = () => {
           ))}
         </ScrollView>
 
-        <TouchableOpacity style={styles.currentButton}>  
-            <Text style={styles.buttonText} onPress={handleImageSelection}>Select Image</Text>
-            </TouchableOpacity>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.currentButton} onPress={handleImageSelection}>
+            <Text style={styles.buttonText}>Select Image</Text>
+          </TouchableOpacity>
+        </View>
       
         <Text style={styles.label}>What do you currently do?</Text>
 
@@ -230,9 +232,11 @@ const ImageAndBio = () => {
           style={styles.textArea}
         />
 
-<TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleSaveProfile}>Next</Text>
-            </TouchableOpacity>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>
+        </View>
 
       </SafeAreaView>
     </View>
@@ -275,10 +279,22 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-  fontWeight: 'bold',
-  marginLeft: 20,
-  marginRight: 20,
-  marginTop: 10
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10
+  },
+  btnContainer : {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#FF8F66',
+    color: '#fff',
+    marginTop: 30,
+    paddingHorizontal: 70,
+    paddingVertical: 18,
+    borderRadius: 8,
   },
   buttonText: {
     color: '#fff',
@@ -287,31 +303,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   currentButton: {
-  backgroundColor: '#51367B',
-  color: '#fff',
-  margin: 10,
-  marginTop: 10,
-  marginLeft: 96,
-  marginRight: 96,
-  marginBottom: 10,
-  paddingLeft: 24,
-  paddingRight: 24,
-  paddingTop: 14,
-  paddingBottom: 14,
-  borderRadius: 8,
-  },
-  button: {
-  backgroundColor: '#FF8F66',
-  color: '#fff',
-  margin: 10,
-  marginTop: 50,
-  marginLeft: 96,
-  marginRight: 96,
-  paddingLeft: 24,
-  paddingRight: 24,
-  paddingTop: 14,
-  paddingBottom: 14,
-  borderRadius: 8,
+    backgroundColor: '#51367B',
+    color: '#fff',
+    marginTop: 30,
+    paddingHorizontal: 70,
+    paddingVertical: 18,
+    borderRadius: 8,
   },
   optionsContainer: {
     flexDirection: 'row',

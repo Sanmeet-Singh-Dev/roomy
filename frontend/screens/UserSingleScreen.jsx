@@ -242,7 +242,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
           source={require('../assets/back.png')}
           style={styles.sortIcon}
         />
-        <Text style={styles.sortText}>Room Listing</Text>
+        <Text style={styles.sortText}>Roommate Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity
                     style={styles.optionsButton}

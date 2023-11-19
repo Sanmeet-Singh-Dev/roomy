@@ -59,10 +59,10 @@ const BottomTabBar = () => {
       })}
     >
     
-      <Tab.Screen name="homePage" component={Home} options={{headerShown: false}} />
-      <Tab.Screen name="spaces" component={Spaces} />
-      <Tab.Screen name="listMySpace" component={ListMySpace} />
-      <Tab.Screen name="Chats" component={ChatsScreen} options={{title:'Messages' ,headerShown: true}}/>
+      <Tab.Screen name="homePage" component={Home} options={{headerShown: false, headerTitle: ""}} />
+      <Tab.Screen name="spaces" component={Spaces} options={{headerShown: false, headerTitle: ''}}/>
+      <Tab.Screen name="listMySpace" component={ListMySpace} options={{headerShown: false}}/>
+      <Tab.Screen name="Chats" component={ChatsScreen} options={{headerShown: false}}/>
       <Tab.Screen name="profileScreen" component={ProfileScreen} options={{headerShown: false}} />
     </Tab.Navigator>
   )

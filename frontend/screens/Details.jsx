@@ -54,7 +54,6 @@ const Details = () => {
               'Authorization': `Bearer ${token}`, // Include the token as a bearer token
             },
             body: JSON.stringify({
-              fullName,
               gender,
               dateOfBirth,
               budget,
@@ -65,7 +64,6 @@ const Details = () => {
             // Handle a successful response
             const data = await response.json();
             const userId = data._id;
-            console.log("Date of Birth is: ", data.dateOfBirth);
             navigation.navigate('location' , {userId: userId} );
           } else {
             // Handle an unsuccessful response (e.g., show an error message)
@@ -99,13 +97,6 @@ const Details = () => {
     </View>
 
         <SafeAreaView>
-          <Text  style={styles.label}>First Name</Text>
-          <TextInput
-            placeholder="Full Name"
-            value={fullName}
-            onChangeText={setFullName}
-            style={styles.textInput}
-          />
 
           <Text style={styles.label}>Gender</Text>
 
@@ -118,7 +109,7 @@ const Details = () => {
               ]}
               onPress={() => handleGenderSelection('Male')}
             >
-              <Text style={styles.optionText}>Male</Text>
+              <Text style={[styles.optionText, gender === 'Male' && styles.selectedOptionText]}>Male</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -128,7 +119,7 @@ const Details = () => {
               ]}
               onPress={() => handleGenderSelection('Female')}
             >
-              <Text style={styles.optionText}>Female</Text>
+              <Text style={[styles.optionText, gender === 'Female' && styles.selectedOptionText]}>Female</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -138,7 +129,7 @@ const Details = () => {
               ]}
               onPress={() => handleGenderSelection('Other')}
             >
-              <Text style={styles.optionText}>Other</Text>
+              <Text style={[styles.optionText, gender === 'Other' && styles.selectedOptionText]}>Other</Text>
             </TouchableOpacity>
 
           </View>
@@ -163,9 +154,11 @@ const Details = () => {
             style={styles.textInput}
           />
           
-          <TouchableOpacity style={styles.button}>  
-          <Text style={styles.buttonText} onPress={handleSaveProfile}>Next </Text>
-          </TouchableOpacity>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
+          </View>
 
         </SafeAreaView>
         
@@ -219,37 +212,40 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   option: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#EEEEEE',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 8,
   },
   selectedOption: {
-    backgroundColor: '#FF8F66', 
-    color:'white'
+    backgroundColor: '#FF8F66',
+    color:'#fff'
   },
   optionText: {
-    color: 'black', // Change to your desired text color
-    textAlign: 'center',
-  },
-  buttonText: {
-    color: '#fff',
+    color: 'black',
     textAlign: 'center',
     fontSize: 17,
-    fontWeight: 'bold'
+  },
+  selectedOptionText: {
+    color: '#fff',
+  },
+  btnContainer : {
+    display: 'flex',
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#FF8F66',
     color: '#fff',
-    margin: 10,
-    marginTop: 60,
-    marginLeft: 96,
-    marginRight: 96,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
+    marginTop: 30,
+    paddingHorizontal: 70,
+    paddingVertical: 18,
     borderRadius: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   text: {
     fontSize: 25,
@@ -276,7 +272,6 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   dateTimePicker: {
-    // backgroundColor: '#fff',
     borderColor: 'gray',
     marginTop: 10,
     marginBottom: 16, 

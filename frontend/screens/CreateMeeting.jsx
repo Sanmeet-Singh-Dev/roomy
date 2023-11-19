@@ -23,110 +23,6 @@ import { IPADDRESS } from "@env"
 
 const { width: vw } = Dimensions.get('window');
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: 'cover'
-  },
-  createTaskButton: {
-    width: 252,
-    height: 48,
-    alignSelf: 'center',
-    marginTop: 40,
-    borderRadius: 5,
-    justifyContent: 'center'
-  },
-  separator: {
-    height: 0.5,
-    width: '100%',
-    backgroundColor: '#979797',
-    alignSelf: 'center',
-    marginVertical: 20
-  },
-  notes: {
-    color: '#9CAAC4',
-    fontSize: 16,
-    fontWeight: '600'
-  },
-  notesContent: {
-    height: 0.5,
-    width: '100%',
-    backgroundColor: '#979797',
-    alignSelf: 'center',
-    marginVertical: 20
-  },
-  learn: {
-    height: 23,
-    width: 51,
-    backgroundColor: '#F8D557',
-    justifyContent: 'center',
-    borderRadius: 5
-  },
-  design: {
-    height: 23,
-    width: 59,
-    backgroundColor: '#62CCFB',
-    justifyContent: 'center',
-    borderRadius: 5,
-    marginRight: 7
-  },
-  readBook: {
-    height: 23,
-    width: 83,
-    backgroundColor: '#4CD565',
-    justifyContent: 'center',
-    borderRadius: 5,
-    marginRight: 7
-  },
-  title: {
-    height: 25,
-    borderColor: '#5DD976',
-    borderLeftWidth: 1,
-    paddingLeft: 8,
-    fontSize: 19
-  },
-  taskContainer: {
-    height: 300,
-    width: 327,
-    alignSelf: 'center',
-    borderRadius: 20,
-    shadowColor: '#2E66E7',
-    backgroundColor: '#ffffff',
-    shadowOffset: {
-      width: 3,
-      height: 3
-    },
-    shadowRadius: 20,
-    shadowOpacity: 0.2,
-    elevation: 5,
-    padding: 38
-  },
-  calenderContainer: {
-    marginTop: 30,
-    width: 350,
-    height: 350,
-    alignSelf: 'center',
-    backgroundColor: "rgba(255,248,246, 0.9)",
-  },
-  newTask: {
-    alignSelf: 'center',
-    fontSize: 20,
-    width: 120,
-    height: 25,
-    textAlign: 'center'
-  },
-  backButton: {
-    flexDirection: 'row',
-    marginTop: 20,
-    width: '100%',
-    alignItems: 'center'
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "rgba(255,248,246, 0.9)",
-  }
-});
-
 const CreateMeeting = ({ route }) => {
     const navigation = useNavigation();
 
@@ -308,24 +204,22 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
         >
           <ScrollView
             contentContainerStyle={{
-              paddingBottom: 100
+              paddingBottom: 100,
             }}
           >
             <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
-            <View style={styles.backButton}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={{ marginRight: vw / 2 - 120, marginLeft: 20 }}
-              >
+                style={styles.backIconContainer}
+                >
                 <Image
-                  style={{ height: 25, width: 40 }}
+                  style={styles.sortIcon}
                   source={require('../assets/back.png')}
                   resizeMode="contain"
                 />
+                <Text style={styles.sortText}>New Meeting</Text>
               </TouchableOpacity>
 
-              <Text style={styles.newTask}>New Meeting</Text>
-            </View>
             <View style={styles.calenderContainer}>
               <CalendarList
                 style={{
@@ -438,3 +332,125 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
 }
 
 export default CreateMeeting
+
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover'
+  },
+  createTaskButton: {
+    width: 252,
+    height: 48,
+    alignSelf: 'center',
+    marginTop: 40,
+    borderRadius: 5,
+    justifyContent: 'center'
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "3%",
+    marginLeft: "2%",
+    marginBottom: "1%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
+  },
+  separator: {
+    height: 0.5,
+    width: '100%',
+    backgroundColor: '#979797',
+    alignSelf: 'center',
+    marginVertical: 20
+  },
+  notes: {
+    color: '#9CAAC4',
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  notesContent: {
+    height: 0.5,
+    width: '100%',
+    backgroundColor: '#979797',
+    alignSelf: 'center',
+    marginVertical: 20
+  },
+  learn: {
+    height: 23,
+    width: 51,
+    backgroundColor: '#F8D557',
+    justifyContent: 'center',
+    borderRadius: 5
+  },
+  design: {
+    height: 23,
+    width: 59,
+    backgroundColor: '#62CCFB',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginRight: 7
+  },
+  readBook: {
+    height: 23,
+    width: 83,
+    backgroundColor: '#4CD565',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginRight: 7
+  },
+  title: {
+    height: 25,
+    borderColor: '#5DD976',
+    borderLeftWidth: 1,
+    paddingLeft: 8,
+    fontSize: 19
+  },
+  taskContainer: {
+    height: 300,
+    width: 327,
+    alignSelf: 'center',
+    borderRadius: 20,
+    shadowColor: '#2E66E7',
+    backgroundColor: '#ffffff',
+    shadowOffset: {
+      width: 3,
+      height: 3
+    },
+    shadowRadius: 20,
+    shadowOpacity: 0.2,
+    elevation: 5,
+    padding: 38
+  },
+  calenderContainer: {
+    marginTop: 30,
+    width: 350,
+    height: 350,
+    alignSelf: 'center',
+    backgroundColor: "rgba(255,248,246, 0.9)",
+  },
+  newTask: {
+    alignSelf: 'center',
+    fontSize: 20,
+    width: 120,
+    height: 25,
+    textAlign: 'center'
+  },
+  backButton: {
+    flexDirection: 'row',
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "rgba(255,248,246, 0.9)",
+  }
+});

@@ -52,9 +52,9 @@ const Register = () => {
         <SafeAreaView style={styles.container}>
             <Text style={styles.text}>Enter your details</Text>
 
-            <Text style={styles.label}>Name:</Text>
+            <Text style={styles.label}>Full Name:</Text>
             <TextInput
-                placeholder="Enter your name"
+                placeholder="Enter your full name"
                 placeholderTextColor="#AFB1B6"
                 value={name}
                 onChangeText={(text) => setname(text)}

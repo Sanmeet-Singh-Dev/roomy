@@ -89,7 +89,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setSmoking('Daily')}
         >
-            <Text style={styles.optionText}>Daily</Text>
+            <Text style={[styles.optionText, smoking === 'Daily' && styles.selectedOptionText]}>Daily</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -98,7 +98,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setSmoking('Occasional')}
         >
-            <Text style={styles.optionText}>Occasional</Text>
+            <Text style={[styles.optionText, smoking === 'Occasional' && styles.selectedOptionText]}>Occasional</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -107,7 +107,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setSmoking('Never')}
         >
-            <Text style={styles.optionText}>Never</Text>
+            <Text style={[styles.optionText, smoking === 'Never' && styles.selectedOptionText]}>Never</Text>
         </TouchableOpacity>
         </View>
 
@@ -120,7 +120,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setGuests('Daily')}
         >
-            <Text style={styles.optionText}>Daily</Text>
+            <Text style={[styles.optionText, guests === 'Daily' && styles.selectedOptionText]}>Daily</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -129,7 +129,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setGuests('Occasional')}
         >
-            <Text style={styles.optionText}>Occasional</Text>
+            <Text style={[styles.optionText, guests === 'Occasional' && styles.selectedOptionText]}>Occasional</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -138,7 +138,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setGuests('Never')}
         >
-            <Text style={styles.optionText}>Never</Text>
+            <Text style={[styles.optionText, guests === 'Never' && styles.selectedOptionText]}>Never</Text>
         </TouchableOpacity>
         </View>
 
@@ -151,7 +151,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setDrinking('Daily')}
         >
-            <Text style={styles.optionText}>Daily</Text>
+            <Text style={[styles.optionText, drinking === 'Daily' && styles.selectedOptionText]}>Daily</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -160,7 +160,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setDrinking('Occasional')}
         >
-            <Text style={styles.optionText}>Occasional</Text>
+            <Text style={[styles.optionText, drinking === 'Occasional' && styles.selectedOptionText]}>Occasional</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -169,7 +169,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setDrinking('Never')}
         >
-            <Text style={styles.optionText}>Never</Text>
+            <Text style={[styles.optionText, drinking === 'Never' && styles.selectedOptionText]}>Never</Text>
         </TouchableOpacity>
         </View>
 
@@ -182,7 +182,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setPets('Have')}
         >
-            <Text style={styles.optionText}>Have</Text>
+            <Text style={[styles.optionText, pets === 'Have' && styles.selectedOptionText]}>Have</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -191,7 +191,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setPets('Dont Have')}
         >
-            <Text style={styles.optionText}>Dont Have</Text>
+            <Text style={[styles.optionText, pets === 'Dont Have' && styles.selectedOptionText]}>Dont Have</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -200,7 +200,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setPets('May Have')}
         >
-            <Text style={styles.optionText}>May Have</Text>
+            <Text style={[styles.optionText, pets === 'May Have' && styles.selectedOptionText]}>May Have</Text>
         </TouchableOpacity>
         </View>
 
@@ -213,7 +213,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setFood('Vegan')}
         >
-            <Text style={styles.optionText}>Vegan</Text>
+            <Text style={[styles.optionText, food === 'Vegan' && styles.selectedOptionText]}>Vegan</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -222,7 +222,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setFood('Vegetarian')}
         >
-            <Text style={styles.optionText}>Vegetarian</Text>
+            <Text style={[styles.optionText, food === 'Vegetarian' && styles.selectedOptionText]}>Vegetarian</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -231,14 +231,14 @@ const Livinghabits = () => {
             ]}
             onPress={() => setFood('Non-Vegetarian')}
         >
-            <Text style={styles.optionText}>Non-Vegetarian</Text>
+            <Text style={[styles.optionText, food === 'Non-Vegetarian' && styles.selectedOptionText]}>Non-Vegetarian</Text>
         </TouchableOpacity>
         </View>
 
         
-        <TouchableOpacity style={styles.button}>  
-          <Text style={styles.buttonText} onPress={handleSaveHabits}>Next </Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleSaveHabits}>  
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
 
         </ScrollView>
         </SafeAreaView>
@@ -249,68 +249,68 @@ const Livinghabits = () => {
 export default Livinghabits
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white'
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '27%'
+  },
+    stepContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
-    progressBar: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        marginTop: 50,
-        marginBottom: 40,
-        width: '27%'
-      },
-      stepContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-      dot: {
-        width:15,
-        height: 15,
-        borderRadius: 50,
-        backgroundColor: 'lightgray',
-      },
-      line: {
-        flex: 1,
-        height: 2,
-        backgroundColor: 'lightgray',
-        marginHorizontal: 1,
-      },
-      buttonText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 17,
-        fontWeight: 'bold'
-      },
-      button: {
-        backgroundColor: '#FF8F66',
-        color: '#fff',
-        margin: 10,
-        marginTop: 60,
-        marginLeft: 96,
-        marginRight: 96,
-        paddingLeft: 24,
-        paddingRight: 24,
-        paddingTop: 14,
-        paddingBottom: 14,
-        borderRadius: 8,
-      },
+    dot: {
+      width:15,
+      height: 15,
+      borderRadius: 50,
+      backgroundColor: 'lightgray',
+    },
+    line: {
+      flex: 1,
+      height: 2,
+      backgroundColor: 'lightgray',
+      marginHorizontal: 1,
+    },
+    buttonText: {
+      color: '#fff',
+      textAlign: 'center',
+      fontSize: 18,
+      fontWeight: 'bold'
+    },
+    button: {
+      backgroundColor: '#FF8F66',
+      color: '#fff',
+      margin: 10,
+      marginTop: 50,
+      marginLeft: 96,
+      marginRight: 96,
+      paddingHorizontal: 24,
+      paddingVertical: 14,
+      borderRadius: 8,
+    },
     option: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      marginVertical: 5,
+      backgroundColor: '#EEEEEE',
+      paddingHorizontal: 19,
+      paddingVertical: 15,
+      borderRadius: 8,
     },
     selectedOption: {
       backgroundColor: '#FF8F66',
-      color: 'white',
+      color:'#fff'
     },
     optionText: {
-      color: 'black', // Change to your desired text color
+      color: 'black',
       textAlign: 'center',
+      fontSize: 16,
+    },
+    selectedOptionText: {
+      color: '#fff',
     },
 });
