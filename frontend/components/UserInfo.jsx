@@ -24,15 +24,17 @@ const UserInfo = (userId) => {
 
     return (
         <View style={styles.header}>
-            <View>
+            <View style={styles.textContainer}>
                 <Text style={styles.nameText}>Hello, {userData.name}!</Text>
                 <Text style={styles.tagline}>Let's find the perfect room-mate for you ?</Text>
             </View>
             {userData.profilePhoto?.[0] ? (
-                <Image
-                    source={{ uri: userData.profilePhoto?.[0] }}
-                    style={styles.image}
-                />
+                <View style={styles.imageContainer}>
+                    <Image
+                        source={{ uri: userData.profilePhoto?.[0] }}
+                        style={styles.image}
+                    />
+                </View>
             ) : (<Text>profile picture N/A</Text>)}
         </View>
     )
@@ -53,17 +55,22 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 50,
-        marginLeft: 20,
         borderWidth: 3,
-        borderColor: "#FF8F66"
-      },
-      header: {
+        borderColor: "#FF8F66",
+    },
+    imageContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    header: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        alignContent: 'center',
         marginTop: 20,
         marginBottom: 15,
-      },
-
+        width: "100%",
+    },
 })

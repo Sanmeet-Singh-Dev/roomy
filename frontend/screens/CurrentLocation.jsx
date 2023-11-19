@@ -153,8 +153,8 @@ const saveLocation = () => {
          <TouchableOpacity style={styles.currentButton}>  
             <Text style={styles.buttonText} onPress={getCurrentLocation}>Set Current Location</Text>
             </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={geoCode}>Next</Text>
+        <TouchableOpacity style={styles.button} onPress={geoCode}>  
+            <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
 
         {/* <Button title="Save Location" onPress={geoCode} />

@@ -76,11 +76,11 @@ const ListMySpace = () => {
     <SafeAreaView style={styles.safeAreaView}>
     <ScrollView>
     <View style={styles.container}>
-      <Text style={styles.listingText}>I want to List My Space</Text>
+      <Text style={styles.listingText}>I want to list my Space</Text>
       <TouchableOpacity style={styles.button} onPress={handleListMySpace}>
         <Text style={styles.buttonText}>List My Space</Text>
       </TouchableOpacity>
-      <Text style={styles.listingText}>My Listing</Text>
+      <Text style={styles.listingText}>My Listings</Text>
         {/* {spaces && <SpaceCard space={spaces} />} */}
         {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} showOptions={true} onReload={() => fetchUserSpaces()}/>}
     </View>
@@ -110,23 +110,24 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#FF8F66',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 8,
     width:"100%",
     height:60,
     marginBottom:20,
   },
   buttonText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontSize: 20,
     textAlign:'center',
     alignContent:'center',
-    paddingTop:8
+    paddingTop:8,
+    fontWeight: '500',
   },
   listingText: {
     alignSelf: 'flex-start',
     marginTop: 25,
     fontSize: 20,
-    fontWeight: 'semibold',
+    fontWeight: '500',
     marginBottom: 15,
   }
 });

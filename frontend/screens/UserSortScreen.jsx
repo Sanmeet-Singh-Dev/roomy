@@ -238,8 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   selectedOption: {
-    backgroundColor: 'blue',
-    borderColor: 'blue',
+    backgroundColor: '#FF8F66',
     color:'#fff'
   },
   optionText: {
@@ -306,11 +305,8 @@ const styles = StyleSheet.create({
   },
   option: {
     backgroundColor: '#EEEEEE',
-    borderRadius: 7,
+    borderRadius: 8,
     margin: 5,
-  },
-  selectedOption: {
-    backgroundColor: '#FF8F66',
   },
   optionText: {
     paddingVertical: 10,

@@ -111,8 +111,8 @@ const Interests = () => {
 
       </View>
 
-      <TouchableOpacity style={styles.button}>  
-          <Text style={styles.buttonText} onPress={handleSaveInterests}>Next </Text>
+      <TouchableOpacity style={styles.button} onPress={handleSaveInterests}>  
+          <Text style={styles.buttonText}>Next </Text>
           </TouchableOpacity>
 
     </ScrollView>
@@ -161,11 +161,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
   },
   option: {
-    borderWidth: 1,
-    borderColor: '#ccc',
     backgroundColor: '#EEEEEE',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 19,
     borderRadius: 5,
     margin: 5,
   },
@@ -176,6 +174,7 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black',
     textAlign: 'center',
+    fontSize: 15,
   },
   text: {
     fontSize: 16,
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF8F66',
     color: '#fff',
     margin: 10,
-    marginTop: 60,
+    marginTop: 50,
     marginLeft: 96,
     marginRight: 96,
     paddingLeft: 24,
