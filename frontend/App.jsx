@@ -58,7 +58,7 @@ export default function App() {
     <UserContext >
       <NavigationContainer>
 
-        <stack.Navigator initialRouteName='personalTraits'>
+        <stack.Navigator initialRouteName='splash'>
         <stack.Screen name="splash" component={Splash} options={{headerShown: false}} />
         <stack.Screen name="home" component={BottomTabBar} options={{headerShown: false, headerTitle: ''}} />
         <stack.Screen name="loginOptions" component={LoginOptions} options={{headerShown: false}} />
