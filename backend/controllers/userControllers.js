@@ -410,6 +410,29 @@ const acceptRequest = asyncHandler (async (req, res) => {
   }
 });
 
+// Endpoint to decline a request of a particular person
+const declineRequest = asyncHandler (async (req, res) => {
+
+  try {
+      const { senderId, recepientId } = req.body;
+
+      const sender = await User.findById(senderId);
+      const recepient = await User.findById(recepientId);
+
+      recepient.friendRequests = recepient.friendRequests.filter((request) => request.toString() !== senderId.toString());
+      sender.sentFriendRequests = sender.sentFriendRequests.filter((request) => request.toString() !== recepientId.toString());
+
+      await sender.save();
+      await recepient.save();
+
+      res.status(200).json({ message: "Friend Request declined successfully." })
+  }
+  catch (error) {
+      console.log("Error", error);
+      res.status(500).json({ message: "Internal server error." })
+  }
+});
+
 
 // Endpoint to Block a User
 const blockUser = asyncHandler (async (req, res) => {
@@ -585,6 +608,7 @@ export {
     getUserFirends,
     sentFriendRequests,
     acceptRequest,
+    declineRequest,
     recievedFriendRequests,
     blockUser,
     unblockUser,

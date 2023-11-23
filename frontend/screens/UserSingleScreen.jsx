@@ -171,6 +171,30 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
     }
   }
 
+  const declineRequest = async (friendRequestId) => {
+
+    try {
+        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request/decline`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                senderId: friendRequestId,
+                recepientId: userId
+            })
+        })
+
+        if (response.ok) {
+            setFriendRequests(friendRequests.filter((request) => request._id !== friendRequestId));
+             navigation.navigate('homePage' , {isReload:"truee"});
+        }
+    }
+    catch (error) {
+        console.log("Error Declining the friend request ", error);
+    }
+}
+
   const handleBlockUser = async (currentUserId, selectedUserId) => {
 
     try {
@@ -184,8 +208,6 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
 
       if (response.ok) {
         console.log("Successfully blocked user");
-        const message = "name has blocked you"
-        handleSend(currentUserId, selectedUserId, message);
         navigation.navigate('homePage', {isReload:"false"} );
       }
       else {
@@ -210,8 +232,6 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
 
       if (response.ok) {
         console.log("Successfully removed as a friend");
-        const message = "name has removed you as a friend"
-        handleSend(currentUserId, selectedUserId, message);
       }
       else {
         console.log("error ", response.status);
@@ -314,11 +334,18 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                       <Text style={styles.btnText}>Request Sent</Text>
                     </Pressable>
                   ) : recievedRequest.some((friend) => friend._id === user.user._id) ? (
+                    <View style={{display:"flex", flexDirection:"row", justifyContent:'space-around'}}>
                     <Pressable
                       onPress={() => acceptRequest(user.user._id)}
                       style={styles.acceptBtn}>
                       <Text style={styles.btnText}>Accept</Text>
                     </Pressable>
+                    <Pressable
+                    onPress={() => declineRequest(user.user._id)}
+                    style={styles.declineBtn}>
+                    <Text style={styles.declineBtnText}>Decline</Text>
+                </Pressable>
+                </View>
                   ) : (
                     <Pressable
                       onPress={() => sendFriendRequest(userId, user.user._id)}
@@ -526,6 +553,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight:"bold"
   },
+  declineBtnText: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight:"500"
+  },
   friendsBtn: {
     backgroundColor: "#82CD47",
     paddingVertical: 15,
@@ -551,6 +583,13 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 25,
     borderRadius: 8,
+  },
+  declineBtn: {
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor:"#FF8F66"
   },
   addFriendBtn: {
     backgroundColor: "#3E206D",
