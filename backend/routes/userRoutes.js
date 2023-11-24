@@ -24,7 +24,8 @@ import {
     getUserByListMySpaceId,
     getUserById,
     getUserSpaces,
-    deleteListing
+    deleteListing,
+    declineRequest
 } from '..//controllers/userControllers.js';
 
 import { getMessages , setMessage , getUser , deleteMessage } from '../controllers/chatController.js';
@@ -76,6 +77,7 @@ router.post('/unfriend-user', unfriendUser);
 router.get('/friend-requests/sent/:userId', sentFriendRequests);
 router.get('/friend-requests/recieved/:userId', recievedFriendRequests);
 router.post('/friend-request/accept', acceptRequest);
+router.post('/friend-request/decline', declineRequest);
 router.get('/messages/:senderId/:recepientId', getMessages);
 router.get('/meetings/:senderId/:recepientId', getMeetings);
 router.post('/messages' , upload.single('imageFile'),setMessage);
