@@ -56,6 +56,7 @@ const BottomTabBar = () => {
           height: 90
         
         },
+        tabBarShowLabel: false
       })}
     >
     
