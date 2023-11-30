@@ -29,7 +29,7 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
     
     const handleEdit = () => {
         setModalVisible(false);
-        navigation.navigate('edit-listing');
+        navigation.navigate('listingOne');
     };
     const handleDelete = () => {
         setModalVisible(false);
