@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
@@ -77,10 +77,23 @@ const RoomAttributes = () => {
           console.error('Error:', error);
         }
       };
+
+      const handleBack = () => {
+        navigation.goBack();
+      }
       
 
 
     return (
+      <View style={styles.mainContainer}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>About the Space</Text>
+      </TouchableOpacity>
+
         <View style={styles.containerMain}>
             <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
@@ -96,7 +109,6 @@ const RoomAttributes = () => {
         ))}
       </View>
             <ScrollView>
-                <Text style={styles.text}>About the Space</Text>
 
 
                 <Text style={styles.text}>Number of Bedrooms</Text>
@@ -140,6 +152,7 @@ const RoomAttributes = () => {
 
             </ScrollView>
 
+        </View>
         </View>
     )
 }
@@ -226,5 +239,27 @@ const styles = StyleSheet.create({
         height: 2,
         backgroundColor: 'lightgray',
         marginHorizontal: 1,
+      },
+      backIconContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: "15%",
+        marginLeft: "2%",
+        marginBottom: "1%",
+      },
+      sortText: {
+        fontSize: 17,
+        fontWeight: "500",
+      },
+      sortIcon: {
+        width: 30,
+        height: 30,
+        margin: 5,
+      },
+      mainContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingBottom: "15%",
       },
 });

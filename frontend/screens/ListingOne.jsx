@@ -232,9 +232,19 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
     )
   }
 
-
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
+    <View style={styles.mainContainer}>
+    <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Where is your room?</Text>
+      </TouchableOpacity>
     <View style={styles.container}>
       <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
@@ -352,6 +362,7 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
           <Text style={styles.buttonText} onPress={handleUpload}>Next {'>'}</Text>
         </TouchableOpacity>
         </ScrollView>
+    </View>
     </View>
 
   );
@@ -536,7 +547,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
-  }
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+    marginBottom: "1%",
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingBottom: "15%",
+  },
 
 
 
