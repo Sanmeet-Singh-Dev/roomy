@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { UserType } from '../UserContext';
@@ -6,12 +6,15 @@ import { IPADDRESS } from "@env"
 import FriendRequest from '../components/FriendRequest'
 import NotificationComponent from '../components/NotificationComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const ShowNotificationScreen = () => {
     const { userId, setUserId } = useContext(UserType);
     const [friendRequests, setFriendRequests ] = useState([]);
     const [notifications , setNotifications ] = useState([]);
+    
     let ipAddress = IPADDRESS;
+    const navigation = useNavigation();
 
     useEffect(() => {
         fetchFriendRequests();
@@ -78,11 +81,22 @@ const ShowNotificationScreen = () => {
         }
     }
 
+    const handleBack = () => {
+      navigation.goBack();
+    }
+
   return (
     <SafeAreaView>
     <ScrollView>
     <View>
     <View style={{padding:10,marginHorizontal:12}}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Notifications</Text>
+      </TouchableOpacity>
         <Text>Your Friend Requests! </Text>
 
         {friendRequests.length > 0 ? (
@@ -110,4 +124,22 @@ const ShowNotificationScreen = () => {
 
 export default ShowNotificationScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "2%",
+    marginBottom: "6%",
+    marginLeft: "-3%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
+  },
+})

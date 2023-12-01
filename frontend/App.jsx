@@ -86,7 +86,7 @@ export default function App() {
         <stack.Screen name="Calendar" component={CalendarScreen} options={{headerShown: false}}/>
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces} options={{ headerShown: false, headerTitle: '' }}/>
-        <stack.Screen name="Notifications" component={ShowNotificationScreen} />
+        <stack.Screen name="Notifications" component={ShowNotificationScreen} options={{headerShown: false}}/>
         <stack.Screen name="BlockedUsers" component={BlockedUserScreen} options={{ headerShown: false }}/>
         <stack.Screen name="edit-listing" component={EditListing} />
       </stack.Navigator>
