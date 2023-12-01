@@ -19,7 +19,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const [userFriends, setUserFriends] = useState([]);
   const [recievedRequest, setRecievedRequest] = useState([]);
   let ipAdress = IPADDRESS;
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchFriendRequests = async () => {

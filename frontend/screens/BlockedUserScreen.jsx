@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserType } from '../UserContext';
@@ -11,6 +11,7 @@ const BlockedUserScreen = () => {
     const ipAdress = IPADDRESS;
     const { userId, setUserId } = useContext(UserType);
     const [ blockedUsers , setBlockedUsers ] = useState([]);
+    const navigation = useNavigation();
 
     useEffect(() => {
         fetchBlockedUsers();
@@ -49,13 +50,45 @@ const BlockedUserScreen = () => {
         }
       }
 
+      const handleBack = () => {
+        navigation.goBack();
+      }
+    
+
   return (
-    blockedUsers.map((userData, index) => (
+    <View style={styles.outerContainer}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Blocked Users</Text>
+      </TouchableOpacity>
+      {blockedUsers.map((userData, index) => (
         <BlockedUserCard key={index} userData={userData} />
-      ))
+      ))}
+      </View>
   )
 }
 
 export default BlockedUserScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "1%",
+    marginBottom: "5%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
+  },
+})
