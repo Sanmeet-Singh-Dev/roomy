@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
@@ -55,7 +55,7 @@ const PersonalTraits = () => {
           'Authorization': `Bearer ${token}`, // Include the token as a bearer token
         },
         body: JSON.stringify({
-          traits: selectedTraits, // Pass the selected interests array
+          traits: selectedTraits,
         }),
       });
   
@@ -63,7 +63,7 @@ const PersonalTraits = () => {
         // Handle a successful response
         const data = await response.json();
         const userName = data.name;
-        navigation.navigate('home', { userName: userName });
+        navigation.navigate('profileCreated', { userName: userName });
       } else {
         // Handle an unsuccessful response (e.g., show an error message)
         console.error('Error updating traits.');
@@ -76,9 +76,21 @@ const PersonalTraits = () => {
     }
   };
   
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
     <View style={styles.containerMain}>
+      <SafeAreaView>
+      <ScrollView>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Your Personal Traits</Text>
+      </TouchableOpacity>
       <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -92,7 +104,7 @@ const PersonalTraits = () => {
         </View>
       ))}
     </View>
-      <ScrollView>
+      
       <Text style={styles.text}>Select Your Personal Traits:</Text>
       <View style={styles.container}>
 
@@ -112,11 +124,11 @@ const PersonalTraits = () => {
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleSaveTraits}>  
-          <Text style={styles.buttonText}>Next</Text>
-          </TouchableOpacity>
+        <Text style={styles.buttonText}>Next</Text>
+      </TouchableOpacity>
 
     </ScrollView>
-
+    </SafeAreaView>
     </View>
   )
 }
@@ -200,5 +212,21 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 14,
     borderRadius: 8,
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "2%",
+    marginLeft: "2%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
 });

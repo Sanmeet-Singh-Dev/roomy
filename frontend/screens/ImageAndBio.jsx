@@ -128,12 +128,22 @@ const ImageAndBio = () => {
     Keyboard.dismiss();
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
 
   return (
     <TouchableWithoutFeedback onPress={handlePressOutside}>
     <View style={styles.container}>
       <SafeAreaView>
-
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Image and Bio</Text>
+      </TouchableOpacity>
       <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -344,5 +354,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlignVertical: 'top',
     height: 80,
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "2%",
+    marginLeft: "2%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
 });

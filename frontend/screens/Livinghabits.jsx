@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,9 +61,21 @@ const Livinghabits = () => {
        
           }
       };
+      const handleBack = () => {
+        navigation.goBack();
+      }
 
   return (
     <View style={styles.container}>
+      <SafeAreaView>
+        <ScrollView>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Your Personal and Living Habits</Text>
+      </TouchableOpacity>
         <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -77,8 +89,6 @@ const Livinghabits = () => {
         </View>
       ))}
     </View>
-        <SafeAreaView>
-        <ScrollView>
 
         <Text style={{ marginLeft: 20 , marginBottom: 5}}>Smoking</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
@@ -312,5 +322,21 @@ const styles = StyleSheet.create({
     },
     selectedOptionText: {
       color: '#fff',
+    },
+    backIconContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: "2%",
+      marginLeft: "2%",
+    },
+    sortIcon: {
+      width: 30,
+      height: 30,
+      margin: 5,
+    },
+    sortText: {
+      fontSize: 17,
+      fontWeight: "500",
     },
 });

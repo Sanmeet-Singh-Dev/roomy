@@ -1,6 +1,6 @@
 
 import React, { useContext,useState, useEffect } from 'react';
-import { Button, SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity } from 'react-native';
+import { Button, SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity, Image } from 'react-native';
 import { useNavigation , useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { IPADDRESS } from '@env'
@@ -127,8 +127,20 @@ const saveLocation = () => {
     getPermissions();
   }, []);
 
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Choose your Location</Text>
+      </TouchableOpacity>
        <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -150,12 +162,12 @@ const saveLocation = () => {
           onChangeText={setAddress}
           style={styles.textInput}
         />
-         <TouchableOpacity style={styles.currentButton}>  
-            <Text style={styles.buttonText} onPress={getCurrentLocation}>Set Current Location</Text>
+         <TouchableOpacity style={styles.currentButton} onPress={getCurrentLocation}>  
+            <Text style={styles.buttonText}>Set Current Location</Text>
             </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={geoCode}>  
             <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
+        </TouchableOpacity>
 
         {/* <Button title="Save Location" onPress={geoCode} />
         <Button title="Use Current Location" onPress={getCurrentLocation} /> */}
@@ -205,29 +217,29 @@ const styles = StyleSheet.create({
     },
     currentButton: {
       backgroundColor: '#51367B',
-    color: '#fff',
-    margin: 10,
-    marginTop: 10,
-    marginLeft: 80,
-    marginRight: 80,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
-    borderRadius: 8,
+      color: '#fff',
+      margin: 10,
+      marginTop: "4%",
+      marginLeft: 80,
+      marginRight: 80,
+      paddingLeft: 24,
+      paddingRight: 24,
+      paddingTop: 14,
+      paddingBottom: 14,
+      borderRadius: 8,
     },
     button: {
       backgroundColor: '#FF8F66',
-    color: '#fff',
-    margin: 10,
-    marginTop: 200,
-    marginLeft: 96,
-    marginRight: 96,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
-    borderRadius: 8,
+      color: '#fff',
+      margin: 10,
+      marginTop: "50%",
+      marginLeft: 96,
+      marginRight: 96,
+      paddingLeft: 24,
+      paddingRight: 24,
+      paddingTop: 14,
+      paddingBottom: 14,
+      borderRadius: 8,
     },
     text: {
       fontSize: 25,
@@ -253,5 +265,21 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10
+    },
+    backIconContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: "15%",
+      marginLeft: "2%",
+    },
+    sortIcon: {
+      width: 30,
+      height: 30,
+      margin: 5,
+    },
+    sortText: {
+      fontSize: 17,
+      fontWeight: "500",
     },
 })
