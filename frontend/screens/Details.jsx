@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -79,9 +79,20 @@ const Details = () => {
       Keyboard.dismiss();
     };
 
+    const handleBack = () => {
+      navigation.goBack();
+    }
+
     return (
       <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+            <Image
+              source={require('../assets/back.png')}
+              style={styles.sortIcon}
+            />
+            <Text style={styles.sortText}>Get your profile started</Text>
+         </TouchableOpacity>
       <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -180,7 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginTop: 50,
+    marginTop: 40,
     marginBottom: 40,
     width: '27%'
   },
@@ -277,6 +288,21 @@ const styles = StyleSheet.create({
     marginBottom: 16, 
     marginLeft: 10,
     alignSelf: 'start',
-    
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
 });

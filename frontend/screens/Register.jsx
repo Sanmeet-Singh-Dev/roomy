@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, Platform, StatusBar, Button, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Platform, StatusBar, Button, TextInput, TouchableOpacity, Image } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
@@ -46,6 +46,10 @@ const Register = () => {
         }
     };
 
+    const handleBack = () => {
+        navigation.goBack();
+    };
+
 
     return (
         <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
@@ -79,8 +83,8 @@ const Register = () => {
                 style={styles.textInput}
             />
 
-           <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={handleRegister}>Create Account</Text>
+           <TouchableOpacity style={styles.button} onPress={handleRegister}>  
+            <Text style={styles.buttonText}>Create Account</Text>
             </TouchableOpacity>
 
         </SafeAreaView>

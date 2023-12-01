@@ -338,8 +338,7 @@ export default Home
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // or 'contain', based on your preference
-    // Other image background styles
+    resizeMode: 'cover',
   },
   container: {
     flex: 1,
