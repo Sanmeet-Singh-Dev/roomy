@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { IPADDRESS } from '@env'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserInfo = (userId) => {
    
@@ -10,7 +11,19 @@ const UserInfo = (userId) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`http://${iPAdress}:6000/api/users/user/${userId.userId}`);
+                const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+                const response = await fetch(`http://${iPAdress}:6000/api/users/user/${userId.userId}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                    }
+                  });
                 const data = await response.json();
                 setUserData(data);
             }

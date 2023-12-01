@@ -34,7 +34,13 @@ const ListMySpace = () => {
         const token = await AsyncStorage.getItem("jwt");
         const decodedToken = jwt_decode(token);
         const userId = decodedToken.userId;
-        const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
+        const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch');
         }
@@ -58,7 +64,14 @@ const ListMySpace = () => {
       const token = await AsyncStorage.getItem("jwt");
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
-      const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
+    
+      const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch');
       }

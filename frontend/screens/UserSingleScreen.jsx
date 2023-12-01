@@ -4,7 +4,7 @@ import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import { useNavigation } from '@react-navigation/native'
 import SpaceCard from '../components/SpaceCard';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserSingleScreen = ({ route, onUnblockUser }) => {
   const { user } = route.params;
@@ -24,7 +24,19 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/sent/${userId}`);
+        const token = await AsyncStorage.getItem('jwt');
+        if (!token) {
+          // Handle the case where the token is not available
+          console.error('No authentication token available.');
+          return;
+        }
+        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/sent/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         const data = await response.json();
         if (response.ok) {
           setFriendRequets(data);
@@ -44,7 +56,19 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   useEffect(() => {
     const fetchRecievedRequests = async () => {
       try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/recieved/${userId}`);
+        const token = await AsyncStorage.getItem('jwt');
+        if (!token) {
+          // Handle the case where the token is not available
+          console.error('No authentication token available.');
+          return;
+        }
+        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/recieved/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         const data = await response.json();
         if (response.ok) {
           setRecievedRequest(data);
@@ -64,7 +88,19 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   useEffect(() => {
     const fetchUserFriends = async () => {
       try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/friends/${userId}`);
+        const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://${ipAdress}:6000/api/users/friends/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         const data = await response.json();
         if (response.ok) {
           setUserFriends(data);
@@ -103,10 +139,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
 
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
       const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ currentUserId, selectedUserId })
       })
@@ -130,10 +173,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
         message: message
       };
 
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
       const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data)
       })
@@ -149,10 +199,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const acceptRequest = async (friendRequestId) => {
 
     try {
+      const token = await AsyncStorage.getItem('jwt');
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('No authentication token available.');
+        return;
+      }
       const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request/accept`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`, 
         },
         body: JSON.stringify({
           senderId: friendRequestId,
@@ -174,10 +231,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const declineRequest = async (friendRequestId) => {
 
     try {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
         const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request/decline`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({
                 senderId: friendRequestId,
@@ -198,10 +262,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const handleBlockUser = async (currentUserId, selectedUserId) => {
 
     try {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
       const response = await fetch(`http://${ipAdress}:6000/api/users/block-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ currentUserId, selectedUserId })
       })
@@ -222,10 +293,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const unfriendUser = async (currentUserId, selectedUserId) => {
 
     try {
+      const token = await AsyncStorage.getItem('jwt');
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('No authentication token available.');
+        return;
+      }
       const response = await fetch(`http://${ipAdress}:6000/api/users/unfriend-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ currentUserId, selectedUserId })
       })

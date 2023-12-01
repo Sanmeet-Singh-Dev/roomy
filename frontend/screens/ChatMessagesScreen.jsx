@@ -9,6 +9,7 @@ import * as ImagePicker from "expo-image-picker";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChatMessagesScreen = () => {
     const iPAdress = IPADDRESS;
@@ -49,7 +50,19 @@ const ChatMessagesScreen = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${recepientId}`)
+            const token = await AsyncStorage.getItem('jwt');
+            if (!token) {
+              // Handle the case where the token is not available
+              console.error('No authentication token available.');
+              return;
+            }
+            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${recepientId}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                }
+              })
             // console.log("response message",response)
             const data = await response.json();
             // console.log("Data ",data);
@@ -72,7 +85,19 @@ const ChatMessagesScreen = () => {
     useEffect(() => {
         const fetchRecepientData = async () => {
             try {
-                const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`);
+                const token = await AsyncStorage.getItem('jwt');
+                if (!token) {
+                  // Handle the case where the token is not available
+                  console.error('No authentication token available.');
+                  return;
+                }
+                const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                    }
+                  });
                 // console.log("response ", response);
                 const data = await response.json();
                 // console.log("User data",data)
@@ -126,10 +151,17 @@ const ChatMessagesScreen = () => {
                 messageText: messageText,
               };
 
+              const token = await AsyncStorage.getItem('jwt');
+              if (!token) {
+                // Handle the case where the token is not available
+                console.error('No authentication token available.');
+                return;
+              }
             const response = await fetch(`http://${ipAdress}:6000/api/users/messages`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(data)
             })
@@ -190,10 +222,17 @@ const ChatMessagesScreen = () => {
 
     const deleteMessages = async (messageIds) => {
         try {
+            const token = await AsyncStorage.getItem('jwt');
+            if (!token) {
+              // Handle the case where the token is not available
+              console.error('No authentication token available.');
+              return;
+            }
             const response = await fetch(`http://${ipAdress}:6000/api/users/deleteMessages`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({ messages: messageIds })
             });

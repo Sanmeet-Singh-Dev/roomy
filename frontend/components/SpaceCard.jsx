@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from '@env'
 import { UserType } from '../UserContext';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SpaceCard = ({ space,showOptions, onReload }) => {
     const navigation = useNavigation();
@@ -43,11 +45,17 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
               text: 'Delete',
               onPress: async () => {
                 try {
+                    const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
                   const response = await fetch(`http://${iPAdress}:6000/api/users/listings/${userId}/${space.id}`, {
                     method: 'DELETE',
                     headers: {
                       'Content-Type': 'application/json',
-
+                      'Authorization': `Bearer ${token}`,
                     },
                   });
       

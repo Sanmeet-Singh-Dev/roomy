@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: vw } = Dimensions.get('window');
 
@@ -95,10 +96,17 @@ const CreateMeeting = ({ route }) => {
             creatTodo: creatTodo
           };
 
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
         const response = await fetch(`http://${ipAdress}:6000/api/users/meetings`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(data)
         })
@@ -121,10 +129,17 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
           message: message
         };
 
+        const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
       const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
           method: "POST",
           headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify(data)
       })

@@ -27,7 +27,19 @@ const ProfileScreen = () => {
     useEffect(() => {
       const fetchUserData = async () => {
         try {
-          const response = await fetch(`http://${ipAdress}:6000/api/users/users/${userId}`);
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+          const response = await fetch(`http://${ipAdress}:6000/api/users/users/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+            }
+          });
           if (!response.ok) {
             throw new Error('Failed to fetch user data');
           }
