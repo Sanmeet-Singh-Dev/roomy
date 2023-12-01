@@ -4,6 +4,7 @@ import { UserType } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
 import NewChat from '../components/NewChat';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChatsScreen = () => {
     const iPAdress = IPADDRESS;
@@ -17,7 +18,19 @@ const ChatsScreen = () => {
     useEffect(()=> {
         const acceptedFriendsList = async () => {
             try{
-                const response = await fetch(`http://${ipAdress}:6000/api/users/accepted-friends/${userId}`);
+                const token = await AsyncStorage.getItem('jwt');
+                if (!token) {
+                  // Handle the case where the token is not available
+                  console.error('No authentication token available.');
+                  return;
+                }
+                const response = await fetch(`http://${ipAdress}:6000/api/users/accepted-friends/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                    }
+                  });
                 const data = await response.json();
                 if(response.ok){
                     setAcceptedFriends(data);

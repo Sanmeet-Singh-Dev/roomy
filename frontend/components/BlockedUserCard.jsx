@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, Pressable } fr
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BlockedUserCard = ({ userData }) => {
   const navigation = useNavigation();
@@ -11,10 +12,17 @@ const BlockedUserCard = ({ userData }) => {
 
   const handleUnblockUser = async ( currentUserId, selectedUserId ) => {
     try{
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
       const response = await fetch(`http://${ipAdress}:6000/api/users/unblock-user`,{
           method: "POST",
           headers: {
               "Content-Type": "application/json",
+              'Authorization': `Bearer ${token}`,
           },
           body:JSON.stringify({currentUserId,selectedUserId})
       })
@@ -40,10 +48,17 @@ const BlockedUserCard = ({ userData }) => {
             message: message
           };
 
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
         const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(data)
         })

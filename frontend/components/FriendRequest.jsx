@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { UserType } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
     const { userId, setUserId } = useContext(UserType);
@@ -12,10 +13,17 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
     const acceptRequest = async (friendRequestId) => {
 
         try {
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
             const response = await fetch(`http://${ipAddress}:6000/api/users/friend-request/accept`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     senderId: friendRequestId,
@@ -38,10 +46,17 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
     const declineRequest = async (friendRequestId) => {
 
         try {
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
             const response = await fetch(`http://${ipAddress}:6000/api/users/friend-request/decline`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`, 
                 },
                 body: JSON.stringify({
                     senderId: friendRequestId,
@@ -67,10 +82,17 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
             message: message
           };
     
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
           const response = await fetch(`http://${ipAddress}:6000/api/users/request-notification`, {
             method: "POST",
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(data)
           })

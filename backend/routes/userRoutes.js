@@ -66,26 +66,26 @@ router.post('/', registerUser);
 router.post('/auth', authUser);
 router.post('/logout', logoutUser);
 router.put('/profile', protect, updateUserProfile);
-router.get('/accepted-friends/:userId', getAcceptedFriends);
-router.get('/friends/:userId', getUserFirends)
-router.get('/friend-request/:userId', getFriendRequests);
-router.get('/notifications/:userId', getUserNotifications);
-router.post('/friend-request', sendFriendRequest);
-router.post('/block-user', blockUser);
-router.post('/unblock-user', unblockUser);
-router.post('/unfriend-user', unfriendUser);
-router.get('/friend-requests/sent/:userId', sentFriendRequests);
-router.get('/friend-requests/recieved/:userId', recievedFriendRequests);
-router.post('/friend-request/accept', acceptRequest);
-router.post('/friend-request/decline', declineRequest);
-router.get('/messages/:senderId/:recepientId', getMessages);
-router.get('/meetings/:senderId/:recepientId', getMeetings);
-router.post('/messages' , upload.single('imageFile'),setMessage);
-router.post('/meetings' , setMeeting);
-router.get('/user/:userId', getUser);
-router.post('/deleteMessages' , deleteMessage);
-router.post('/deleteMeetings', deleteMeeting);
-router.put('/updateMeetings', updateMeeting);
+router.get('/accepted-friends/:userId', protect, getAcceptedFriends);
+router.get('/friends/:userId', protect, getUserFirends)
+router.get('/friend-request/:userId', protect, getFriendRequests);
+router.get('/notifications/:userId', protect, getUserNotifications);
+router.post('/friend-request', protect, sendFriendRequest);
+router.post('/block-user', protect, blockUser);
+router.post('/unblock-user', protect, unblockUser);
+router.post('/unfriend-user', protect, unfriendUser);
+router.get('/friend-requests/sent/:userId', protect, sentFriendRequests);
+router.get('/friend-requests/recieved/:userId', protect, recievedFriendRequests);
+router.post('/friend-request/accept', protect, acceptRequest);
+router.post('/friend-request/decline', protect, declineRequest);
+router.get('/messages/:senderId/:recepientId', protect, getMessages);
+router.get('/meetings/:senderId/:recepientId', protect, getMeetings);
+router.post('/messages' , protect, upload.single('imageFile'),setMessage);
+router.post('/meetings' , protect, setMeeting);
+router.get('/user/:userId', protect, getUser);
+router.post('/deleteMessages' , protect, deleteMessage);
+router.post('/deleteMeetings', protect, deleteMeeting);
+router.put('/updateMeetings', protect, updateMeeting);
 router.put('/bio', protect, updateUserBio)
 router.put('/habits', protect, updateUserHabits)
 router.put('/interests', protect, updateUserInterests)
@@ -94,8 +94,8 @@ router.put('/update-room-attributes', protect, updateUserRoomAttributes)
 router.post('/update-room-details', protect, saveRoomDetails)
 router.get('/:id/preferences', protect, getUserPreferences)
 
-router.post('/save-list-my-space', saveListMySpaceData);
-router.get('/list-spaces', getAllListsMySpace);
+router.post('/save-list-my-space', protect, saveListMySpaceData);
+router.get('/list-spaces', protect, getAllListsMySpace);
 router.post('/set-location', protect, setLocation);
 
 router.get('/all', getAllUsers);
@@ -103,12 +103,12 @@ router.get('/all', getAllUsers);
 // router.get('/preferences', protect, getUserPreferences);
 router.get('/compatibility', protect, calculateCompatibilityWithAllUsers);
 router.get('/getBlockedUsers', protect, getBlockedUsers);
-router.post('/request-notification' , setNotification)
-router.get('/notification/:recepientId' , getNotifications);
-router.post('/deleteNotification', deleteNotification);
+router.post('/request-notification' , protect, setNotification)
+router.get('/notification/:recepientId' , protect, getNotifications);
+router.post('/deleteNotification', protect, deleteNotification);
 router.get('/getUserByListMySpace/:listMySpaceId', getUserByListMySpaceId);
-router.get('/users/:userId', getUserById);
-router.get('/users/:userId/spaces', getUserSpaces);
-router.delete('/listings/:userId/:spaceId', deleteListing);
+router.get('/users/:userId', protect, getUserById);
+router.get('/users/:userId/spaces', protect, getUserSpaces);
+router.delete('/listings/:userId/:spaceId', protect, deleteListing);
 
 export default router;

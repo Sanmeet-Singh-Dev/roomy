@@ -164,7 +164,19 @@ const Home = () => {
 
   const fetchNotifications = async (userId) => {
     try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/notification/${userId}`)
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://${ipAdress}:6000/api/users/notification/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        })
         const data = await response.json();
         if (response.ok) {
             setNotifications(data);
@@ -203,10 +215,17 @@ async function schedulePushNotification(notification) {
 
   const deleteNotification = async (id) => {
     try {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
         const response = await fetch(`http://${ipAdress}:6000/api/users/deleteNotification`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ id : id })
         });

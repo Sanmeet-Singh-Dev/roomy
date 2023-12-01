@@ -134,10 +134,17 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
 
       };
 
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
       const response = await fetch(`http://${iPAdress}:6000/api/users/save-list-my-space`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });

@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, TouchableWithoutFeedback } from 'react-n
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const UserCard = ({ userData }) => {
   const navigation = useNavigation();
@@ -13,7 +15,18 @@ const UserCard = ({ userData }) => {
   useEffect(() => {
     const fetchUserFriends = async () => {
         try{
-            const response = await fetch(`http://${ipAdress}:6000/api/users/friends/${userId}`);
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            console.error('No authentication token available.');
+            return;
+          }
+            const response = await fetch(`http://${ipAdress}:6000/api/users/friends/${userId}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              }
+            });
             const data = await response.json();
             if(response.ok){
                 setUserFriends(data);

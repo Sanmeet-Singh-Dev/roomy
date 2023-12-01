@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet , TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SliderBox } from 'react-native-image-slider-box';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from '@env'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserType } from '../UserContext';
 
 const SpaceDetails = ({ route }) => {
   const navigation = useNavigation();
@@ -12,6 +14,7 @@ const SpaceDetails = ({ route }) => {
   let user;
   const [userData, setUserData] = useState({});
   const [ userFriends , setUserFriends ] = useState([]);
+  const { userId, setUserId } = useContext(UserType);
   
 
   const renderImageCarousel = () => (
@@ -21,7 +24,19 @@ const SpaceDetails = ({ route }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://${iPAdress}:6000/api/users/users/${space.user}`);
+        const token = await AsyncStorage.getItem('jwt');
+        if (!token) {
+          // Handle the case where the token is not available
+          console.error('No authentication token available.');
+          return;
+        }
+        const response = await fetch(`http://${iPAdress}:6000/api/users/users/${space.user}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch user data');
         }
@@ -39,7 +54,18 @@ const SpaceDetails = ({ route }) => {
   useEffect(() => {
     const fetchUserFriends = async () => {
         try{
-            const response = await fetch(`http://${iPAdress}:6000/api/users/friends/${userId}`);
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+           console.error('No authentication token available.');
+            return;
+          }
+            const response = await fetch(`http://${iPAdress}:6000/api/users/friends/${userId}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+              }
+            });
             const data = await response.json();
             if(response.ok){
                 setUserFriends(data);

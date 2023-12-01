@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const UserChat = ({ item }) => {
     const iPAdress = IPADDRESS;
@@ -13,8 +15,19 @@ const UserChat = ({ item }) => {
 
     const fetchMessages = async () => {
         try {
-            
-            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${item._id}`)
+            const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${item._id}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                }
+              })
             const data = await response.json();
             if (response.ok) {
                 setMessages(data);

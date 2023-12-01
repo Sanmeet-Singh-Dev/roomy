@@ -6,6 +6,8 @@ import UserChat from '../components/UserChat';
 import { Entypo } from '@expo/vector-icons';
 import { IPADDRESS } from "@env"
 import { ImageBackground } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const ChatsScreen = () => {
 
@@ -19,7 +21,18 @@ const ChatsScreen = () => {
     useEffect(()=> {
         const acceptedFriendsList = async () => {
             try{
-                const response = await fetch(`http://${ipAdress}:6000/api/users/accepted-friends/${userId}`);
+                const token = await AsyncStorage.getItem('jwt');
+                if (!token) {
+                  console.error('No authentication token available.');
+                  return;
+                }
+                const response = await fetch(`http://${ipAdress}:6000/api/users/accepted-friends/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`,
+                    }
+                  });
                 const data = await response.json();
                 if(response.ok){
                     setAcceptedFriends(data);

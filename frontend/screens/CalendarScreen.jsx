@@ -23,6 +23,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation , useRoute} from '@react-navigation/native';
 import { IPADDRESS } from "@env"
 import { UserType } from '../UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const datesWhitelist = [
   {
@@ -53,7 +54,19 @@ const CalendarScreen = () => {
 
   const fetchMeetings = async () => {
     try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/meetings/${userId}/${recepientId}`)
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://${ipAdress}:6000/api/users/meetings/${userId}/${recepientId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        })
         
         const data = await response.json();
 
@@ -85,11 +98,17 @@ useEffect(() => {
   const updateSelectedTask = async ({date, meetings}) => {
 
     try {
-
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
         const response = await fetch(`http://${ipAdress}:6000/api/users/updateMeetings`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ meetings: meetings, date: date })
         });
@@ -108,10 +127,17 @@ useEffect(() => {
 
   const deleteSelectedTask = async ({date, meetings}) => {
     try {
+      const token = await AsyncStorage.getItem('jwt');
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('No authentication token available.');
+        return;
+      }
         const response = await fetch(`http://${ipAdress}:6000/api/users/deleteMeetings`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ meetings: meetings, date: date })
         });

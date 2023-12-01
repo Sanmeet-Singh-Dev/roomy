@@ -5,6 +5,7 @@ import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import FriendRequest from '../components/FriendRequest'
 import NotificationComponent from '../components/NotificationComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ShowNotificationScreen = () => {
     const { userId, setUserId } = useContext(UserType);
@@ -19,7 +20,18 @@ const ShowNotificationScreen = () => {
 
     const fetchFriendRequests = async () => {
         try{
-            const response = await axios.get(`http://${ipAddress}:6000/api/users/friend-request/${userId}`);
+            const token = await AsyncStorage.getItem('jwt');
+            if (!token) {
+              console.error('No authentication token available.');
+              return;
+            }
+            const response = await axios.get(`http://${ipAddress}:6000/api/users/friend-request/${userId}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                }
+              });
             if(response.status == 200){
                 const friendRequestsData = response.data.map((friendRequest) => ({
                     _id: friendRequest._id,
@@ -38,7 +50,18 @@ const ShowNotificationScreen = () => {
 
     const fetchUserNotifications = async () => {
         try{
-            const response = await axios.get(`http://${ipAddress}:6000/api/users/notifications/${userId}`);
+            const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            console.error('No authentication token available.');
+            return;
+          }
+            const response = await axios.get(`http://${ipAddress}:6000/api/users/notifications/${userId}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`,
+                }
+              });
             if(response.status == 200){
                 const notificationsData = response.data.map((notifications) => ({
                     senderId: notifications.senderId,
