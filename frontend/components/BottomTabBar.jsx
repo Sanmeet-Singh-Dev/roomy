@@ -16,6 +16,7 @@ const BottomTabBar = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconPath;
+          let customSize = size;
 
           if (route.name === 'homePage') {
             iconPath = focused
@@ -26,6 +27,7 @@ const BottomTabBar = () => {
               ? require('../assets/spaces-icon.png')
               : require('../assets/spaces-unfocused-icon.png');
           } else if (route.name === 'listMySpace') {
+            customSize = size + 20;
             iconPath = focused
               ? require('../assets/list-space-icon.png')
               : require('../assets/listing-unfocused-icon.png');
@@ -39,7 +41,14 @@ const BottomTabBar = () => {
               : require('../assets/profile-unfocused-icon.png');
           }
 
-          return <Image source={iconPath} style={{ width: size, height: size }} />;
+          return <View style={{
+          }}>
+                  <Image source={iconPath} style={{
+                    width: customSize,
+                    height: customSize,
+
+                     }} />
+                </View>
         },
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',

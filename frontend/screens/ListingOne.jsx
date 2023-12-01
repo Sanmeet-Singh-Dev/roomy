@@ -225,10 +225,19 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
     )
   }
 
-
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Roommate Profile</Text>
+      </TouchableOpacity>
       <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
@@ -341,8 +350,8 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
         </View>
 
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={handleUpload}>Next {'>'}</Text>
+        <TouchableOpacity style={styles.button} onPress={handleUpload}>
+          <Text style={styles.buttonText}>Next {'>'}</Text>
         </TouchableOpacity>
         </ScrollView>
     </View>
@@ -368,9 +377,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonImage: {
-    width: 40, // Adjust the width according to your image size
-    height: 40, // Adjust the height according to your image size
-    marginRight: 1, // Add spacing between the image and text if needed
+    width: 40,
+    height: 40,
+    marginRight: 1,
   },
   button: {
     backgroundColor: '#FF8F66',
@@ -529,9 +538,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
-  }
-
-
-
-
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "-2%",
+    marginBottom: "5%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
+  },
 })

@@ -76,7 +76,7 @@ const ListMySpace = () => {
     <SafeAreaView style={styles.safeAreaView}>
     <ScrollView>
     <View style={styles.container}>
-      <Text style={styles.listingText}>I want to list my Space</Text>
+      <Text style={styles.listingText}>I Want to List My Space</Text>
       <TouchableOpacity style={styles.button} onPress={handleListMySpace}>
         <Text style={styles.buttonText}>List My Space</Text>
       </TouchableOpacity>

@@ -130,14 +130,14 @@ const ProfileScreen = () => {
               source={require('../assets/setting-icon.png')}
               style={styles.icon}
             />
-            <Text>Settings</Text>
+            <Text>Blocked Users</Text>
           </TouchableOpacity>
           <View style={styles.profileButton}>
           <Image
               source={require('../assets/calender.png')}
               style={styles.icon}
             />
-            <Text>Appointments</Text>
+            <Text>Meetings</Text>
           </View>
           <TouchableOpacity style={styles.logoutButton}  onPress={handleLogout}>
           <Image

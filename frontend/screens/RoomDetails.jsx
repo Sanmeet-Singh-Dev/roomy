@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Button, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Button, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
 import { useNavigation } from '@react-navigation/native'
@@ -94,9 +94,20 @@ const RoomDetails = () => {
     ));
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
   return (
     <View style={styles.containerMain}>
-                  <View style={styles.progressBar}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Cost & Availability</Text>
+      </TouchableOpacity>
+      <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
             <View
@@ -171,7 +182,7 @@ const styles = StyleSheet.create({
   },
   selectedOption: {
     backgroundColor: '#FF8F66',
-    color: '#fff',
+    color:'#fff'
   },
   text: {
     fontSize: 17,
@@ -226,6 +237,23 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: 'lightgray',
     marginHorizontal: 1,
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "-2%",
+    marginBottom: "5%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
 });
 

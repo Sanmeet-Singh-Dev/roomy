@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
@@ -33,8 +33,6 @@ const RoomAttributes = () => {
             setSelectedAttributes((prevAttribute) => [...prevAttribute, attribute]);
         }
     };
-
-
 
     const handleSaveAttributes = async () => {
         let ipAddress = IPADDRESS;
@@ -78,11 +76,20 @@ const RoomAttributes = () => {
         }
       };
       
-
+      const handleBack = () => {
+        navigation.goBack();
+      }
 
     return (
         <View style={styles.containerMain}>
-            <View style={styles.progressBar}>
+          <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+            <Image
+              source={require('../assets/back.png')}
+              style={styles.sortIcon}
+            />
+            <Text style={styles.sortText}>About the Space</Text>
+          </TouchableOpacity>
+        <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
             <View
@@ -226,5 +233,22 @@ const styles = StyleSheet.create({
         height: 2,
         backgroundColor: 'lightgray',
         marginHorizontal: 1,
+      },
+      backIconContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: "15%",
+        marginLeft: "-2%",
+        marginBottom: "5%",
+      },
+      sortIcon: {
+        width: 30,
+        height: 30,
+        margin: 5,
+      },
+      sortText: {
+        fontSize: 17,
+        fontWeight: "500",
       },
 });
