@@ -93,20 +93,20 @@ const RoomDetails = () => {
       </TouchableOpacity>
     ));
   };
-
   const handleBack = () => {
     navigation.goBack();
   }
 
   return (
+    <View style={styles.mainContainer}> 
+    <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+    <Image
+      source={require('../assets/back.png')}
+      style={styles.sortIcon}
+    />
+    <Text style={styles.sortText}>Cost & Availability </Text>
+  </TouchableOpacity>
     <View style={styles.containerMain}>
-      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
-        <Image
-          source={require('../assets/back.png')}
-          style={styles.sortIcon}
-        />
-        <Text style={styles.sortText}>Cost & Availability</Text>
-      </TouchableOpacity>
       <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
@@ -152,6 +152,7 @@ const RoomDetails = () => {
           <Text style={styles.buttonText}>Next {'>'}</Text>
         </TouchableOpacity>
       </ScrollView>
+    </View>
     </View>
   );
 };
@@ -243,17 +244,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: "15%",
-    marginLeft: "-2%",
-    marginBottom: "5%",
+    marginLeft: "2%",
+    marginBottom: "1%",
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
   },
   sortIcon: {
     width: 30,
     height: 30,
     margin: 5,
   },
-  sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingBottom: "15%",
   },
 });
 

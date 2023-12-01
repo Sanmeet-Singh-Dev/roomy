@@ -78,11 +78,11 @@ export default function App() {
         <stack.Screen name="Chats" component={ChatsScreen} options={{headerShown: false}}/>
         <stack.Screen name="newChat" component={NewChatScreen} options={{headerShown: false}}/>
         <stack.Screen name="Messages" component={ChatMessagesScreen} options={{headerShown: true}}/>  
-        <stack.Screen name="listingOne" component={ListingOne} options={{headerShown: false}}/>
+        <stack.Screen name="listingOne" component={ListingOne} options={{ headerShown: false }}/>
         <stack.Screen name="listMySpace" component={ListMySpace}/>
         <stack.Screen name="room-attributes" component={RoomAttributes} options={{ headerShown: false }}/>
         <stack.Screen name="single-space" component={SingleSpace} options={{ headerShown: false }}/>
-        <stack.Screen name="room-details" component={RoomDetails} options={{headerShown: false}}/>
+        <stack.Screen name="room-details" component={RoomDetails} options={{ headerShown: false }}/>
         <stack.Screen name="Calendar" component={CalendarScreen} options={{headerShown: false}}/>
         <stack.Screen name="CreateMeeting" component={CreateMeeting} options={{ headerShown: false }} />
         <stack.Screen name="Spaces" component={Spaces} options={{ headerShown: false, headerTitle: '' }}/>
