@@ -57,11 +57,12 @@ export default UserInfo
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 20,
-        marginTop: 20,
+        fontSize: 22,
+        marginBottom: 6,
+        fontWeight: "500",
     },
     tagline: {
-        fontSize: 13,
+        fontSize: 14,
         color: '#797979',
     },
     image: {
@@ -82,8 +83,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         alignContent: 'center',
-        marginTop: 20,
-        marginBottom: 15,
+        alignSelf: 'center',
+        marginTop: 13,
         width: "100%",
     },
 })

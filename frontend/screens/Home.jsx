@@ -271,10 +271,19 @@ async function schedulePushNotification(notification) {
       <SafeAreaView>
         <ScrollView>
 
-          <Ionicons 
-            onPress={() => navigation.navigate("Notifications")}
-            name="notifications" size={24} color="black" style={styles.notificationIcon}
-          />
+          <View style={styles.locationandNotication}>
+            <View style={styles.locationContainer}>
+              <Image
+                  source={require('../assets/currentlocation.png')}
+                  style={styles.locationIcon}
+                />
+                <Text style={styles.locationText}>Fraser Street, Vancouvcer</Text>
+            </View>
+            <Ionicons 
+              onPress={() => navigation.navigate("Notifications")}
+              name="notifications" size={24} color="black" style={styles.notificationIcon}
+            />
+          </View>
 
           <View style={styles.header}>
            <UserInfo userId={userId}/>
@@ -344,6 +353,28 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
   },
+  locationandNotication: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  locationContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    justifyContent: "flex-start",
+  },
+  locationIcon: {
+    width: 25,
+    height: 25,
+  },
+  locationText: {
+    fontSize: 16,
+  },
   buttonText: {
     color: '#fff',
     textAlign: 'center',
@@ -351,7 +382,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   notificationIcon: {
-    alignSelf: "flex-end",
     marginRight: 10,
   },
   button: {
