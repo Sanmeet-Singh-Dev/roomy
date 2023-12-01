@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Button, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
-import { View, Text, TouchableOpacity, Button, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
 import { useNavigation } from '@react-navigation/native'
@@ -108,13 +107,6 @@ const RoomDetails = () => {
     <Text style={styles.sortText}>Cost & Availability </Text>
   </TouchableOpacity>
     <View style={styles.containerMain}>
-      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
-        <Image
-          source={require('../assets/back.png')}
-          style={styles.sortIcon}
-        />
-        <Text style={styles.sortText}>Cost & Availability</Text>
-      </TouchableOpacity>
       <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>

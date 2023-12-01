@@ -246,13 +246,6 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
         <Text style={styles.sortText}>Where is your room?</Text>
       </TouchableOpacity>
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
-        <Image
-          source={require('../assets/back.png')}
-          style={styles.sortIcon}
-        />
-        <Text style={styles.sortText}>Roommate Profile</Text>
-      </TouchableOpacity>
       <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>

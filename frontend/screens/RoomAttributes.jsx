@@ -93,13 +93,6 @@ const RoomAttributes = () => {
       </TouchableOpacity>
 
         <View style={styles.containerMain}>
-          <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
-            <Image
-              source={require('../assets/back.png')}
-              style={styles.sortIcon}
-            />
-            <Text style={styles.sortText}>About the Space</Text>
-          </TouchableOpacity>
         <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
