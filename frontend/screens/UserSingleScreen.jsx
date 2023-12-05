@@ -495,7 +495,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     margin: 19,
-    borderRadius: 15,
+    marginBottom: 0,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
     backgroundColor: '#fff',
     marginBottom: "60%",
   },

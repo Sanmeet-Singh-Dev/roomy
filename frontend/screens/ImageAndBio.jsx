@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation , useRoute} from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 import { uploadToFirebase } from '../firebase-config';
+import { StatusBar } from 'expo-status-bar';
 import { UserType } from '../UserContext';
 import { manipulateAsync } from 'expo-image-manipulator';
 import { IPADDRESS } from '@env';
@@ -17,6 +18,7 @@ const ImageAndBio = () => {
   // const [selectedImageUri, setSelectedImageUri] = useState(null);
   const route = useRoute();
   const userId = route.params?.userId;
+  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
   const currentStep = 2;
   const steps = 6;
 
@@ -37,8 +39,7 @@ const ImageAndBio = () => {
     }
   }, []);
 
-  const handleImageSelection = async () => {
-
+  const handlePickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -48,6 +49,37 @@ const ImageAndBio = () => {
       if (!result.canceled) {
         const { uri } = result.assets[0];
         const fileName = uri.split('/').pop();
+        const compressedImage = await manipulateAsync(
+          uri,
+          [{ resize: { width: 800, height: 600 } }],
+          { format: 'jpeg', compress: 0.8 }
+        );
+        setSelectedImages([...selectedImages, compressedImage.uri]);
+        // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
+        // Alert.alert('Success Picture uploaded successfully');
+      }
+    } catch (error) {
+      console.error('ImagePicker Error:', error);
+      Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
+    }
+  };
+
+  const handleClickImage = async () => {
+
+
+    try {
+      const cameraResp = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        quality: 1
+
+      });
+
+      // console.log(cameraResp)
+
+      if (!cameraResp.canceled) {
+        const { uri } = cameraResp.assets[0];
+        const fileName = uri.split('/').pop();
 
         const compressedImage = await manipulateAsync(
           uri,
@@ -56,13 +88,27 @@ const ImageAndBio = () => {
         );
 
         setSelectedImages([...selectedImages, compressedImage.uri]);
-
+        // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
+        // Alert.alert('Success Picture uploaded successfully');
       }
     } catch (error) {
       console.error('ImagePicker Error:', error);
       Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
     }
-  };
+
+
+
+  }
+
+  if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
+    return (
+      <View style={styles.container}>
+        <Text>Permission Not Granted {permission?.status}</Text>
+        <StatusBar style="auto" />
+        <Button title="Request Camera Permission" onPress={requestPermission}></Button>
+      </View>
+    )
+  }
 
   const handleSaveProfile = async () => {
     try {
@@ -158,7 +204,26 @@ const ImageAndBio = () => {
       ))}
     </View>
 
-        <Text style={styles.label}>Add your Images</Text>
+    <View style={styles.clickUploadContainer}>
+          <TouchableOpacity onPress={handleClickImage} style={styles.pictureContainer}>
+            <View style={styles.innerContainer}>
+              <Image
+                source={require('../assets/Camera.png')}
+                style={styles.pictureImage}
+              />
+              <Text style={styles.pictureText}>Click a picture</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handlePickImage} style={styles.pictureContainer}>
+            <View style={styles.innerContainer}>
+              <Image
+                source={require('../assets/upload.png')}
+                style={styles.pictureImage}
+              />
+              <Text style={styles.pictureText}>Add from Library</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 
         <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
           {selectedImages.map((uri, index) => (
@@ -169,12 +234,6 @@ const ImageAndBio = () => {
             />
           ))}
         </ScrollView>
-
-        <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.currentButton} onPress={handleImageSelection}>
-            <Text style={styles.buttonText}>Select Image</Text>
-          </TouchableOpacity>
-        </View>
       
         <Text style={styles.label}>What do you currently do?</Text>
 
@@ -258,6 +317,36 @@ export default ImageAndBio
 
 
 const styles = StyleSheet.create({
+  pictureImage: {
+    width: 34,
+    height: 28.8,
+    resizeMode: 'cover',
+  },
+  pictureText: {
+    marginTop: 8,
+    fontSize: 8,
+    fontWeight: 'bold',
+    color:'#9B9B9B'
+  },
+  pictureContainer: {
+    borderWidth: 1,
+    borderColor: '9B9B9B',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 50,
+    width: '45%',
+    marginBottom: 10
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
+  clickUploadContainer: {
+
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+
+
+  },
   container: {
     flex: 1,
     backgroundColor: 'white'
@@ -299,7 +388,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#FF8F66',
+    backgroundColor: '#51367B',
     color: '#fff',
     marginTop: 30,
     paddingHorizontal: 70,
@@ -340,7 +429,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   optionText: {
-    color: 'black', // Change to your desired text color
+    color: 'black',
     textAlign: 'center',
   },
   textArea: {

@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: 20,
   },
   locationContainer: {
     display: "flex",
