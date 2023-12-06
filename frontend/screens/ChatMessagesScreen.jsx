@@ -1,5 +1,6 @@
 import { KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, View, Image } from 'react-native'
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Entypo } from '@expo/vector-icons';
 import EmojiSelector from 'react-native-emoji-selector';
 import { UserType } from '../UserContext';
@@ -282,7 +283,11 @@ const ChatMessagesScreen = () => {
     }
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
+        <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      extraScrollHeight={Platform.OS === 'ios' ? 10 : 0}
+      enableOnAndroid={true}
+    >
             <ScrollView ref={scrollViewRef} contentContainerStyle={{flexGrow:1}} onContentSizeChange={handleContentSizeChange}>
                 {messages.map((item, index) => {
                     if (item.messageType === "text") {
@@ -355,7 +360,6 @@ const ChatMessagesScreen = () => {
                 <Entypo
                     onPress={handleEmojiPress}
                     style={{ marginRight: 5 }} name="emoji-happy" size={24} color="gray" />
-
                 <TextInput
                     value={message}
                     onChangeText={(text) => setMessage(text)}
@@ -385,7 +389,7 @@ const ChatMessagesScreen = () => {
                     setMessage((prevMessage) => prevMessage + emoji)
                 }} />
             )}
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
     )
 }
 

@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
@@ -76,6 +82,8 @@ const Home = () => {
     useEffect(() => {
       registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
     }, []);
+
+   
 
     async function registerForPushNotificationsAsync() {
       let token;
@@ -200,6 +208,17 @@ notifications.map((notification) => {
   })
 }
 
+let [fontsLoaded] = useFonts({
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+  return null;
+}
+
 async function schedulePushNotification(notification) {
   if(notification.isNotified === false){
     deleteNotification(notification._id);
@@ -277,12 +296,15 @@ async function schedulePushNotification(notification) {
                   source={require('../assets/currentlocation.png')}
                   style={styles.locationIcon}
                 />
-                <Text style={styles.locationText}>Fraser Street, Vancouvcer</Text>
+                <Text style={styles.locationText}>Downtown, Vancouvcer</Text>
             </View>
-            <Ionicons 
-              onPress={() => navigation.navigate("Notifications")}
-              name="notifications" size={24} color="black" style={styles.notificationIcon}
-            />
+
+          <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
+                <Image
+                  source={require('../assets/notificationIcon.png')}
+                  style={styles.notificationIcon}
+                />
+          </TouchableOpacity>
           </View>
 
           <View style={styles.header}>
@@ -318,7 +340,6 @@ async function schedulePushNotification(notification) {
                   source={require('../assets/clear.png')}
                   style={styles.resetIcon}
                 />
-                <Text style={styles.resetText}>Reset</Text>
             </TouchableOpacity>
           </View>
 
@@ -359,7 +380,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: 20,
   },
   locationContainer: {
     display: "flex",
@@ -373,7 +394,8 @@ const styles = StyleSheet.create({
     height: 25,
   },
   locationText: {
-    fontSize: 16,
+    fontSize: 19,
+    fontFamily: 'Outfit_400Regular',
   },
   buttonText: {
     color: '#fff',
@@ -383,6 +405,8 @@ const styles = StyleSheet.create({
   },
   notificationIcon: {
     marginRight: 10,
+    width: 30,
+    height: 30,
   },
   button: {
     backgroundColor: '#007AFF',
@@ -443,17 +467,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     paddingHorizontal: 0,
+    paddingVertical: 0,
     backgroundColor: '#FFFFFF',
-    width: '60%',
+    width: '65%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    height: "80%",
+    // elevation: 1,
   },
   input: {
     flex: 1,
-    paddingVertical: 2,
+    paddingVertical: 0,
     backgroundColor: 'transparent',
+    fontFamily: 'Outfit_400Regular',
   },
   searchIcon: {
-    width: 30,
-    height: 30,
+    width: 27,
+    height: 27,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -482,8 +514,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sortIcon: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
   },
   resetIcon: {
     width: 18,
@@ -500,7 +532,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginLeft: 5,
     marginRight: 5,
-    padding: 13,
+    paddingHorizontal: 11,
+    paddingVertical: 9.5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,

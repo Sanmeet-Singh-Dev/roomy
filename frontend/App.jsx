@@ -1,4 +1,11 @@
 import React from 'react';
+import { Text } from 'react-native';
+
+Text.defaultProps = {
+  ...Text.defaultProps,
+  style: [{ fontFamily: 'Outfit', borderWidth: 3 }],
+};
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -46,8 +53,6 @@ LogBox.ignoreLogs([
 	'NativeBase: The contrast ratio of',
 	"[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
 ])
-
-
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

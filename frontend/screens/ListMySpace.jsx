@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React ,{ useState, useContext, useEffect }  from 'react';
 import { View, Text, TouchableOpacity, StyleSheet,ScrollView,SafeAreaView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -55,6 +61,18 @@ const ListMySpace = () => {
 
     fetchUserSpaces();
   }, [spaces]);
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
   const handleListMySpace = () => {
     navigation.navigate('listingOne');
   };
@@ -134,13 +152,13 @@ const styles = StyleSheet.create({
     textAlign:'center',
     alignContent:'center',
     paddingTop:8,
-    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium',
   },
   listingText: {
     alignSelf: 'flex-start',
     marginTop: 25,
     fontSize: 20,
-    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium',
     marginBottom: 15,
   }
 });

@@ -1,13 +1,21 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation , useRoute} from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 import { uploadToFirebase } from '../firebase-config';
+import { StatusBar } from 'expo-status-bar';
 import { UserType } from '../UserContext';
 import { manipulateAsync } from 'expo-image-manipulator';
 import { IPADDRESS } from '@env';
-
+import NextButton from '../components/NextButton';
 
 const ImageAndBio = () => {
 
@@ -17,6 +25,7 @@ const ImageAndBio = () => {
   // const [selectedImageUri, setSelectedImageUri] = useState(null);
   const route = useRoute();
   const userId = route.params?.userId;
+  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
   const currentStep = 2;
   const steps = 6;
 
@@ -37,8 +46,18 @@ const ImageAndBio = () => {
     }
   }, []);
 
-  const handleImageSelection = async () => {
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
 
+if (!fontsLoaded) {
+    return null;
+}
+
+  const handlePickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -48,6 +67,37 @@ const ImageAndBio = () => {
       if (!result.canceled) {
         const { uri } = result.assets[0];
         const fileName = uri.split('/').pop();
+        const compressedImage = await manipulateAsync(
+          uri,
+          [{ resize: { width: 800, height: 600 } }],
+          { format: 'jpeg', compress: 0.8 }
+        );
+        setSelectedImages([...selectedImages, compressedImage.uri]);
+        // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
+        // Alert.alert('Success Picture uploaded successfully');
+      }
+    } catch (error) {
+      console.error('ImagePicker Error:', error);
+      Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
+    }
+  };
+
+  const handleClickImage = async () => {
+
+
+    try {
+      const cameraResp = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        quality: 1
+
+      });
+
+      // console.log(cameraResp)
+
+      if (!cameraResp.canceled) {
+        const { uri } = cameraResp.assets[0];
+        const fileName = uri.split('/').pop();
 
         const compressedImage = await manipulateAsync(
           uri,
@@ -56,13 +106,27 @@ const ImageAndBio = () => {
         );
 
         setSelectedImages([...selectedImages, compressedImage.uri]);
-
+        // const uploadResponse = await uploadToFirebase(uri, fileName, userId);
+        // Alert.alert('Success Picture uploaded successfully');
       }
     } catch (error) {
       console.error('ImagePicker Error:', error);
       Alert.alert('Error', `Failed to pick an image from the library: ${error.message}`);
     }
-  };
+
+
+
+  }
+
+  if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
+    return (
+      <View style={styles.container}>
+        <Text>Permission Not Granted {permission?.status}</Text>
+        <StatusBar style="auto" />
+        <Button title="Request Camera Permission" onPress={requestPermission}></Button>
+      </View>
+    )
+  }
 
   const handleSaveProfile = async () => {
     try {
@@ -132,8 +196,15 @@ const ImageAndBio = () => {
     navigation.goBack();
   }
 
+ 
+
 
   return (
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      extraScrollHeight={Platform.OS === 'ios' ? 50 : 0} // Adjust this value based on your UI
+      enableOnAndroid={true}
+    >
     <TouchableWithoutFeedback onPress={handlePressOutside}>
     <View style={styles.container}>
       <SafeAreaView>
@@ -158,7 +229,26 @@ const ImageAndBio = () => {
       ))}
     </View>
 
-        <Text style={styles.label}>Add your Images</Text>
+    <View style={styles.clickUploadContainer}>
+          <TouchableOpacity onPress={handleClickImage} style={styles.pictureContainer}>
+            <View style={styles.innerContainer}>
+              <Image
+                source={require('../assets/Camera.png')}
+                style={styles.pictureImage}
+              />
+              <Text style={styles.pictureText}>Click a picture</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handlePickImage} style={styles.pictureContainer}>
+            <View style={styles.innerContainer}>
+              <Image
+                source={require('../assets/upload.png')}
+                style={styles.pictureImage}
+              />
+              <Text style={styles.pictureText}>Add from Library</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 
         <ScrollView horizontal contentContainerStyle={styles.scrollViewContent}>
           {selectedImages.map((uri, index) => (
@@ -169,12 +259,6 @@ const ImageAndBio = () => {
             />
           ))}
         </ScrollView>
-
-        <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.currentButton} onPress={handleImageSelection}>
-            <Text style={styles.buttonText}>Select Image</Text>
-          </TouchableOpacity>
-        </View>
       
         <Text style={styles.label}>What do you currently do?</Text>
 
@@ -187,7 +271,7 @@ const ImageAndBio = () => {
             ]}
             onPress={() => handleGenderSelection('Working Professional')}
           >
-            <Text style={styles.optionText}>Working Professional</Text>
+            <Text style={[styles.optionText, work === 'Working Professional' && styles.selectedOptionText]}>Working Professional</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -197,7 +281,7 @@ const ImageAndBio = () => {
             ]}
             onPress={() => handleGenderSelection('Unemployed')}
           >
-            <Text style={styles.optionText}>Unemployed</Text>
+            <Text style={[styles.optionText, work === 'Unemployed' && styles.selectedOptionText]}>Unemployed</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -207,7 +291,7 @@ const ImageAndBio = () => {
             ]}
             onPress={() => handleGenderSelection('Student')}
           >
-            <Text style={styles.optionText}>Student</Text>
+            <Text style={[styles.optionText, , work === 'Student' && styles.selectedOptionText]}>Student</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -217,7 +301,7 @@ const ImageAndBio = () => {
             ]}
             onPress={() => handleGenderSelection('Business')}
           >
-            <Text style={styles.optionText}>Business</Text>
+            <Text style={[styles.optionText, work === 'Business' && styles.selectedOptionText]}>Business</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -227,7 +311,7 @@ const ImageAndBio = () => {
             ]}
             onPress={() => handleGenderSelection('Other')}
           >
-            <Text style={styles.optionText}>Other</Text>
+            <Text style={[styles.optionText, work === 'Other' && styles.selectedOptionText]}>Other</Text>
           </TouchableOpacity>
 
         </View>
@@ -245,12 +329,17 @@ const ImageAndBio = () => {
         <View style={styles.btnContainer}>
           <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
             <Text style={styles.buttonText}>Next</Text>
+            <Image
+            source={require('../assets/Horizontal.png')}
+            style={styles.nextIcon}
+            />
           </TouchableOpacity>
         </View>
 
       </SafeAreaView>
     </View>
     </TouchableWithoutFeedback>
+    </KeyboardAwareScrollView>
   )
 }
 
@@ -258,9 +347,40 @@ export default ImageAndBio
 
 
 const styles = StyleSheet.create({
+  pictureImage: {
+    width: 34,
+    height: 28.8,
+    resizeMode: 'cover',
+  },
+  pictureText: {
+    marginTop: 8,
+    fontSize: 8,
+    fontFamily: 'Outfit_600SemiBold',
+    color:'#9B9B9B',
+    fontSize: 12,
+  },
+  pictureContainer: {
+    borderWidth: 1,
+    borderColor: '9B9B9B',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 50,
+    width: '45%',
+    marginBottom: 10
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
+  clickUploadContainer: {
+
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+
+
+  },
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   progressBar: {
     flexDirection: 'row',
@@ -289,29 +409,39 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Outfit_600SemiBold',
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10
   },
   btnContainer : {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: '#FF8F66',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "34%",
+},
+button: {
+    backgroundColor: '#51367B',
     color: '#fff',
-    marginTop: 30,
-    paddingHorizontal: 70,
-    paddingVertical: 18,
+    paddingHorizontal: 60,
+    paddingVertical: 17,
     borderRadius: 8,
-  },
-  buttonText: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+},
+buttonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
-  },
+    fontSize: 20,
+    fontWeight: "400",
+},
+nextIcon: {
+  width: 23,
+  height: 23,
+},
   currentButton: {
     backgroundColor: '#51367B',
     color: '#fff',
@@ -330,18 +460,25 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   option: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5
+    backgroundColor: 'lightgray',
+    borderRadius: 5,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
   },
   selectedOption: {
     backgroundColor: '#FF8F66', 
     color: 'white'
   },
+  selectedOptionText: {
+    color: '#fff',
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16,
+  },
   optionText: {
-    color: 'black', // Change to your desired text color
+    color: 'black',
     textAlign: 'center',
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16,
   },
   textArea: {
     borderWidth: 1,
@@ -351,7 +488,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 8,
+    marginBottom: 0,
     textAlignVertical: 'top',
     height: 80,
   },
@@ -368,7 +505,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+    fontSize: 18,
+    fontFamily: 'Outfit_500Medium',
   },
 });

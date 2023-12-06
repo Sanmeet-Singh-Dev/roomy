@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import { RadioButton } from 'react-native-paper';
@@ -12,6 +18,17 @@ const Livinghabits = () => {
     const [drinking, setDrinking] = useState(''); 
     const [pets, setPets] = useState('');
     const [food, setFood] = useState('');
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
 
     const navigation = useNavigation();
     const currentStep = 3;
@@ -90,7 +107,7 @@ const Livinghabits = () => {
       ))}
     </View>
 
-        <Text style={{ marginLeft: 20 , marginBottom: 5}}>Smoking</Text>
+        <Text style={{ marginLeft: 20 , marginBottom: 5, fontSize: 16, fontFamily: 'Outfit_600SemiBold',}}>Smoking</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -121,7 +138,7 @@ const Livinghabits = () => {
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Guests</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Guests</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -152,7 +169,7 @@ const Livinghabits = () => {
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Drinking</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Drinking</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -183,7 +200,7 @@ const Livinghabits = () => {
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Pets</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Pets</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -214,7 +231,7 @@ const Livinghabits = () => {
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Food Choice</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Food Choice</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -245,10 +262,15 @@ const Livinghabits = () => {
         </TouchableOpacity>
         </View>
 
-        
-        <TouchableOpacity style={styles.button} onPress={handleSaveHabits}>  
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleSaveHabits}>
+            <Text style={styles.buttonText}>Next</Text>
+            <Image
+            source={require('../assets/Horizontal.png')}
+            style={styles.nextIcon}
+            />
+          </TouchableOpacity>
+        </View>
 
         </ScrollView>
         </SafeAreaView>
@@ -288,25 +310,37 @@ const styles = StyleSheet.create({
       backgroundColor: 'lightgray',
       marginHorizontal: 1,
     },
-    buttonText: {
+    btnContainer : {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: "13%",
+  },
+  button: {
+      backgroundColor: '#51367B',
+      color: '#fff',
+      marginTop: 30,
+      paddingHorizontal: 60,
+      paddingVertical: 17,
+      borderRadius: 8,
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 6,
+  },
+  buttonText: {
       color: '#fff',
       textAlign: 'center',
-      fontSize: 18,
-      fontWeight: 'bold'
-    },
-    button: {
-      backgroundColor: '#FF8F66',
-      color: '#fff',
-      margin: 10,
-      marginTop: 50,
-      marginLeft: 96,
-      marginRight: 96,
-      paddingHorizontal: 24,
-      paddingVertical: 14,
-      borderRadius: 8,
-    },
+      fontSize: 20,
+      fontWeight: "400",
+  },
+  nextIcon: {
+      width: 23,
+      height: 23,
+  },
     option: {
-      backgroundColor: '#EEEEEE',
+      backgroundColor: 'lightgray',
       paddingHorizontal: 19,
       paddingVertical: 15,
       borderRadius: 8,
@@ -318,10 +352,12 @@ const styles = StyleSheet.create({
     optionText: {
       color: 'black',
       textAlign: 'center',
-      fontSize: 16,
+      fontSize: 17,
+      fontFamily: 'Outfit_400Regular',
     },
     selectedOptionText: {
       color: '#fff',
+      fontFamily: 'Outfit_400Regular',
     },
     backIconContainer: {
       display: 'flex',
@@ -336,7 +372,7 @@ const styles = StyleSheet.create({
       margin: 5,
     },
     sortText: {
-      fontSize: 17,
-      fontWeight: "500",
+      fontSize: 18,
+      fontFamily: 'Outfit_500Medium',
     },
 });

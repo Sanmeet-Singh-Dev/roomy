@@ -4,6 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from "@env"
 import DateTimePicker from '@react-native-community/datetimepicker';
+import NextButton from '../components/NextButton';
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 
 const Details = () => {
     const [fullName, setFullName] = useState('');
@@ -14,6 +21,17 @@ const Details = () => {
     const [show, setShow] = useState(false);
     const currentStep = 0;
     const steps = 6;
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
 
     const onChange = (event, selectedDate) => {
       setShow(Platform.OS === 'ios');
@@ -165,11 +183,14 @@ const Details = () => {
             style={styles.textInput}
           />
           
-          <View style={styles.btnContainer}>
+          {/* <View style={styles.btnContainer}>
             <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
+
+          <NextButton onPress={handleSaveProfile} buttonText="Next" />
+
 
         </SafeAreaView>
         
@@ -184,7 +205,7 @@ export default Details
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   progressBar: {
     flexDirection: 'row',
@@ -211,10 +232,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     marginHorizontal: 1,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   optionsContainer: {
     flexDirection: 'row',
     marginLeft: 20,
@@ -223,7 +240,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   option: {
-    backgroundColor: '#EEEEEE',
+    backgroundColor: 'lightgray',
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderRadius: 8,
@@ -236,16 +253,18 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     fontSize: 17,
+    fontFamily: 'Outfit_400Regular',
   },
   selectedOptionText: {
     color: '#fff',
+    fontFamily: 'Outfit_400Regular',
   },
   btnContainer : {
     display: 'flex',
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#FF8F66',
+    backgroundColor: '#51367B',
     color: '#fff',
     marginTop: 30,
     paddingHorizontal: 70,
@@ -274,19 +293,20 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     padding: 10,
+    fontFamily: 'Outfit_400Regular',
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Outfit_600SemiBold',
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10
   },
   dateTimePicker: {
-    borderColor: 'gray',
+    borderColor: 'lightgray',
     marginTop: 10,
     marginBottom: 16, 
-    marginLeft: 10,
+    marginLeft: 7.5,
     alignSelf: 'start',
   },
   backIconContainer: {
@@ -304,5 +324,6 @@ const styles = StyleSheet.create({
   sortText: {
     fontSize: 17,
     fontWeight: "500",
+    fontFamily: 'Outfit_600SemiBold',
   },
 });

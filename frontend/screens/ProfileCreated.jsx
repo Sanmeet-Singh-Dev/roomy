@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React from 'react'
 import { Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -7,6 +13,17 @@ const ProfileCreated = () => {
     const handleNavigation = () => {
         navigation.navigate('home');
     };
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+  
+  if (!fontsLoaded) {
+      return null;
+  }
 
   return (
     <ImageBackground source={require('../assets/ProfileCreate.jpg')} style={styles.background}>
@@ -56,20 +73,20 @@ const styles = StyleSheet.create({
       headingText: {
         color: "#51367B",
         fontSize: 30,
-        fontWeight: "700",
+        fontFamily: 'Outfit_600SemiBold',
       },
       descText: {
         color: "#000000",
         fontSize: 18,
-        fontWeight: "500",
+        fontFamily: 'Outfit_500Medium',
         lineHeight: 28,
         textAlign: 'center',
       },
       button: {
         backgroundColor: "#51367B",
         borderRadius: 10,
-        paddingHorizontal: 17,
-        paddingVertical: 10,
+        paddingHorizontal: 11,
+        paddingVertical: 9,
         marginTop: 25,
       },
       btnIcon: {

@@ -37,17 +37,28 @@ const NotificationComponent = ( {notification }) => {
     }, [recepientData])
     
   return (
-    <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: 10}} >
+    <View style={styles.reqContainer} >
         {recepientData ? (
             <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={{ uri: recepientData.image }} />
             ) : (
             null
         ) }
-      <Text style={{ fontSize: 15, fontWeight: "bold", marginLeft: 10, flex: 1 }}>{notification.message}</Text>
+      <Text style={{ fontSize: 15, marginLeft: 10, flex: 1, color: "#333333" }}>{notification.message}</Text>
     </View>
   )
 }
 
 export default NotificationComponent
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  reqContainer: {
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: "4%",
+    paddingVertical: "2%",
+    borderRadius: 9,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: "2%",
+  }
+})

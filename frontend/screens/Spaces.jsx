@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, ScrollView, View, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { IPADDRESS } from '@env'
@@ -103,6 +109,17 @@ const Spaces = () => {
 
     fetchDataAndGeocode();
   }, [isFocused]);
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
 
   const navigateToSpaceDetails = (space) => {
     navigation.navigate('single-space', { space });

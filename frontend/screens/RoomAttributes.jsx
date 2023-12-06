@@ -92,9 +92,9 @@ const RoomAttributes = () => {
         <Text style={styles.sortText}>About the Space</Text>
       </TouchableOpacity>
 
-        <View style={styles.containerMain}>
+      <View style={styles.containerMain}>
         <View style={styles.progressBar}>
-        {[...Array(steps).keys()].map((step) => (
+          {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
             <View
               style={[
@@ -102,8 +102,8 @@ const RoomAttributes = () => {
                 { backgroundColor: step <= currentStep ? '#FF8F66' : 'lightgray' },
               ]}
             />
-            {step < steps - 1 && <View style={styles.line} />}
-          </View>
+              {step < steps - 1 && <View style={styles.line} />}
+            </View>
         ))}
       </View>
             <ScrollView>
@@ -111,6 +111,7 @@ const RoomAttributes = () => {
 
                 <Text style={styles.text}>Number of Bedrooms</Text>
                 <TextInput
+                    keyboardType="numeric"
                     placeholder="Enter number of bedrooms"
                     value={numBedrooms}
                     onChangeText={setNumBedrooms}
@@ -119,6 +120,7 @@ const RoomAttributes = () => {
 
                 <Text style={styles.text}>Number of Bathrooms</Text>
                 <TextInput
+                    keyboardType="numeric"
                     placeholder="Enter number of bathrooms"
                     value={numBathrooms}
                     onChangeText={setNumBathrooms}
@@ -161,6 +163,7 @@ const styles = StyleSheet.create({
     containerMain: {
         flex: 1,
         padding: 30,
+        paddingBottom: "5%",
         backgroundColor:"#fff"
     },
     container: {
@@ -191,14 +194,15 @@ const styles = StyleSheet.create({
         marginBottom:10,
     },
     button: {
-        backgroundColor: '#FF8F66',
+        backgroundColor: '#51367B',
         color: '#fff',
         margin: 10,
         padding: 20,
         borderRadius: 8,
         width: '55%',
         alignSelf: 'center',
-        marginTop:40
+        marginTop:30,
+        marginBottom: "20%"
       },
       buttonText: {
         color: '#fff',
@@ -220,7 +224,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 10,
         marginBottom: 40,
-        width: '52%'
+        width: '52%',
       },
       stepContainer: {
         flexDirection: 'row',
@@ -258,6 +262,6 @@ const styles = StyleSheet.create({
       mainContainer: {
         flex: 1,
         backgroundColor: '#fff',
-        paddingBottom: "15%",
+        paddingBottom: "0%",
       },
 });

@@ -123,7 +123,9 @@ const RoomDetails = () => {
       <ScrollView>
         <View>
           <Text style={styles.text}>Rent per month</Text>
-          <TextInput placeholder="Budget"
+          <TextInput 
+          keyboardType="numeric"
+          placeholder="Budget"
             value={budget}
             onChangeText={setBudget} style={styles.textInput} />
         </View>
@@ -193,9 +195,11 @@ const styles = StyleSheet.create({
   
   },
   button: {
-    backgroundColor: '#FF8F66',
+    backgroundColor: '#51367B',
     color: '#fff',
     margin: 10,
+    marginVertical: "5%",
+
     padding: 20,
     borderRadius: 8,
     width: '55%',
@@ -259,7 +263,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom: "15%",
   },
 });
 

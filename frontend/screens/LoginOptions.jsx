@@ -1,15 +1,33 @@
 import { View, Text, SafeAreaView, Platform, StatusBar, Button, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
+import {  useFonts, 
+          Outfit_400Regular,
+          Outfit_500Medium,
+          Outfit_600SemiBold,
+          Outfit_700Bold,
+        } from '@expo-google-fonts/outfit';
+
 
 const LoginOptions = () => {
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const navigation = useNavigation();
   return (
 
   
      <ImageBackground
-      source={require('../assets/Splash-Screen.jpg')}
+      source={require('../assets/loginOptions.jpg')}
       style={styles.container}
       resizeMode="cover"
     >
@@ -30,8 +48,8 @@ const LoginOptions = () => {
         </TouchableOpacity>
         <Text style={styles.loginText}>
             Already have an account? &nbsp;
-            <Text style={{color:'#FF8F66', fontSize: 19, fontWeight: 500}} onPress={() => navigation.navigate('login')}>
-            Login
+            <Text style={{color:'#FF8F66', fontSize: 19, fontFamily: "Outfit_700Bold",}} onPress={() => navigation.navigate('login')}>
+            Log In
             </Text>
             </Text>
       </SafeAreaView>
@@ -53,7 +71,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: '600',
+    fontFamily: 'Outfit_600SemiBold',
   },
   button: {
     backgroundColor: '#51367B',
@@ -69,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 120,
     textAlign: 'center',
     color:'#3F3F3F',
-    fontWeight: "500",
+    fontFamily: 'Outfit_500Medium',
   },
   centerContainer: {
     justifyContent: 'center',
@@ -85,6 +104,6 @@ const styles = StyleSheet.create({
     textAlign:'center', 
     marginTop: 20,
     fontSize: 19,
-    fontWeight: 500,
+    fontFamily: 'Outfit_400Regular',
   }
 });

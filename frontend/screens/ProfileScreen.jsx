@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { SafeAreaView, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
 import React, { useContext , useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -53,6 +59,17 @@ const ProfileScreen = () => {
     
       fetchUserData();
     }, []);
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
 
     //function to handle logout
     const handleLogout = async () => {
@@ -128,35 +145,35 @@ const ProfileScreen = () => {
               source={require('../assets/edit-icon.png')}
               style={styles.icon}
             />
-            <Text>Edit Personal Info</Text>
+            <Text style={styles.profileText}>Edit Personal Info</Text>
           </View>
           <View style={styles.profileButton}>
           <Image
               source={require('../assets/mylisting-icon.png')}
               style={styles.icon}
             />
-            <Text>My Listing</Text>
+            <Text style={styles.profileText}>My Listing</Text>
           </View>
           <TouchableOpacity style={styles.profileButton}  onPress={handleBlockedUsers}>
           <Image
               source={require('../assets/setting-icon.png')}
               style={styles.icon}
             />
-            <Text>Blocked Users</Text>
+            <Text style={styles.profileText}>Blocked Users</Text>
           </TouchableOpacity>
           <View style={styles.profileButton}>
           <Image
               source={require('../assets/calender.png')}
               style={styles.icon}
             />
-            <Text>Meetings</Text>
+            <Text style={styles.profileText}>Meetings</Text>
           </View>
           <TouchableOpacity style={styles.logoutButton}  onPress={handleLogout}>
           <Image
               source={require('../assets/logout-icon.png')}
               style={styles.icon}
             />
-            <Text>Log Out</Text>
+            <Text style={styles.profileText}>Log Out</Text>
           </TouchableOpacity>
         </SafeAreaView>
     </ImageBackground>
@@ -197,7 +214,7 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     icon: {
-      marginRight: 20,
+      marginRight: 15,
     },
     image: {
       width: 100,
@@ -215,8 +232,9 @@ const styles = StyleSheet.create({
     profileText: {
       marginTop:7,
       textAlign: 'right',
-      fontWeight: 'bold',
-      marginLeft: 15
+      fontSize: 16,
+      fontFamily: 'Outfit_500Medium',
+      borderWidth: 0,
     }
 
 })

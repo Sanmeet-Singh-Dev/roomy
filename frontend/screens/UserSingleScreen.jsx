@@ -412,18 +412,18 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                       <Text style={styles.btnText}>Request Sent</Text>
                     </Pressable>
                   ) : recievedRequest.some((friend) => friend._id === user.user._id) ? (
-                    <View style={{display:"flex", flexDirection:"row", justifyContent:'space-around'}}>
-                    <Pressable
-                      onPress={() => acceptRequest(user.user._id)}
-                      style={styles.acceptBtn}>
-                      <Text style={styles.btnText}>Accept</Text>
-                    </Pressable>
-                    <Pressable
-                    onPress={() => declineRequest(user.user._id)}
-                    style={styles.declineBtn}>
-                    <Text style={styles.declineBtnText}>Decline</Text>
-                </Pressable>
-                </View>
+                    <View style={styles.adBtnContainer}>
+                      <Pressable
+                        onPress={() => acceptRequest(user.user._id)}
+                        style={styles.acceptBtn}>
+                        <Text style={styles.btnText}>Accept</Text>
+                      </Pressable>
+                      <Pressable
+                      onPress={() => declineRequest(user.user._id)}
+                      style={styles.declineBtn}>
+                      <Text style={styles.declineBtnText}>Decline</Text>
+                      </Pressable>
+                    </View>
                   ) : (
                     <Pressable
                       onPress={() => sendFriendRequest(userId, user.user._id)}
@@ -493,9 +493,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  adBtnContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   contentContainer: {
     margin: 19,
-    borderRadius: 15,
+    marginBottom: 0,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
     backgroundColor: '#fff',
     marginBottom: "60%",
   },
@@ -560,7 +567,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   optionInnerContainer: {
-    backgroundColor: '#EEEEEE',
+    backgroundColor: 'lightgray',
     borderRadius: 7,
     margin: 5,
   },
@@ -628,12 +635,12 @@ const styles = StyleSheet.create({
   btnText: {
     textAlign: "center",
     color: "white",
-    fontSize: 16,
-    fontWeight:"bold"
+    fontSize: 20,
+    fontWeight:"500"
   },
   declineBtnText: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 20,
     fontWeight:"500"
   },
   friendsBtn: {
@@ -658,16 +665,15 @@ const styles = StyleSheet.create({
   },
   acceptBtn: {
     backgroundColor: "#FF8F66",
-    paddingVertical: 15,
-    paddingHorizontal: 25,
+    paddingVertical: 13,
+    paddingHorizontal: 52,
     borderRadius: 8,
   },
   declineBtn: {
-    paddingVertical: 15,
-    paddingHorizontal: 25,
+    paddingVertical: 13,
+    paddingHorizontal: 52,
     borderRadius: 8,
-    borderWidth: 2,
-    borderColor:"#FF8F66"
+    backgroundColor: "lightgray",
   },
   addFriendBtn: {
     backgroundColor: "#3E206D",

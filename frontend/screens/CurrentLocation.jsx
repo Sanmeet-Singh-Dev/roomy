@@ -1,12 +1,16 @@
-
-import React, { useContext,useState, useEffect } from 'react';
-import { Button, SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity, Image } from 'react-native';
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity, Image } from 'react-native';
 import { useNavigation , useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { IPADDRESS } from '@env'
-import { UserType } from '../UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import NextButton from '../components/NextButton';
 
 const CurrentLocation = () => {
 
@@ -17,9 +21,11 @@ const CurrentLocation = () => {
   const route = useRoute();
   const userId = route.params?.userId;
   const currentStep = 1;
-    const steps = 6;
+  const steps = 6;
 
   const geoCode = async () => {
+    
+
     // Use the address entered by the user
     const geoCodedLocation = await Location.geocodeAsync(address);
 
@@ -95,8 +101,6 @@ const getCurrentLocation = async () => {
     }
   };
 
-  // ... (previous code)
-
 const saveLocation = () => {
     if (address) {
       // If an address is entered, geocode and save the custom location
@@ -131,6 +135,17 @@ const saveLocation = () => {
     navigation.goBack();
   }
 
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
 
   return (
     <View style={styles.container}>
@@ -164,10 +179,13 @@ const saveLocation = () => {
         />
          <TouchableOpacity style={styles.currentButton} onPress={getCurrentLocation}>  
             <Text style={styles.buttonText}>Set Current Location</Text>
-            </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={geoCode}>  
-            <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
+            <Image
+                  source={require('../assets/currentlocation.png')}
+                  style={styles.locationIcon}
+                />
+          </TouchableOpacity>
+
+          <NextButton onPress={geoCode} buttonText="Next" />
 
         {/* <Button title="Save Location" onPress={geoCode} />
         <Button title="Use Current Location" onPress={getCurrentLocation} /> */}
@@ -209,11 +227,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     marginHorizontal: 1,
   },
+  locationIcon: {
+    width: 25,
+    height: 25,
+    marginRight: "8%"
+  },
   buttonText: {
       color: '#fff',
       textAlign: 'center',
-      fontSize: 17,
-      fontWeight: 'bold'
+      fontSize: 18,
+      fontFamily: 'Outfit_600SemiBold',
     },
     currentButton: {
       backgroundColor: '#51367B',
@@ -222,17 +245,21 @@ const styles = StyleSheet.create({
       marginTop: "4%",
       marginLeft: 80,
       marginRight: 80,
+      marginBottom: "24%",
       paddingLeft: 24,
       paddingRight: 24,
       paddingTop: 14,
       paddingBottom: 14,
       borderRadius: 8,
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between"
     },
     button: {
-      backgroundColor: '#FF8F66',
+      backgroundColor: '#51367B',
       color: '#fff',
       margin: 10,
-      marginTop: "50%",
+      marginTop: "95%",
       marginLeft: 96,
       marginRight: 96,
       paddingLeft: 24,
@@ -261,7 +288,7 @@ const styles = StyleSheet.create({
     },
     label: {
       fontSize: 16,
-    fontWeight: 'bold',
+      fontFamily: 'Outfit_600SemiBold',
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10
@@ -279,7 +306,7 @@ const styles = StyleSheet.create({
       margin: 5,
     },
     sortText: {
-      fontSize: 17,
-      fontWeight: "500",
+      fontSize: 18,
+      fontFamily: 'Outfit_500Medium',
     },
 })
