@@ -106,7 +106,7 @@ if (!fontsLoaded) {
         ]}
         onPress={() => setOption(option)}
       >
-        <Text style={styles.optionText}>{option}</Text>
+        <Text style={[styles.optionText, { color: selectedOption.includes(option) ? 'white' : 'black' }, ]}>{option}</Text>
       </TouchableOpacity>
     ));
   };
@@ -204,7 +204,8 @@ const styles = StyleSheet.create({
   },
   selectedOption: {
     backgroundColor: '#FF8F66',
-    color:'#fff'
+    color:'#fff',
+    fontFamily: 'Outfit_400Regular',
   },
   text: {
     fontSize: 16,
