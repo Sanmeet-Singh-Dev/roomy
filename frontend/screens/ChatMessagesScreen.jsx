@@ -198,7 +198,7 @@ const ChatMessagesScreen = () => {
                     ) : (
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <Image style={{ width: 30, height: 30, borderRadius: 15, resizeMode: "cover" }} source={{ uri: recepientData?.image }} />
-                            <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold" }}>{recepientData?.name}</Text>
+                            <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold", fontFamily: 'Outfit_500Medium' }}>{recepientData?.name}</Text>
                         </View>
                     )}
                 </View>
@@ -284,7 +284,7 @@ const ChatMessagesScreen = () => {
 
     return (
         <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1, backgroundColor:'#f5f5f5' }}
       extraScrollHeight={Platform.OS === 'ios' ? 10 : 0}
       enableOnAndroid={true}
     >
@@ -299,11 +299,11 @@ const ChatMessagesScreen = () => {
                                 style={[
                                     item?.senderId?._id === userId ? {
                                         alignSelf: "flex-end",
-                                        backgroundColor: "#DCF8C6",
+                                        backgroundColor: "#EEEEEE",
                                         padding: 8,
                                         maxWidth: "60%",
                                         borderRadius: 7,
-                                        margin: 10
+                                        margin: 10,
                                     } : {
                                         alignSelf: "flex-start",
                                         backgroundColor: "white",
@@ -315,8 +315,8 @@ const ChatMessagesScreen = () => {
 
                                     isSelected && { width: "100%", backgroundColor: "#F0FFFF" }
                                 ]}>
-                                <Text style={{ fontSize: 13, textAlign: isSelected ? "right" : "left" }}>{item?.message}</Text>
-                                <Text style={{ textAlign: "right", fontSize: 9, color: "gray", marginTop: 5 }}>{formatTime(item?.timeStamp)}</Text>
+                                <Text style={{ fontSize: 13, textAlign: isSelected ? "right" : "left", fontFamily: 'Outfit_400Regular', fontSize: 14, }}>{item?.message}</Text>
+                                <Text style={{ textAlign: "right", fontSize: 9, color: "gray", marginTop: 5, fontFamily: 'Outfit_400Regular', fontSize: 9 }}>{formatTime(item?.timeStamp)}</Text>
                             </Pressable>
                         )
                     }
@@ -363,7 +363,7 @@ const ChatMessagesScreen = () => {
                 <TextInput
                     value={message}
                     onChangeText={(text) => setMessage(text)}
-                    style={{ flex: 1, height: 40, borderWidth: 1, borderColor: "#dddddd", borderRadius: 20, paddingHorizontal: 10 }} placeholder='Type your message' />
+                    style={{ flex: 1, height: 40, borderWidth: 1, borderColor: "#dddddd", borderRadius: 20, paddingHorizontal: 10, fontFamily: 'Outfit_400Regular', fontSize: 16 }} placeholder='Type your message' />
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 7, marginHorizontal: 8 }}>
 
                     <Entypo
@@ -379,8 +379,8 @@ const ChatMessagesScreen = () => {
                 </View>
                 <Pressable
                     onPress={() => handleSend("text")}
-                    style={{ backgroundColor: "#007bff", paddingVertical: 8, paddingHorizontal: 12, borderRadius: 20 }}>
-                    <Text style={{ color: "white", fontWeight: "bold" }}>Send</Text>
+                    style={{ backgroundColor: "#FF8F66", paddingVertical: 8, paddingHorizontal: 12, borderRadius: 20 }}>
+                    <Text style={{ color: "white", fontWeight: "bold", fontFamily: 'Outfit_500Medium' }}>Send</Text>
                 </Pressable>
             </View>
 

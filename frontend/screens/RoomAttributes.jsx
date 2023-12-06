@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,6 +27,17 @@ const RoomAttributes = () => {
         'tv', 'garbage-disposal', 'refrigerator', 'wheelchair-accessible',
         'roof-deck', 'storage', 'walkin-closet'
     ];
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+  
+  if (!fontsLoaded) {
+      return null;
+  }
 
     const toggleAttributes = (attribute) => {
         if (selectedAttributes.includes(attribute)) {
@@ -177,7 +194,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     marginVertical: 5,
-    backgroundColor: '#EEEEEE'
+    backgroundColor: '#EEEEEE',
     },
     selectedOption: {
         backgroundColor: '#FF8F66',
@@ -186,12 +203,15 @@ const styles = StyleSheet.create({
     optionText: {
         color: 'black',
         textAlign: 'center',
+        fontFamily: 'Outfit_400Regular',
+        fontSize: 14
     },
     text: {
-        fontSize: 17,
+        fontSize: 16,
         marginTop: 30,
         fontWeight:'500',
         marginBottom:10,
+        fontFamily: 'Outfit_500Medium'
     },
     button: {
         backgroundColor: '#51367B',
@@ -208,6 +228,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontSize: 17,
+        fontWeight: '500',
+        fontFamily: 'Outfit_500Medium'
       },
       textInput: {
         height: 40,
@@ -216,6 +238,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 10,
         padding: 10,
+        fontFamily: 'Outfit_400Regular',
+        fontSize: 16
       },
       progressBar: {
         flexDirection: 'row',
@@ -251,8 +275,8 @@ const styles = StyleSheet.create({
         marginBottom: "1%",
       },
       sortText: {
-        fontSize: 17,
-        fontWeight: "500",
+        fontSize: 16,
+        fontFamily: 'Outfit_600SemiBold',
       },
       sortIcon: {
         width: 30,

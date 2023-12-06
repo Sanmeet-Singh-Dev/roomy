@@ -1,3 +1,9 @@
+import {  useFonts, 
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  } from '@expo-google-fonts/outfit';
 import { Pressable, StyleSheet, Text, View, Image, Platform  } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
@@ -46,6 +52,17 @@ const UserChat = ({ item }) => {
         fetchMessages();
     }, [messages]);
 
+    let [fontsLoaded] = useFonts({
+        Outfit_400Regular,
+        Outfit_500Medium,
+        Outfit_600SemiBold,
+        Outfit_700Bold,
+    });
+    
+    if (!fontsLoaded) {
+        return null;
+    }
+
 
     const getLastMessage = () => {
         const userMessage = messages.filter((message) => message.messageType === "text");
@@ -71,15 +88,15 @@ const UserChat = ({ item }) => {
             <Image style={{ width: 50, height: 50, borderRadius: 10, resizeMode: "cover" }} source={{ uri: item?.image }} />
 
             <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, fontWeight: "500" }}>{item?.name}</Text>
+                <Text style={{ fontSize: 15, fontWeight: "500", fontFamily: 'Outfit_400Regular', fontSize: 16 }}>{item?.name}</Text>
                 {lastMessage && (
-                    <Text style={{ color: "gray", marginTop: 3, fontWeight: "500" }}>{lastMessage?.message}</Text>
+                    <Text style={{ color: "gray", marginTop: 3, fontWeight: "500", fontFamily: 'Outfit_400Regular', fontSize: 14 }}>{lastMessage?.message}</Text>
                 )}
                 
             </View>
 
             <View>
-                <Text style={{ fontSize: 11, fontWeight: "400", color: "#585858" }}>
+                <Text style={{ fontSize: 11, fontWeight: "400", color: "#585858", fontFamily: 'Outfit_400Regular', fontSize: 12 }}>
                     {lastMessage && formatTime(lastMessage?.timeStamp)}
                 </Text>
             </View>

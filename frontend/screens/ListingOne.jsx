@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { useState, useContext, useEffect } from 'react';
 import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Modal } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -63,6 +69,18 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
     };
     getPermissions();
   }, []);
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
 
   const getCurrentLocation = async () => {
     if (location) {
@@ -385,7 +403,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontSize: 17,
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium'
   },
   buttonContainer: {
     flexDirection: "row",
@@ -418,6 +437,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
   },
   label: {
     fontSize: 16,
@@ -459,7 +480,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 8,
     fontWeight: 'bold',
-    color:'#9B9B9B'
+    color:'#9B9B9B',
+    fontFamily: 'Outfit_600SemiBold'
   },
   pictureContainer: {
     borderWidth: 1,
@@ -524,6 +546,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 25,
+    fontFamily: 'Outfit_500Medium'
   },
   adressTextInput: {
     height: 40,
@@ -533,17 +556,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
-    width: "85%"
+    width: "85%",
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
   },
   titleText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Outfit_500Medium'
   },
   descText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Outfit_500Medium'
   },
   textArea: {
     height: 100,
@@ -553,6 +580,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
   },
   backIconContainer: {
     display: 'flex',
@@ -563,8 +592,8 @@ const styles = StyleSheet.create({
     marginBottom: "1%",
   },
   sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
   },
   sortIcon: {
     width: 30,

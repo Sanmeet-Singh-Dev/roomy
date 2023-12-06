@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { Fragment, useEffect, useState , useContext} from 'react';
 import {
   Alert,
@@ -94,6 +100,7 @@ useEffect(() => {
     fetchMeetings();
     updateCurrentTask(currentDate);
 }, [meetings])
+
 
   const updateSelectedTask = async ({date, meetings}) => {
 
@@ -203,6 +210,17 @@ useEffect(() => {
   const handleBack = () => {
     navigation.goBack();
   };
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  });
+  
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <Fragment>
@@ -545,8 +563,8 @@ sortIcon: {
     margin: 5,
 },
 sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+  fontSize: 16,
+  fontFamily: 'Outfit_600SemiBold',
 },
   taskListContent: {
     height: 100,

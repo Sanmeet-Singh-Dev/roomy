@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Button, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,6 +19,17 @@ const RoomDetails = () => {
   const [furnished, setFurnished] = useState('');
   const [budget, setBudget] = useState('')
   const navigation = useNavigation();
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
 
   const handleSaveRoomDetails = async () => {
     let ipAddress = IPADDRESS;
@@ -169,7 +186,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    gap:10
+    gap:10,
   },
   option: {
     padding: 10,
@@ -182,16 +199,19 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black',
     textAlign: 'center',
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 14
   },
   selectedOption: {
     backgroundColor: '#FF8F66',
     color:'#fff'
   },
   text: {
-    fontSize: 17,
+    fontSize: 16,
     marginTop: 40,
     marginBottom: 10,
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium'
   
   },
   button: {
@@ -209,6 +229,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontSize: 17,
+    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium'
   },
   textInput: {
     height: 40,
@@ -217,6 +239,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     padding: 10,
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
   },
   progressBar: {
     flexDirection: 'row',
@@ -252,8 +276,8 @@ const styles = StyleSheet.create({
     marginBottom: "1%",
   },
   sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
   },
   sortIcon: {
     width: 30,
