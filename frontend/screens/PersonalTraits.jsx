@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +16,17 @@ const PersonalTraits = () => {
   const navigation = useNavigation();
   const currentStep = 5;
     const steps = 6;
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+  
+  if (!fontsLoaded) {
+      return null;
+  }
 
   const availableTraits = [
     'calm', 'friendly', 'organized', 'social',
@@ -80,6 +97,8 @@ const PersonalTraits = () => {
     navigation.goBack();
   }
 
+  
+
   return (
     <View style={styles.containerMain}>
       <SafeAreaView>
@@ -123,9 +142,15 @@ const PersonalTraits = () => {
 
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSaveTraits}>  
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
+      <View style={styles.btnContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleSaveTraits}>
+          <Text style={styles.buttonText}>Next</Text>
+          <Image
+          source={require('../assets/Horizontal.png')}
+          style={styles.nextIcon}
+          />
+        </TouchableOpacity>
+      </View>
 
     </ScrollView>
     </SafeAreaView>
@@ -175,10 +200,11 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black',
     textAlign: 'center',
-    fontSize: 15,
+    fontSize: 17,
+    fontFamily: 'Outfit_400Regular',
   },
   option: {
-    backgroundColor: '#EEEEEE',
+    backgroundColor: 'lightgray',
     paddingVertical: 12,
     paddingHorizontal: 19,
     borderRadius: 5,
@@ -190,29 +216,39 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Outfit_600SemiBold',
     marginLeft: 20,
     marginRight: 20,
   },
-  buttonText: {
+  btnContainer : {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "31%",
+},
+button: {
+    backgroundColor: '#51367B',
+    color: '#fff',
+    marginTop: 30,
+    paddingHorizontal: 60,
+    paddingVertical: 17,
+    borderRadius: 8,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+},
+buttonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
-  },
-  button: {
-    backgroundColor: '#FF8F66',
-    color: '#fff',
-    margin: 10,
-    marginTop: 50,
-    marginLeft: 96,
-    marginRight: 96,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
-    borderRadius: 8,
-  },
+    fontSize: 20,
+    fontWeight: "400",
+},
+nextIcon: {
+    width: 23,
+    height: 23,
+},
   backIconContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -226,7 +262,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+    fontSize: 18,
+    fontFamily: 'Outfit_500Medium',
   },
 });

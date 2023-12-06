@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Modal } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import jwt_decode from "jwt-decode";
@@ -237,6 +238,11 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
   }
 
   return (
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      extraScrollHeight={Platform.OS === 'ios' ? 50 : 0} // Adjust this value based on your UI
+      enableOnAndroid={true}
+    >
     <View style={styles.mainContainer}>
     <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
         <Image
@@ -325,7 +331,6 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
                 source={require('../assets/currentlocation.png')}
                 style={styles.buttonImage}
               />
-
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -352,7 +357,7 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
               onChangeText={setDescription}
               style={styles.textArea}
               multiline
-              numberOfLines={50} // You can adjust the number of lines you want to display
+              numberOfLines={50}
             />
           </View>
         </View>
@@ -364,7 +369,7 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
         </ScrollView>
     </View>
     </View>
-
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -383,7 +388,8 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   buttonImage: {
     width: 40,
@@ -391,7 +397,7 @@ const styles = StyleSheet.create({
     marginRight: 1,
   },
   button: {
-    backgroundColor: '#FF8F66',
+    backgroundColor: '#51367B',
     color: '#fff',
     margin: 10,
     padding: 20,
@@ -527,7 +533,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
-    width: 320
+    width: "85%"
   },
   titleText: {
     fontSize: 16,

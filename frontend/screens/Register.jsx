@@ -4,6 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
 import { IPADDRESS } from '@env'
 import { ImageBackground } from 'react-native';
+import {  useFonts, 
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  } from '@expo-google-fonts/outfit';
 
 const Register = () => {
 
@@ -11,6 +17,17 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     let ipAdress = IPADDRESS;
+
+    let [fontsLoaded] = useFonts({
+        Outfit_400Regular,
+        Outfit_500Medium,
+        Outfit_600SemiBold,
+        Outfit_700Bold,
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     const navigation = useNavigation();
 
@@ -50,15 +67,20 @@ const Register = () => {
         navigation.goBack();
     };
 
+    const handleSignup = () => {
+        navigation.navigate('login');
+    }
+
 
     return (
         <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
         <SafeAreaView style={styles.container}>
-            <Text style={styles.text}>Enter your details</Text>
+            <Text style={styles.text}>Create your account</Text>
+            <Text style={styles.headingBottom}>Enter the fields below to get started</Text>
 
             <Text style={styles.label}>Full Name:</Text>
             <TextInput
-                placeholder="Enter your full name"
+                placeholder="Enter name"
                 placeholderTextColor="#AFB1B6"
                 value={name}
                 onChangeText={(text) => setname(text)}
@@ -66,7 +88,7 @@ const Register = () => {
             />
              <Text style={styles.label}>Email:</Text>
             <TextInput
-                placeholder="Email"
+                placeholder="Enter Email"
                 placeholderTextColor="#AFB1B6"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -76,7 +98,7 @@ const Register = () => {
              <Text style={styles.label}>Password:</Text>
             <TextInput
                 secureTextEntry
-                placeholder="Password"
+                placeholder="Create Password"
                 placeholderTextColor="#AFB1B6"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -86,6 +108,13 @@ const Register = () => {
            <TouchableOpacity style={styles.button} onPress={handleRegister}>  
             <Text style={styles.buttonText}>Create Account</Text>
             </TouchableOpacity>
+
+            <View style={styles.signUpContainer}>
+              <Text style={styles.createText}>Already have an account?</Text>
+              <TouchableOpacity onPress={handleSignup}>  
+                <Text style={styles.signUpText}>&nbsp;Log In</Text>
+              </TouchableOpacity>
+            </View>
 
         </SafeAreaView>
         </ImageBackground>
@@ -107,31 +136,38 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
     },
+    headingBottom: {
+        color: '#EEEEEE',
+        marginBottom: 50,
+        textAlign: 'center',
+        fontFamily: 'Outfit_400Regular',
+      },
     buttonText: {
         color: '#fff',
         textAlign: 'center',
-        fontSize: 17,
-        fontWeight: 'bold'
+        fontSize: 19,
+        fontFamily: 'Outfit_600SemiBold',
     },
     button: {
         backgroundColor: '#FF8F66',
         color: '#fff',
         margin: 10,
-        marginTop: 60,
+        marginTop: "25%",
         marginLeft: 45,
         marginRight: 45,
-        paddingLeft: 24,
-        paddingRight: 24,
-        paddingTop: 14,
-        paddingBottom: 14,
+        paddingLeft: 23,
+        paddingRight: 23,
+        paddingTop: 18,
+        paddingBottom: 18,
         borderRadius: 8,
     },
     text: {
-        fontSize: 25,
-        marginBottom: 60,
+        fontSize: 28,
+        marginBottom: 18,
         textAlign: 'center',
         color:'#EEEEEE',
-        marginTop:60
+        marginTop:60,
+        fontFamily: 'Outfit_600SemiBold',
     },
     textInput: {
         height: 40,
@@ -144,16 +180,30 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         padding: 10,
-        color:'#EEEEEE'
-
+        color:'#EEEEEE',
+        fontFamily: 'Outfit_400Regular',
     },
     label: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'Outfit_600SemiBold',
         marginLeft: 30,
         marginRight: 30,
         color:'#EEEEEE',
-
-
+    },
+    signUpContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: "2%"
+    },
+        createText: {
+        color: "#EEEEEE",
+        fontSize: 17,
+        fontFamily: 'Outfit_400Regular',
+    },
+        signUpText: {
+        color: "#FF8F66",
+        fontSize: 17,
+        fontFamily: 'Outfit_600SemiBold',
     },
 })

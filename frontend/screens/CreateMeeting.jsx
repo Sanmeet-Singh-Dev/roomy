@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState, useContext } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   Alert,
   Dimensions,
@@ -201,6 +202,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
   };
 
   return (
+    
     <Fragment>
       <DateTimePicker
         isVisible={isDateTimePickerVisible}
@@ -210,19 +212,20 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
         date={new Date()}
         isDarkModeEnabled
       />
-
+     
       <SafeAreaView style={styles.container}>
-        <View
-          style={{
-            height: visibleHeight,
-          }}
-        >
+      <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      extraScrollHeight={Platform.OS === 'ios' ? 50 : 0}
+      enableOnAndroid={true}
+    >
+        <View>
           <ScrollView
             contentContainerStyle={{
               paddingBottom: 100,
             }}
           >
-            <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
+          
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
                 style={styles.backIconContainer}
@@ -341,6 +344,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
             </TouchableOpacity>
           </ScrollView>
         </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </Fragment>
   );
@@ -360,7 +364,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 40,
     borderRadius: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   backIconContainer: {
     display: 'flex',
@@ -442,10 +446,11 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     shadowOpacity: 0.2,
     elevation: 5,
-    padding: 38
+    padding: 38,
   },
   calenderContainer: {
     marginTop: 30,
+    marginBottom: 30,
     width: 350,
     height: 350,
     alignSelf: 'center',

@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { UserType } from '../UserContext';
@@ -7,6 +7,11 @@ import FriendRequest from '../components/FriendRequest'
 import NotificationComponent from '../components/NotificationComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+
+Text.defaultProps = {
+  ...Text.defaultProps,
+  style: [{ fontFamily: 'Outfit', color: "blue" }],
+};
 
 const ShowNotificationScreen = () => {
     const { userId, setUserId } = useContext(UserType);
@@ -86,6 +91,7 @@ const ShowNotificationScreen = () => {
     }
 
   return (
+    <ImageBackground source={require('../assets/Requests.jpg')} style={styles.background}>
     <SafeAreaView>
     <ScrollView>
     <View>
@@ -97,7 +103,9 @@ const ShowNotificationScreen = () => {
         />
         <Text style={styles.sortText}>Notifications</Text>
       </TouchableOpacity>
-        <Text>Your Friend Requests! </Text>
+        <View style={styles.notificationType}>
+          <Text style={styles.notificationText}>All Requests</Text>
+        </View>
 
         {friendRequests.length > 0 ? (
 
@@ -105,12 +113,17 @@ const ShowNotificationScreen = () => {
                 <FriendRequest key={index} item={item} friendRequests={friendRequests} setFriendRequests={setFriendRequests}/>
             ))
         ) : (
-            <Text style={{ fontSize: 15, fontWeight: "bold", marginLeft: 10, marginTop: 10 }}> No Requests!</Text>
+          <View style={styles.notificationTypeNo}>
+            <Text style={styles.notificationText}>No Requests</Text>
+          </View>
         )}
         
     </View>
     <View style={{padding:10,marginHorizontal:12}}>
-    {notifications.length > 0 && <Text style={{marginTop: 20}}>Your Other Notifications</Text> }
+    {notifications.length > 0 &&
+    <View style={styles.notificationType}>
+      <Text style={styles.notificationText}>All Notifications</Text>
+    </View> }
 
     {notifications.map((notification, index) => (
                 <NotificationComponent key={index} notification={notification}/>
@@ -119,6 +132,7 @@ const ShowNotificationScreen = () => {
 </View>
 </ScrollView>
 </SafeAreaView>
+</ImageBackground>
   )
 }
 
@@ -132,6 +146,22 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     marginBottom: "6%",
     marginLeft: "-3%",
+  },
+  notificationType: {
+    backgroundColor: "#fff",
+    width: "60%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    borderRadius: 30,
+    paddingHorizontal: "5%",
+    paddingVertical: "5%",
+    marginBottom: "3%",
+  },
+  notificationText: {
+    fontSize: 17,
+    fontWeight: "500",
+    marginLeft: "4%",
   },
   sortIcon: {
     width: 30,

@@ -1,3 +1,9 @@
+import {  useFonts, 
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  } from '@expo-google-fonts/outfit';
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { IPADDRESS } from '@env'
@@ -35,6 +41,17 @@ const UserInfo = (userId) => {
         fetchUserData();
     }, [userId])
 
+    let [fontsLoaded] = useFonts({
+        Outfit_400Regular,
+        Outfit_500Medium,
+        Outfit_600SemiBold,
+        Outfit_700Bold,
+    });
+  
+    if (!fontsLoaded) {
+        return null;
+    }
+
     return (
         <View style={styles.header}>
             <View style={styles.textContainer}>
@@ -57,17 +74,18 @@ export default UserInfo
 
 const styles = StyleSheet.create({
     nameText: {
-        fontSize: 22,
-        marginBottom: 6,
-        fontWeight: "500",
+        fontSize: 26,
+        marginBottom: 8,
+        fontFamily: 'Outfit_400Regular',
     },
     tagline: {
-        fontSize: 14,
+        fontSize: 15,
         color: '#797979',
+        fontFamily: 'Outfit_400Regular',
     },
     image: {
-        width: 80,
-        height: 80,
+        width: 90,
+        height: 90,
         borderRadius: 50,
         borderWidth: 3,
         borderColor: "#FF8F66",
@@ -84,7 +102,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         alignSelf: 'center',
-        marginTop: 13,
+        marginTop: 8,
         width: "100%",
     },
 })

@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -41,6 +47,17 @@ const UserCard = ({ userData }) => {
 
     fetchUserFriends();
 },[userFriends]);
+
+let [fontsLoaded] = useFonts({
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+  return null;
+}
 
 if(userFriends.includes(userData.user._id)){
 }
@@ -86,8 +103,8 @@ const styles = StyleSheet.create({
     elevation: 3,
     shadowColor: '#333',
     shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
     width: '47%',
     paddingBottom: 20,
     paddingRight: 0,
@@ -111,8 +128,9 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   userName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 19,
+    fontFamily: 'Outfit_600SemiBold',
+    marginBottom: 5,
   },
   userScore: {
     position: 'absolute',
@@ -120,14 +138,27 @@ const styles = StyleSheet.create({
     right: 5,
     backgroundColor: '#fff',
     paddingVertical: 18,
-    paddingHorizontal: 10,
+    paddingHorizontal: 13,
     borderRadius: 100,
+    elevation: 3,
+    shadowColor: '#333',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
   userScoreText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Outfit_600SemiBold',
     color: '#FF8F66',
+    padding: 0,
+    margin: 0,
   },
+  userBudget: {
+    borderWidth: 0,
+    fontSize: 15,
+    fontFamily: 'Outfit_400Regular',
+    color: '#505050',
+  }
 });
 
 export default UserCard;

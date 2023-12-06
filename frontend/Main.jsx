@@ -4,6 +4,11 @@ import { Provider } from 'react-redux';
 import React from 'react'
 import App from './App';
 
+Text.defaultProps = {
+  ...Text.defaultProps,
+  style: [{ fontFamily: 'YourChosenFont' }],
+};
+
 const Main = () => {
   return <App />;
 }

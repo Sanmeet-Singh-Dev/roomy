@@ -350,6 +350,7 @@ useEffect(() => {
             flex:1,
             backgroundColor: "rgba(255,248,246, 0.9)",
             marginTop: "1%",
+            borderRadius: 40,
           }}
         >
           <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
@@ -366,7 +367,7 @@ useEffect(() => {
               background: "url('../assets/Account.jpg') center / contain no-repeat",
               // backgroundColor: 'white',
               backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover'
+              backgroundSize: 'cover',
             }}
             calendarHeaderStyle={{ color: '#000000' }}
             dateNumberStyle={{ color: '#000000', paddingTop: 10 }}
@@ -402,7 +403,6 @@ useEffect(() => {
               setCurrentDate(selectedDate);
             }}
           />
-          <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
           <TouchableOpacity
               onPress={() =>
                 navigation.navigate('CreateMeeting', {
@@ -422,7 +422,7 @@ useEffect(() => {
           <View
             style={{
               width: '100%',
-              height: Dimensions.get('window').height - 170
+              height: Dimensions.get('window').height - 170,
             }}
           >
             <ScrollView
@@ -666,6 +666,6 @@ sortText: {
     shadowOpacity: 0.1,
     elevation: 5,
     padding: 30,
-    paddingTop: 50
+    paddingTop: 50,
   }
 });
