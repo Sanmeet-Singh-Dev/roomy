@@ -157,7 +157,7 @@ const RoomAttributes = () => {
                             ]}
                             onPress={() => toggleAttributes(attributes)}
                         >
-                            <Text style={styles.optionText}>{attributes}</Text>
+                            <Text style={[styles.optionText, { color: selectedAttributes.includes(attributes) ? 'white' : 'black' }, ]}>{attributes}</Text>
                         </TouchableOpacity>
                     ))}
 

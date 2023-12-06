@@ -8,7 +8,7 @@ import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, To
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import jwt_decode from "jwt-decode";
 import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
@@ -47,6 +47,7 @@ const Home = () => {
     const [sortingBudget, setSortingBudget] = useState([0, 10000]);
     const [sortingWork, setSortingWork] = useState('Student');
     const [sortingPets, setSortingPets] = useState('Yes');
+    const isFocused = useIsFocused(); 
 
     const onApplySorting = (sortingGender, sortingBudget, sortingWork, sortingPets) => {
       // Create a copy of the original data to avoid mutating it
@@ -120,7 +121,7 @@ const Home = () => {
 
     useEffect(() => {
      handleCompatibility();
-    }, [reloadPage]);
+    }, [reloadPage,isFocused]);
 
   const handleCompatibility = () => {
     const fetchUsers = async () => {
