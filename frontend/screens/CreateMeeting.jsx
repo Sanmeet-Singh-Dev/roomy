@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { Fragment, useEffect, useState, useContext } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
@@ -201,6 +207,17 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
     hideDateTimePicker();
   };
 
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
   return (
     
     <Fragment>
@@ -288,6 +305,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                     height: 25,
                     fontSize: 19,
                     marginTop: 3,
+                    fontFamily: 'Outfit_400Regular',
                   }}
                   onChangeText={setNotesText}
                   value={notesText}
@@ -300,7 +318,8 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                   style={{
                     color: '#9CAAC4',
                     fontSize: 16,
-                    fontWeight: '600'
+                    fontWeight: '600',
+                    fontFamily: 'Outfit_600SemiBold',
                   }}
                 >
                   Time
@@ -325,7 +344,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                 styles.createTaskButton,
                 {
                   backgroundColor:
-                    taskText === '' ? 'rgba(255,143,102,0.5)' : '#FF8F66'
+                    taskText === '' ? 'rgba(62,32,109,0.5)' : '#3E206D'
                 }
               ]}
               onPress={async () => {
@@ -336,10 +355,11 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                 style={{
                   fontSize: 18,
                   textAlign: 'center',
-                  color: '#fff'
+                  color: '#fff',
+                  ontFamily: 'Outfit_600SemiBold',
                 }}
               >
-                ADD YOUR TASK
+                Schedule Meeting
               </Text>
             </TouchableOpacity>
           </ScrollView>
@@ -380,8 +400,8 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
   },
   separator: {
     height: 0.5,
@@ -393,7 +413,8 @@ const styles = StyleSheet.create({
   notes: {
     color: '#9CAAC4',
     fontSize: 16,
-    fontWeight: '600'
+    fontWeight: '600',
+    fontFamily: 'Outfit_600SemiBold',
   },
   notesContent: {
     height: 0.5,
@@ -430,7 +451,8 @@ const styles = StyleSheet.create({
     borderColor: '#5DD976',
     borderLeftWidth: 1,
     paddingLeft: 8,
-    fontSize: 19
+    fontSize: 19,
+    fontFamily: 'Outfit_400Regular',
   },
   taskContainer: {
     height: 300,

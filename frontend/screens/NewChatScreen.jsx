@@ -1,3 +1,9 @@
+import {  useFonts, 
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  } from '@expo-google-fonts/outfit';
 import { Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserType } from '../UserContext';
@@ -43,6 +49,17 @@ const ChatsScreen = () => {
 
         acceptedFriendsList();
     },[])
+
+    let [fontsLoaded] = useFonts({
+        Outfit_400Regular,
+        Outfit_500Medium,
+        Outfit_600SemiBold,
+        Outfit_700Bold,
+    });
+    
+    if (!fontsLoaded) {
+        return null;
+    }
 
     const handleBack = () => {
         navigation.goBack();
@@ -97,7 +114,7 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     sortText: {
-        fontSize: 17,
-        fontWeight: "500",
+        fontSize: 16,
+        fontFamily: 'Outfit_600SemiBold',
     },
 })
