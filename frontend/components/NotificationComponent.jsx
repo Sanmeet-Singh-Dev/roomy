@@ -18,7 +18,7 @@ const NotificationComponent = ( {notification }) => {
                 console.error('No authentication token available.');
                 return;
               }
-                const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`, {
+                const response = await fetch(`http://roomyapp.ca/api/api/users/user/${recepientId}`, {
                   method: 'GET',
                   headers: {
                     'Content-Type': 'application/json',

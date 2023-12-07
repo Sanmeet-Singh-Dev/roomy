@@ -165,7 +165,7 @@ if (!fontsLoaded) {
         },
         
       };
-      const response = await fetch(`http://${ipAdress}:6000/api/users/bio`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/bio`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

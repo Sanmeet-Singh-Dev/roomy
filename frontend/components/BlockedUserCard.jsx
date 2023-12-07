@@ -18,7 +18,7 @@ const BlockedUserCard = ({ userData }) => {
             console.error('No authentication token available.');
             return;
           }
-      const response = await fetch(`http://${ipAdress}:6000/api/users/unblock-user`,{
+      const response = await fetch(`http://roomyapp.ca/api/api/users/unblock-user`,{
           method: "POST",
           headers: {
               "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const BlockedUserCard = ({ userData }) => {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
+        const response = await fetch(`http://roomyapp.ca/api/api/users/request-notification`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

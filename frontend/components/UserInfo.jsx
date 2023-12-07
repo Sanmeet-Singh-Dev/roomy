@@ -23,7 +23,7 @@ const UserInfo = (userId) => {
             console.error('No authentication token available.');
             return;
           }
-                const response = await fetch(`http://${iPAdress}:6000/api/users/user/${userId.userId}`, {
+                const response = await fetch(`http://roomyapp.ca/api/api/users/user/${userId.userId}`, {
                     method: 'GET',
                     headers: {
                       'Content-Type': 'application/json',

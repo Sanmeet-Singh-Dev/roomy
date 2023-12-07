@@ -71,7 +71,7 @@ const getCurrentLocation = async () => {
           return;
         }
 
-      const response = await fetch(`http://${ipAdress}:6000/api/users/set-location`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/set-location`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

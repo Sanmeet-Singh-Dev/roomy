@@ -29,7 +29,7 @@ const BlockedUserScreen = () => {
           }
       
           //sending request to API to get all users
-          const response = await fetch(`http://${ipAdress}:6000/api/users/getBlockedUsers`, {
+          const response = await fetch(`http://roomyapp.ca/api/api/users/getBlockedUsers`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
