@@ -1,5 +1,6 @@
 import { KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, View, Image } from 'react-native'
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Entypo } from '@expo/vector-icons';
 import EmojiSelector from 'react-native-emoji-selector';
 import { UserType } from '../UserContext';
@@ -9,6 +10,7 @@ import * as ImagePicker from "expo-image-picker";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChatMessagesScreen = () => {
     const iPAdress = IPADDRESS;
@@ -49,7 +51,19 @@ const ChatMessagesScreen = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${recepientId}`)
+            const token = await AsyncStorage.getItem('jwt');
+            if (!token) {
+              // Handle the case where the token is not available
+              console.error('No authentication token available.');
+              return;
+            }
+            const response = await fetch(`http://roomyapp.ca/api/api/users/messages/${userId}/${recepientId}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                }
+              })
             // console.log("response message",response)
             const data = await response.json();
             // console.log("Data ",data);
@@ -72,7 +86,19 @@ const ChatMessagesScreen = () => {
     useEffect(() => {
         const fetchRecepientData = async () => {
             try {
-                const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`);
+                const token = await AsyncStorage.getItem('jwt');
+                if (!token) {
+                  // Handle the case where the token is not available
+                  console.error('No authentication token available.');
+                  return;
+                }
+                const response = await fetch(`http://roomyapp.ca/api/api/users/user/${recepientId}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+                    }
+                  });
                 // console.log("response ", response);
                 const data = await response.json();
                 // console.log("User data",data)
@@ -126,10 +152,17 @@ const ChatMessagesScreen = () => {
                 messageText: messageText,
               };
 
-            const response = await fetch(`http://${ipAdress}:6000/api/users/messages`, {
+              const token = await AsyncStorage.getItem('jwt');
+              if (!token) {
+                // Handle the case where the token is not available
+                console.error('No authentication token available.');
+                return;
+              }
+            const response = await fetch(`http://roomyapp.ca/api/api/users/messages`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(data)
             })
@@ -165,7 +198,7 @@ const ChatMessagesScreen = () => {
                     ) : (
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <Image style={{ width: 30, height: 30, borderRadius: 15, resizeMode: "cover" }} source={{ uri: recepientData?.image }} />
-                            <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold" }}>{recepientData?.name}</Text>
+                            <Text style={{ marginLeft: 5, fontSize: 15, fontWeight: "bold", fontFamily: 'Outfit_500Medium' }}>{recepientData?.name}</Text>
                         </View>
                     )}
                 </View>
@@ -190,10 +223,17 @@ const ChatMessagesScreen = () => {
 
     const deleteMessages = async (messageIds) => {
         try {
-            const response = await fetch(`http://${ipAdress}:6000/api/users/deleteMessages`, {
+            const token = await AsyncStorage.getItem('jwt');
+            if (!token) {
+              // Handle the case where the token is not available
+              console.error('No authentication token available.');
+              return;
+            }
+            const response = await fetch(`http://roomyapp.ca/api/api/users/deleteMessages`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({ messages: messageIds })
             });
@@ -243,7 +283,11 @@ const ChatMessagesScreen = () => {
     }
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1, backgroundColor: "#F0F0F0" }}>
+        <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1, backgroundColor:'#f5f5f5' }}
+      extraScrollHeight={Platform.OS === 'ios' ? 10 : 0}
+      enableOnAndroid={true}
+    >
             <ScrollView ref={scrollViewRef} contentContainerStyle={{flexGrow:1}} onContentSizeChange={handleContentSizeChange}>
                 {messages.map((item, index) => {
                     if (item.messageType === "text") {
@@ -255,11 +299,11 @@ const ChatMessagesScreen = () => {
                                 style={[
                                     item?.senderId?._id === userId ? {
                                         alignSelf: "flex-end",
-                                        backgroundColor: "#DCF8C6",
+                                        backgroundColor: "#EEEEEE",
                                         padding: 8,
                                         maxWidth: "60%",
                                         borderRadius: 7,
-                                        margin: 10
+                                        margin: 10,
                                     } : {
                                         alignSelf: "flex-start",
                                         backgroundColor: "white",
@@ -271,8 +315,8 @@ const ChatMessagesScreen = () => {
 
                                     isSelected && { width: "100%", backgroundColor: "#F0FFFF" }
                                 ]}>
-                                <Text style={{ fontSize: 13, textAlign: isSelected ? "right" : "left" }}>{item?.message}</Text>
-                                <Text style={{ textAlign: "right", fontSize: 9, color: "gray", marginTop: 5 }}>{formatTime(item?.timeStamp)}</Text>
+                                <Text style={{ fontSize: 13, textAlign: isSelected ? "right" : "left", fontFamily: 'Outfit_400Regular', fontSize: 14, }}>{item?.message}</Text>
+                                <Text style={{ textAlign: "right", fontSize: 9, color: "gray", marginTop: 5, fontFamily: 'Outfit_400Regular', fontSize: 9 }}>{formatTime(item?.timeStamp)}</Text>
                             </Pressable>
                         )
                     }
@@ -316,11 +360,10 @@ const ChatMessagesScreen = () => {
                 <Entypo
                     onPress={handleEmojiPress}
                     style={{ marginRight: 5 }} name="emoji-happy" size={24} color="gray" />
-
                 <TextInput
                     value={message}
                     onChangeText={(text) => setMessage(text)}
-                    style={{ flex: 1, height: 40, borderWidth: 1, borderColor: "#dddddd", borderRadius: 20, paddingHorizontal: 10 }} placeholder='Type your message' />
+                    style={{ flex: 1, height: 40, borderWidth: 1, borderColor: "#dddddd", borderRadius: 20, paddingHorizontal: 10, fontFamily: 'Outfit_400Regular', fontSize: 16 }} placeholder='Type your message' />
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 7, marginHorizontal: 8 }}>
 
                     <Entypo
@@ -336,8 +379,8 @@ const ChatMessagesScreen = () => {
                 </View>
                 <Pressable
                     onPress={() => handleSend("text")}
-                    style={{ backgroundColor: "#007bff", paddingVertical: 8, paddingHorizontal: 12, borderRadius: 20 }}>
-                    <Text style={{ color: "white", fontWeight: "bold" }}>Send</Text>
+                    style={{ backgroundColor: "#FF8F66", paddingVertical: 8, paddingHorizontal: 12, borderRadius: 20 }}>
+                    <Text style={{ color: "white", fontWeight: "bold", fontFamily: 'Outfit_500Medium' }}>Send</Text>
                 </Pressable>
             </View>
 
@@ -346,7 +389,7 @@ const ChatMessagesScreen = () => {
                     setMessage((prevMessage) => prevMessage + emoji)
                 }} />
             )}
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
     )
 }
 

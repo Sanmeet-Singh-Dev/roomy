@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, ImageBackground, Image } from 'react-native'
 import React, { useState } from 'react'
 import { useRoute } from '@react-navigation/native';
@@ -23,6 +29,17 @@ const UserSortScreen = ( ) => {
       onApplySorting(gender, budget, work, pets);
       navigation.goBack();
     };
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
 
     const handleWorkSelection = (work) => {
       setWork(work);
@@ -58,7 +75,7 @@ const UserSortScreen = ( ) => {
 
         <SafeAreaView>
             <ScrollView>
-              <Text style={styles.heading}>Sort By</Text>
+              <Text style={styles.heading}>Sort By:</Text>
               <Text style={styles.heading}>Roommate gender</Text>
               <View style={styles.optionsContainer}>
                 <TouchableOpacity
@@ -211,8 +228,8 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   sortText: {
-    fontSize: 17,
-    fontWeight: "500",
+    fontSize: 18,
+      fontFamily: 'Outfit_500Medium',
   },
   container: {
     padding: 15,
@@ -238,13 +255,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   selectedOption: {
-    backgroundColor: 'blue',
-    borderColor: 'blue',
+    backgroundColor: '#FF8F66',
     color:'#fff'
-  },
-  optionText: {
-    color: 'black',
-    textAlign: 'center',
   },
   button: {
     backgroundColor: '#3E206D',
@@ -262,7 +274,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    fontWeight: "600",
+      fontFamily: 'Outfit_600SemiBold',
     marginTop: 20,
     marginBottom: 10,
   },
@@ -305,20 +317,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   option: {
-    backgroundColor: '#EEEEEE',
-    borderRadius: 7,
+    backgroundColor: 'lightgray',
+    borderRadius: 8,
     margin: 5,
-  },
-  selectedOption: {
-    backgroundColor: '#FF8F66',
   },
   optionText: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    fontSize: 16,
+    fontSize: 17,
+    fontFamily: 'Outfit_400Regular',
   },
   selectedOptionText: {
     color: '#fff',
+    fontFamily: 'Outfit_400Regular',
   }
 });

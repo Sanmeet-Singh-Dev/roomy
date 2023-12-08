@@ -1,12 +1,16 @@
-
-import React, { useContext,useState, useEffect } from 'react';
-import { Button, SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity } from 'react-native';
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, Text, TextInput, View, StyleSheet,TouchableOpacity, Image } from 'react-native';
 import { useNavigation , useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { IPADDRESS } from '@env'
-import { UserType } from '../UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import NextButton from '../components/NextButton';
 
 const CurrentLocation = () => {
 
@@ -17,9 +21,11 @@ const CurrentLocation = () => {
   const route = useRoute();
   const userId = route.params?.userId;
   const currentStep = 1;
-    const steps = 6;
+  const steps = 6;
 
   const geoCode = async () => {
+    
+
     // Use the address entered by the user
     const geoCodedLocation = await Location.geocodeAsync(address);
 
@@ -65,7 +71,7 @@ const getCurrentLocation = async () => {
           return;
         }
 
-      const response = await fetch(`http://${ipAdress}:6000/api/users/set-location`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/set-location`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,8 +100,6 @@ const getCurrentLocation = async () => {
       console.error('Error:', error);
     }
   };
-
-  // ... (previous code)
 
 const saveLocation = () => {
     if (address) {
@@ -127,8 +131,31 @@ const saveLocation = () => {
     getPermissions();
   }, []);
 
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Choose your Location</Text>
+      </TouchableOpacity>
        <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -150,12 +177,15 @@ const saveLocation = () => {
           onChangeText={setAddress}
           style={styles.textInput}
         />
-         <TouchableOpacity style={styles.currentButton}>  
-            <Text style={styles.buttonText} onPress={getCurrentLocation}>Set Current Location</Text>
-            </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>  
-            <Text style={styles.buttonText} onPress={geoCode}>Next</Text>
-            </TouchableOpacity>
+         <TouchableOpacity style={styles.currentButton} onPress={getCurrentLocation}>  
+            <Text style={styles.buttonText}>Set Current Location</Text>
+            <Image
+                  source={require('../assets/currentlocation.png')}
+                  style={styles.locationIcon}
+                />
+          </TouchableOpacity>
+
+          <NextButton onPress={geoCode} buttonText="Next" />
 
         {/* <Button title="Save Location" onPress={geoCode} />
         <Button title="Use Current Location" onPress={getCurrentLocation} /> */}
@@ -197,37 +227,46 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     marginHorizontal: 1,
   },
+  locationIcon: {
+    width: 25,
+    height: 25,
+    marginRight: "8%"
+  },
   buttonText: {
       color: '#fff',
       textAlign: 'center',
-      fontSize: 17,
-      fontWeight: 'bold'
+      fontSize: 18,
+      fontFamily: 'Outfit_600SemiBold',
     },
     currentButton: {
       backgroundColor: '#51367B',
-    color: '#fff',
-    margin: 10,
-    marginTop: 10,
-    marginLeft: 80,
-    marginRight: 80,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
-    borderRadius: 8,
+      color: '#fff',
+      margin: 10,
+      marginTop: "4%",
+      marginLeft: 80,
+      marginRight: 80,
+      marginBottom: "24%",
+      paddingLeft: 24,
+      paddingRight: 24,
+      paddingTop: 14,
+      paddingBottom: 14,
+      borderRadius: 8,
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between"
     },
     button: {
-      backgroundColor: '#FF8F66',
-    color: '#fff',
-    margin: 10,
-    marginTop: 200,
-    marginLeft: 96,
-    marginRight: 96,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
-    borderRadius: 8,
+      backgroundColor: '#51367B',
+      color: '#fff',
+      margin: 10,
+      marginTop: "95%",
+      marginLeft: 96,
+      marginRight: 96,
+      paddingLeft: 24,
+      paddingRight: 24,
+      paddingTop: 14,
+      paddingBottom: 14,
+      borderRadius: 8,
     },
     text: {
       fontSize: 25,
@@ -249,9 +288,25 @@ const styles = StyleSheet.create({
     },
     label: {
       fontSize: 16,
-    fontWeight: 'bold',
+      fontFamily: 'Outfit_600SemiBold',
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10
+    },
+    backIconContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: "15%",
+      marginLeft: "2%",
+    },
+    sortIcon: {
+      width: 30,
+      height: 30,
+      margin: 5,
+    },
+    sortText: {
+      fontSize: 18,
+      fontFamily: 'Outfit_500Medium',
     },
 })

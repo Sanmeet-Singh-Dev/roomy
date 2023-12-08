@@ -1,22 +1,40 @@
 import { View, Text, SafeAreaView, Platform, StatusBar, Button, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
+import {  useFonts, 
+          Outfit_400Regular,
+          Outfit_500Medium,
+          Outfit_600SemiBold,
+          Outfit_700Bold,
+        } from '@expo-google-fonts/outfit';
+
 
 const LoginOptions = () => {
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const navigation = useNavigation();
   return (
 
   
      <ImageBackground
-      source={require('../assets/Splash-Screen.jpg')}
+      source={require('../assets/loginOptions.jpg')}
       style={styles.container}
       resizeMode="cover"
     >
       <View style={styles.container}>
       <View style={styles.centerContainer}>
         <Image
-          source={require('../assets/Login-roomy.png')}
+          source={require('../assets/roomyLogo34.png')}
           style={styles.icon}
         />
         <Text style={styles.text}>Welcome to Roomy!</Text>
@@ -30,8 +48,8 @@ const LoginOptions = () => {
         </TouchableOpacity>
         <Text style={styles.loginText}>
             Already have an account? &nbsp;
-            <Text style={{color:'#FF8F66'}} onPress={() => navigation.navigate('login')}>
-            Login
+            <Text style={{color:'#FF8F66', fontSize: 19, fontFamily: "Outfit_700Bold",}} onPress={() => navigation.navigate('login')}>
+            Log In
             </Text>
             </Text>
       </SafeAreaView>
@@ -52,37 +70,40 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
+    fontSize: 20,
+    fontWeight: '600',
+    fontFamily: 'Outfit_600SemiBold',
   },
   button: {
-    backgroundColor: '#FF8F66',
+    backgroundColor: '#51367B',
     color: '#fff',
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
+    paddingHorizontal: 25,
+    paddingVertical: 22,
     borderRadius: 8,
+    width: "75%",
+    alignSelf: 'center',
   },
   text: {
     fontSize: 25,
-    marginBottom: 150,
+    marginBottom: 120,
     textAlign: 'center',
-    color:'#3F3F3F'
+    color:'#3F3F3F',
+    fontFamily: 'Outfit_500Medium',
   },
   centerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   icon: {
-    width: 50, 
-    height: 70, 
+    width: 150, 
+    height: 150,
     marginTop: 250,
     marginBottom: 20,
   },
   loginText: {
     textAlign:'center', 
     marginTop: 20,
-    fontSize: 16
+    fontSize: 19,
+    fontFamily: 'Outfit_400Regular',
   }
 });

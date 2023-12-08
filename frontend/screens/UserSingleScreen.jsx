@@ -4,7 +4,7 @@ import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
 import { useNavigation } from '@react-navigation/native'
 import SpaceCard from '../components/SpaceCard';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserSingleScreen = ({ route, onUnblockUser }) => {
   const { user } = route.params;
@@ -19,12 +19,24 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const [userFriends, setUserFriends] = useState([]);
   const [recievedRequest, setRecievedRequest] = useState([]);
   let ipAdress = IPADDRESS;
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/sent/${userId}`);
+        const token = await AsyncStorage.getItem('jwt');
+        if (!token) {
+          // Handle the case where the token is not available
+          console.error('No authentication token available.');
+          return;
+        }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/friend-requests/sent/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         const data = await response.json();
         if (response.ok) {
           setFriendRequets(data);
@@ -44,7 +56,19 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   useEffect(() => {
     const fetchRecievedRequests = async () => {
       try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/friend-requests/recieved/${userId}`);
+        const token = await AsyncStorage.getItem('jwt');
+        if (!token) {
+          // Handle the case where the token is not available
+          console.error('No authentication token available.');
+          return;
+        }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/friend-requests/recieved/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         const data = await response.json();
         if (response.ok) {
           setRecievedRequest(data);
@@ -64,7 +88,19 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   useEffect(() => {
     const fetchUserFriends = async () => {
       try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/friends/${userId}`);
+        const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/friends/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         const data = await response.json();
         if (response.ok) {
           setUserFriends(data);
@@ -103,10 +139,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
 
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
-      const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request`, {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ currentUserId, selectedUserId })
       })
@@ -130,10 +173,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
         message: message
       };
 
-      const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/request-notification`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data)
       })
@@ -149,10 +199,17 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const acceptRequest = async (friendRequestId) => {
 
     try {
-      const response = await fetch(`http://${ipAdress}:6000/api/users/friend-request/accept`, {
+      const token = await AsyncStorage.getItem('jwt');
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('No authentication token available.');
+        return;
+      }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request/accept`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`, 
         },
         body: JSON.stringify({
           senderId: friendRequestId,
@@ -171,21 +228,57 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
     }
   }
 
+  const declineRequest = async (friendRequestId) => {
+
+    try {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request/decline`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                senderId: friendRequestId,
+                recepientId: userId
+            })
+        })
+
+        if (response.ok) {
+            setFriendRequests(friendRequests.filter((request) => request._id !== friendRequestId));
+             navigation.navigate('homePage' , {isReload:"truee"});
+        }
+    }
+    catch (error) {
+        console.log("Error Declining the friend request ", error);
+    }
+}
+
   const handleBlockUser = async (currentUserId, selectedUserId) => {
 
     try {
-      const response = await fetch(`http://${ipAdress}:6000/api/users/block-user`, {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/block-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ currentUserId, selectedUserId })
       })
 
       if (response.ok) {
         console.log("Successfully blocked user");
-        const message = "name has blocked you"
-        handleSend(currentUserId, selectedUserId, message);
         navigation.navigate('homePage', {isReload:"false"} );
       }
       else {
@@ -200,18 +293,23 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
   const unfriendUser = async (currentUserId, selectedUserId) => {
 
     try {
-      const response = await fetch(`http://${ipAdress}:6000/api/users/unfriend-user`, {
+      const token = await AsyncStorage.getItem('jwt');
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('No authentication token available.');
+        return;
+      }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/unfriend-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ currentUserId, selectedUserId })
       })
 
       if (response.ok) {
         console.log("Successfully removed as a friend");
-        const message = "name has removed you as a friend"
-        handleSend(currentUserId, selectedUserId, message);
       }
       else {
         console.log("error ", response.status);
@@ -242,7 +340,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
           source={require('../assets/back.png')}
           style={styles.sortIcon}
         />
-        <Text style={styles.sortText}>Room Listing</Text>
+        <Text style={styles.sortText}>Roommate Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity
                     style={styles.optionsButton}
@@ -292,8 +390,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                       source={{ uri: user.user.profilePhoto[0] }}
                       style={styles.image} blurRadius={20} />
                   )}
-                  <Text style={styles.userName}>{firstName},
-                   {userAge}
+                  <Text style={styles.userName}>{firstName},&nbsp;{userAge}
                    </Text>
                 </View>
                 <View style={styles.CompatibilityContainer}>
@@ -315,11 +412,18 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
                       <Text style={styles.btnText}>Request Sent</Text>
                     </Pressable>
                   ) : recievedRequest.some((friend) => friend._id === user.user._id) ? (
-                    <Pressable
-                      onPress={() => acceptRequest(user.user._id)}
-                      style={styles.acceptBtn}>
-                      <Text style={styles.btnText}>Accept</Text>
-                    </Pressable>
+                    <View style={styles.adBtnContainer}>
+                      <Pressable
+                        onPress={() => acceptRequest(user.user._id)}
+                        style={styles.acceptBtn}>
+                        <Text style={styles.btnText}>Accept</Text>
+                      </Pressable>
+                      <Pressable
+                      onPress={() => declineRequest(user.user._id)}
+                      style={styles.declineBtn}>
+                      <Text style={styles.declineBtnText}>Decline</Text>
+                      </Pressable>
+                    </View>
                   ) : (
                     <Pressable
                       onPress={() => sendFriendRequest(userId, user.user._id)}
@@ -389,9 +493,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  adBtnContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   contentContainer: {
     margin: 19,
-    borderRadius: 15,
+    marginBottom: 0,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
     backgroundColor: '#fff',
     marginBottom: "60%",
   },
@@ -456,7 +567,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   optionInnerContainer: {
-    backgroundColor: '#EEEEEE',
+    backgroundColor: 'lightgray',
     borderRadius: 7,
     margin: 5,
   },
@@ -524,8 +635,13 @@ const styles = StyleSheet.create({
   btnText: {
     textAlign: "center",
     color: "white",
-    fontSize: 16,
-    fontWeight:"bold"
+    fontSize: 20,
+    fontWeight:"500"
+  },
+  declineBtnText: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight:"500"
   },
   friendsBtn: {
     backgroundColor: "#82CD47",
@@ -549,9 +665,15 @@ const styles = StyleSheet.create({
   },
   acceptBtn: {
     backgroundColor: "#FF8F66",
-    paddingVertical: 15,
-    paddingHorizontal: 25,
+    paddingVertical: 13,
+    paddingHorizontal: 52,
     borderRadius: 8,
+  },
+  declineBtn: {
+    paddingVertical: 13,
+    paddingHorizontal: 52,
+    borderRadius: 8,
+    backgroundColor: "lightgray",
   },
   addFriendBtn: {
     backgroundColor: "#3E206D",

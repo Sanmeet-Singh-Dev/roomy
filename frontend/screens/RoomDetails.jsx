@@ -1,5 +1,11 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Button, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Button, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
 import { useNavigation } from '@react-navigation/native'
@@ -14,6 +20,17 @@ const RoomDetails = () => {
   const [budget, setBudget] = useState('')
   const navigation = useNavigation();
 
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
   const handleSaveRoomDetails = async () => {
     let ipAddress = IPADDRESS;
     try {
@@ -25,7 +42,7 @@ const RoomDetails = () => {
         return;
       }
 
-      const response = await fetch(`http://${ipAddress}:6000/api/users/update-room-details`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/update-room-details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,14 +106,25 @@ const RoomDetails = () => {
         ]}
         onPress={() => setOption(option)}
       >
-        <Text style={styles.optionText}>{option}</Text>
+        <Text style={[styles.optionText, { color: selectedOption.includes(option) ? 'white' : 'black' }, ]}>{option}</Text>
       </TouchableOpacity>
     ));
   };
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
+    <View style={styles.mainContainer}> 
+    <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+    <Image
+      source={require('../assets/back.png')}
+      style={styles.sortIcon}
+    />
+    <Text style={styles.sortText}>Cost & Availability </Text>
+  </TouchableOpacity>
     <View style={styles.containerMain}>
-                  <View style={styles.progressBar}>
+      <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
             <View
@@ -112,7 +140,9 @@ const RoomDetails = () => {
       <ScrollView>
         <View>
           <Text style={styles.text}>Rent per month</Text>
-          <TextInput placeholder="Budget"
+          <TextInput 
+          keyboardType="numeric"
+          placeholder="Budget"
             value={budget}
             onChangeText={setBudget} style={styles.textInput} />
         </View>
@@ -142,6 +172,7 @@ const RoomDetails = () => {
         </TouchableOpacity>
       </ScrollView>
     </View>
+    </View>
   );
 };
 
@@ -155,7 +186,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    gap:10
+    gap:10,
   },
   option: {
     padding: 10,
@@ -168,22 +199,28 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black',
     textAlign: 'center',
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 14
   },
   selectedOption: {
     backgroundColor: '#FF8F66',
-    color: '#fff',
+    color:'#fff',
+    fontFamily: 'Outfit_400Regular',
   },
   text: {
-    fontSize: 17,
+    fontSize: 16,
     marginTop: 40,
     marginBottom: 10,
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium'
   
   },
   button: {
-    backgroundColor: '#FF8F66',
+    backgroundColor: '#51367B',
     color: '#fff',
     margin: 10,
+    marginVertical: "5%",
+
     padding: 20,
     borderRadius: 8,
     width: '55%',
@@ -193,6 +230,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontSize: 17,
+    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium'
   },
   textInput: {
     height: 40,
@@ -201,6 +240,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     padding: 10,
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
   },
   progressBar: {
     flexDirection: 'row',
@@ -226,6 +267,27 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: 'lightgray',
     marginHorizontal: 1,
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+    marginBottom: "1%",
+  },
+  sortText: {
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
 });
 

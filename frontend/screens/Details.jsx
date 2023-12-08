@@ -1,9 +1,16 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from "@env"
 import DateTimePicker from '@react-native-community/datetimepicker';
+import NextButton from '../components/NextButton';
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 
 const Details = () => {
     const [fullName, setFullName] = useState('');
@@ -14,6 +21,17 @@ const Details = () => {
     const [show, setShow] = useState(false);
     const currentStep = 0;
     const steps = 6;
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
 
     const onChange = (event, selectedDate) => {
       setShow(Platform.OS === 'ios');
@@ -47,14 +65,13 @@ const Details = () => {
             return;
           }
           
-          const response = await fetch(`http://${ipAdress}:6000/api/users/profile`, {
+          const response = await fetch(`http://roomyapp.ca/api/api/users/profile`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`, // Include the token as a bearer token
             },
             body: JSON.stringify({
-              fullName,
               gender,
               dateOfBirth,
               budget,
@@ -65,7 +82,6 @@ const Details = () => {
             // Handle a successful response
             const data = await response.json();
             const userId = data._id;
-            console.log("Date of Birth is: ", data.dateOfBirth);
             navigation.navigate('location' , {userId: userId} );
           } else {
             // Handle an unsuccessful response (e.g., show an error message)
@@ -81,9 +97,20 @@ const Details = () => {
       Keyboard.dismiss();
     };
 
+    const handleBack = () => {
+      navigation.goBack();
+    }
+
     return (
       <TouchableWithoutFeedback onPress={handlePressOutside}>
       <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+            <Image
+              source={require('../assets/back.png')}
+              style={styles.sortIcon}
+            />
+            <Text style={styles.sortText}>Get your profile started</Text>
+         </TouchableOpacity>
       <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -99,13 +126,6 @@ const Details = () => {
     </View>
 
         <SafeAreaView>
-          <Text  style={styles.label}>First Name</Text>
-          <TextInput
-            placeholder="Full Name"
-            value={fullName}
-            onChangeText={setFullName}
-            style={styles.textInput}
-          />
 
           <Text style={styles.label}>Gender</Text>
 
@@ -118,7 +138,7 @@ const Details = () => {
               ]}
               onPress={() => handleGenderSelection('Male')}
             >
-              <Text style={styles.optionText}>Male</Text>
+              <Text style={[styles.optionText, gender === 'Male' && styles.selectedOptionText]}>Male</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -128,7 +148,7 @@ const Details = () => {
               ]}
               onPress={() => handleGenderSelection('Female')}
             >
-              <Text style={styles.optionText}>Female</Text>
+              <Text style={[styles.optionText, gender === 'Female' && styles.selectedOptionText]}>Female</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -138,7 +158,7 @@ const Details = () => {
               ]}
               onPress={() => handleGenderSelection('Other')}
             >
-              <Text style={styles.optionText}>Other</Text>
+              <Text style={[styles.optionText, gender === 'Other' && styles.selectedOptionText]}>Other</Text>
             </TouchableOpacity>
 
           </View>
@@ -163,9 +183,14 @@ const Details = () => {
             style={styles.textInput}
           />
           
-          <TouchableOpacity style={styles.button}>  
-          <Text style={styles.buttonText} onPress={handleSaveProfile}>Next </Text>
-          </TouchableOpacity>
+          {/* <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
+          </View> */}
+
+          <NextButton onPress={handleSaveProfile} buttonText="Next" />
+
 
         </SafeAreaView>
         
@@ -180,14 +205,14 @@ export default Details
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   progressBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginTop: 50,
+    marginTop: 40,
     marginBottom: 40,
     width: '27%'
   },
@@ -207,10 +232,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     marginHorizontal: 1,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   optionsContainer: {
     flexDirection: 'row',
     marginLeft: 20,
@@ -219,37 +240,42 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   option: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: 'lightgray',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 8,
   },
   selectedOption: {
-    backgroundColor: '#FF8F66', 
-    color:'white'
+    backgroundColor: '#FF8F66',
+    color:'#fff'
   },
   optionText: {
-    color: 'black', // Change to your desired text color
+    color: 'black',
     textAlign: 'center',
+    fontSize: 17,
+    fontFamily: 'Outfit_400Regular',
+  },
+  selectedOptionText: {
+    color: '#fff',
+    fontFamily: 'Outfit_400Regular',
+  },
+  btnContainer : {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#51367B',
+    color: '#fff',
+    marginTop: 30,
+    paddingHorizontal: 70,
+    paddingVertical: 18,
+    borderRadius: 8,
   },
   buttonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold'
-  },
-  button: {
-    backgroundColor: '#FF8F66',
-    color: '#fff',
-    margin: 10,
-    marginTop: 60,
-    marginLeft: 96,
-    marginRight: 96,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
-    borderRadius: 8,
   },
   text: {
     fontSize: 25,
@@ -267,21 +293,37 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     padding: 10,
+    fontFamily: 'Outfit_400Regular',
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Outfit_600SemiBold',
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10
   },
   dateTimePicker: {
-    // backgroundColor: '#fff',
-    borderColor: 'gray',
+    borderColor: 'lightgray',
     marginTop: 10,
     marginBottom: 16, 
-    marginLeft: 10,
+    marginLeft: 7.5,
     alignSelf: 'start',
-    
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 17,
+    fontWeight: "500",
+    fontFamily: 'Outfit_600SemiBold',
   },
 });

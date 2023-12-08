@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { SafeAreaView, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native'
 import React, { useContext , useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,7 +33,19 @@ const ProfileScreen = () => {
     useEffect(() => {
       const fetchUserData = async () => {
         try {
-          const response = await fetch(`http://${ipAdress}:6000/api/users/users/${userId}`);
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+          const response = await fetch(`http://roomyapp.ca/api/api/users/users/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+            }
+          });
           if (!response.ok) {
             throw new Error('Failed to fetch user data');
           }
@@ -42,11 +60,22 @@ const ProfileScreen = () => {
       fetchUserData();
     }, []);
 
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
+
     //function to handle logout
     const handleLogout = async () => {
         // Send a request to the logout endpoint on your server
         try {
-          const response = await fetch(`http://${ipAdress}:6000/api/users/logout`, {
+          const response = await fetch(`http://roomyapp.ca/api/api/users/logout`, {
             method: 'POST', // Use the appropriate HTTP method
             headers: {
               'Content-Type': 'application/json',
@@ -116,35 +145,35 @@ const ProfileScreen = () => {
               source={require('../assets/edit-icon.png')}
               style={styles.icon}
             />
-            <Text>Edit Personal Info</Text>
+            <Text style={styles.profileText}>Edit Personal Info</Text>
           </View>
           <View style={styles.profileButton}>
           <Image
               source={require('../assets/mylisting-icon.png')}
               style={styles.icon}
             />
-            <Text>My Listing</Text>
+            <Text style={styles.profileText}>My Listing</Text>
           </View>
           <TouchableOpacity style={styles.profileButton}  onPress={handleBlockedUsers}>
           <Image
               source={require('../assets/setting-icon.png')}
               style={styles.icon}
             />
-            <Text>Settings</Text>
+            <Text style={styles.profileText}>Blocked Users</Text>
           </TouchableOpacity>
           <View style={styles.profileButton}>
           <Image
               source={require('../assets/calender.png')}
               style={styles.icon}
             />
-            <Text>Appointments</Text>
+            <Text style={styles.profileText}>Meetings</Text>
           </View>
           <TouchableOpacity style={styles.logoutButton}  onPress={handleLogout}>
           <Image
               source={require('../assets/logout-icon.png')}
               style={styles.icon}
             />
-            <Text>Log Out</Text>
+            <Text style={styles.profileText}>Log Out</Text>
           </TouchableOpacity>
         </SafeAreaView>
     </ImageBackground>
@@ -185,7 +214,7 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     icon: {
-      marginRight: 20,
+      marginRight: 15,
     },
     image: {
       width: 100,
@@ -203,8 +232,9 @@ const styles = StyleSheet.create({
     profileText: {
       marginTop:7,
       textAlign: 'right',
-      fontWeight: 'bold',
-      marginLeft: 15
+      fontSize: 16,
+      fontFamily: 'Outfit_500Medium',
+      borderWidth: 0,
     }
 
 })

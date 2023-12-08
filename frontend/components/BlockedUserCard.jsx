@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, Pressable } fr
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BlockedUserCard = ({ userData }) => {
   const navigation = useNavigation();
@@ -11,18 +12,23 @@ const BlockedUserCard = ({ userData }) => {
 
   const handleUnblockUser = async ( currentUserId, selectedUserId ) => {
     try{
-      const response = await fetch(`http://${ipAdress}:6000/api/users/unblock-user`,{
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/unblock-user`,{
           method: "POST",
           headers: {
               "Content-Type": "application/json",
+              'Authorization': `Bearer ${token}`,
           },
           body:JSON.stringify({currentUserId,selectedUserId})
       })
   
       if(response.ok){
           console.log("Successfully Unblocked user");
-          const message = "name has unblocked you"
-          handleSend(currentUserId , selectedUserId , message);
           navigation.navigate('homePage' , {isReload:"true"});
       }
       else {
@@ -42,10 +48,17 @@ const BlockedUserCard = ({ userData }) => {
             message: message
           };
 
-        const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/request-notification`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(data)
         })
@@ -61,19 +74,19 @@ const BlockedUserCard = ({ userData }) => {
 
   return (
     <View style={styles.cardContainer}>
-        <View>
+        <View style={styles.contentContainer}>
           <Image source={{ uri: userData.profilePhoto[0]}} style={styles.image} />
-          <View style={{display:'flex', flexDirection:"row", justifyContent:"space-between"}}>
-          <View style={styles.userInfo}>
-              <Text style={styles.userName}>{userData.name}</Text>
+          <View style={styles.textImageContainer}>
+            <View style={styles.userInfo}>
+                <Text style={styles.userName}>{userData.name}</Text>
+            </View>
+            <Pressable
+              onPress={() => handleUnblockUser(userId , userData._id) }
+              style ={{backgroundColor:"#82CD47",padding:10,borderRadius:6,width:85}}
+              >
+              <Text style={{textAlign:"center",color:"white",fontSize:16}}>Unblock</Text>
+            </Pressable>
           </View>
-          <Pressable
-          onPress={() => handleUnblockUser(userId , userData._id) }
-          style ={{backgroundColor:"#82CD47",padding:8,borderRadius:6,width:85, marginLeft:40}}
-          >
-              <Text style={{textAlign:"center",color:"white",fontSize:13}}>Unlbock</Text>
-          </Pressable>
-        </View>
         </View>
     </View>
   );
@@ -98,17 +111,30 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 8,
   },
-  userInfo: {
-    marginLeft: 10,
-  },
   userName: {
-    fontSize: 18,
+    fontSize: 21,
     fontWeight: 'bold',
   },
   userScore: {
     fontSize: 16,
     marginBottom: 10
   },
+  contentContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: "flex-start",
+    width: '100%',
+    gap: 10,
+  },
+  textImageContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    alignContent: "flex-start",
+    height: 100,
+  }
 });
 
 export default BlockedUserCard;

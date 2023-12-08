@@ -1,4 +1,10 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native'
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
@@ -22,6 +28,17 @@ const RoomAttributes = () => {
         'roof-deck', 'storage', 'walkin-closet'
     ];
 
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+  
+  if (!fontsLoaded) {
+      return null;
+  }
+
     const toggleAttributes = (attribute) => {
         if (selectedAttributes.includes(attribute)) {
             // If the interest is already selected, remove it
@@ -33,8 +50,6 @@ const RoomAttributes = () => {
             setSelectedAttributes((prevAttribute) => [...prevAttribute, attribute]);
         }
     };
-
-
 
     const handleSaveAttributes = async () => {
         let ipAddress = IPADDRESS;
@@ -51,7 +66,7 @@ const RoomAttributes = () => {
 
           console.log(parseInt(numBedrooms), parseInt(numBathrooms))
       
-          const response = await fetch(`http://${ipAddress}:6000/api/users/update-room-attributes`, {
+          const response = await fetch(`http://roomyapp.ca/api/api/users/update-room-attributes`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -77,13 +92,26 @@ const RoomAttributes = () => {
           console.error('Error:', error);
         }
       };
+
+      const handleBack = () => {
+        navigation.goBack();
+      }
       
 
 
     return (
-        <View style={styles.containerMain}>
-            <View style={styles.progressBar}>
-        {[...Array(steps).keys()].map((step) => (
+      <View style={styles.mainContainer}>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>About the Space</Text>
+      </TouchableOpacity>
+
+      <View style={styles.containerMain}>
+        <View style={styles.progressBar}>
+          {[...Array(steps).keys()].map((step) => (
           <View key={step} style={styles.stepContainer}>
             <View
               style={[
@@ -91,16 +119,16 @@ const RoomAttributes = () => {
                 { backgroundColor: step <= currentStep ? '#FF8F66' : 'lightgray' },
               ]}
             />
-            {step < steps - 1 && <View style={styles.line} />}
-          </View>
+              {step < steps - 1 && <View style={styles.line} />}
+            </View>
         ))}
       </View>
             <ScrollView>
-                <Text style={styles.text}>About the Space</Text>
 
 
                 <Text style={styles.text}>Number of Bedrooms</Text>
                 <TextInput
+                    keyboardType="numeric"
                     placeholder="Enter number of bedrooms"
                     value={numBedrooms}
                     onChangeText={setNumBedrooms}
@@ -109,6 +137,7 @@ const RoomAttributes = () => {
 
                 <Text style={styles.text}>Number of Bathrooms</Text>
                 <TextInput
+                    keyboardType="numeric"
                     placeholder="Enter number of bathrooms"
                     value={numBathrooms}
                     onChangeText={setNumBathrooms}
@@ -128,7 +157,7 @@ const RoomAttributes = () => {
                             ]}
                             onPress={() => toggleAttributes(attributes)}
                         >
-                            <Text style={styles.optionText}>{attributes}</Text>
+                            <Text style={[styles.optionText, { color: selectedAttributes.includes(attributes) ? 'white' : 'black' }, ]}>{attributes}</Text>
                         </TouchableOpacity>
                     ))}
 
@@ -141,6 +170,7 @@ const RoomAttributes = () => {
             </ScrollView>
 
         </View>
+        </View>
     )
 }
 
@@ -150,6 +180,7 @@ const styles = StyleSheet.create({
     containerMain: {
         flex: 1,
         padding: 30,
+        paddingBottom: "5%",
         backgroundColor:"#fff"
     },
     container: {
@@ -163,7 +194,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     marginVertical: 5,
-    backgroundColor: '#EEEEEE'
+    backgroundColor: '#EEEEEE',
     },
     selectedOption: {
         backgroundColor: '#FF8F66',
@@ -172,27 +203,33 @@ const styles = StyleSheet.create({
     optionText: {
         color: 'black',
         textAlign: 'center',
+        fontFamily: 'Outfit_400Regular',
+        fontSize: 14
     },
     text: {
-        fontSize: 17,
+        fontSize: 16,
         marginTop: 30,
         fontWeight:'500',
         marginBottom:10,
+        fontFamily: 'Outfit_500Medium'
     },
     button: {
-        backgroundColor: '#FF8F66',
+        backgroundColor: '#51367B',
         color: '#fff',
         margin: 10,
         padding: 20,
         borderRadius: 8,
         width: '55%',
         alignSelf: 'center',
-        marginTop:40
+        marginTop:30,
+        marginBottom: "20%"
       },
       buttonText: {
         color: '#fff',
         textAlign: 'center',
         fontSize: 17,
+        fontWeight: '500',
+        fontFamily: 'Outfit_500Medium'
       },
       textInput: {
         height: 40,
@@ -201,6 +238,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 10,
         padding: 10,
+        fontFamily: 'Outfit_400Regular',
+        fontSize: 16
       },
       progressBar: {
         flexDirection: 'row',
@@ -209,7 +248,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 10,
         marginBottom: 40,
-        width: '52%'
+        width: '52%',
       },
       stepContainer: {
         flexDirection: 'row',
@@ -226,5 +265,27 @@ const styles = StyleSheet.create({
         height: 2,
         backgroundColor: 'lightgray',
         marginHorizontal: 1,
+      },
+      backIconContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: "15%",
+        marginLeft: "2%",
+        marginBottom: "1%",
+      },
+      sortText: {
+        fontSize: 16,
+        fontFamily: 'Outfit_600SemiBold',
+      },
+      sortIcon: {
+        width: 30,
+        height: 30,
+        margin: 5,
+      },
+      mainContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingBottom: "0%",
       },
 });

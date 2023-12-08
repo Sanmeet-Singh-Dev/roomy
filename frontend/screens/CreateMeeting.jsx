@@ -1,4 +1,11 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { Fragment, useEffect, useState, useContext } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   Alert,
   Dimensions,
@@ -20,112 +27,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { UserType } from '../UserContext';
 import { IPADDRESS } from "@env"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: vw } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: 'cover'
-  },
-  createTaskButton: {
-    width: 252,
-    height: 48,
-    alignSelf: 'center',
-    marginTop: 40,
-    borderRadius: 5,
-    justifyContent: 'center'
-  },
-  separator: {
-    height: 0.5,
-    width: '100%',
-    backgroundColor: '#979797',
-    alignSelf: 'center',
-    marginVertical: 20
-  },
-  notes: {
-    color: '#9CAAC4',
-    fontSize: 16,
-    fontWeight: '600'
-  },
-  notesContent: {
-    height: 0.5,
-    width: '100%',
-    backgroundColor: '#979797',
-    alignSelf: 'center',
-    marginVertical: 20
-  },
-  learn: {
-    height: 23,
-    width: 51,
-    backgroundColor: '#F8D557',
-    justifyContent: 'center',
-    borderRadius: 5
-  },
-  design: {
-    height: 23,
-    width: 59,
-    backgroundColor: '#62CCFB',
-    justifyContent: 'center',
-    borderRadius: 5,
-    marginRight: 7
-  },
-  readBook: {
-    height: 23,
-    width: 83,
-    backgroundColor: '#4CD565',
-    justifyContent: 'center',
-    borderRadius: 5,
-    marginRight: 7
-  },
-  title: {
-    height: 25,
-    borderColor: '#5DD976',
-    borderLeftWidth: 1,
-    paddingLeft: 8,
-    fontSize: 19
-  },
-  taskContainer: {
-    height: 300,
-    width: 327,
-    alignSelf: 'center',
-    borderRadius: 20,
-    shadowColor: '#2E66E7',
-    backgroundColor: '#ffffff',
-    shadowOffset: {
-      width: 3,
-      height: 3
-    },
-    shadowRadius: 20,
-    shadowOpacity: 0.2,
-    elevation: 5,
-    padding: 38
-  },
-  calenderContainer: {
-    marginTop: 30,
-    width: 350,
-    height: 350,
-    alignSelf: 'center',
-    backgroundColor: "rgba(255,248,246, 0.9)",
-  },
-  newTask: {
-    alignSelf: 'center',
-    fontSize: 20,
-    width: 120,
-    height: 25,
-    textAlign: 'center'
-  },
-  backButton: {
-    flexDirection: 'row',
-    marginTop: 20,
-    width: '100%',
-    alignItems: 'center'
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "rgba(255,248,246, 0.9)",
-  }
-});
 
 const CreateMeeting = ({ route }) => {
     const navigation = useNavigation();
@@ -199,10 +103,17 @@ const CreateMeeting = ({ route }) => {
             creatTodo: creatTodo
           };
 
-        const response = await fetch(`http://${ipAdress}:6000/api/users/meetings`, {
+          const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/meetings`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(data)
         })
@@ -225,10 +136,17 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
           message: message
         };
 
-      const response = await fetch(`http://${ipAdress}:6000/api/users/request-notification`, {
+        const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/request-notification`, {
           method: "POST",
           headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify(data)
       })
@@ -289,7 +207,19 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
     hideDateTimePicker();
   };
 
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
   return (
+    
     <Fragment>
       <DateTimePicker
         isVisible={isDateTimePickerVisible}
@@ -299,33 +229,32 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
         date={new Date()}
         isDarkModeEnabled
       />
-
+     
       <SafeAreaView style={styles.container}>
-        <View
-          style={{
-            height: visibleHeight,
-          }}
-        >
+      <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      extraScrollHeight={Platform.OS === 'ios' ? 50 : 0}
+      enableOnAndroid={true}
+    >
+        <View>
           <ScrollView
             contentContainerStyle={{
-              paddingBottom: 100
+              paddingBottom: 100,
             }}
           >
-            <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}></ImageBackground>
-            <View style={styles.backButton}>
+          
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={{ marginRight: vw / 2 - 120, marginLeft: 20 }}
-              >
+                style={styles.backIconContainer}
+                >
                 <Image
-                  style={{ height: 25, width: 40 }}
+                  style={styles.sortIcon}
                   source={require('../assets/back.png')}
                   resizeMode="contain"
                 />
+                <Text style={styles.sortText}>New Meeting</Text>
               </TouchableOpacity>
 
-              <Text style={styles.newTask}>New Meeting</Text>
-            </View>
             <View style={styles.calenderContainer}>
               <CalendarList
                 style={{
@@ -376,6 +305,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                     height: 25,
                     fontSize: 19,
                     marginTop: 3,
+                    fontFamily: 'Outfit_400Regular',
                   }}
                   onChangeText={setNotesText}
                   value={notesText}
@@ -388,7 +318,8 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                   style={{
                     color: '#9CAAC4',
                     fontSize: 16,
-                    fontWeight: '600'
+                    fontWeight: '600',
+                    fontFamily: 'Outfit_600SemiBold',
                   }}
                 >
                   Time
@@ -413,7 +344,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                 styles.createTaskButton,
                 {
                   backgroundColor:
-                    taskText === '' ? 'rgba(255,143,102,0.5)' : '#FF8F66'
+                    taskText === '' ? 'rgba(62,32,109,0.5)' : '#3E206D'
                 }
               ]}
               onPress={async () => {
@@ -424,17 +355,144 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
                 style={{
                   fontSize: 18,
                   textAlign: 'center',
-                  color: '#fff'
+                  color: '#fff',
+                  ontFamily: 'Outfit_600SemiBold',
                 }}
               >
-                ADD YOUR TASK
+                Schedule Meeting
               </Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </Fragment>
   );
 }
 
 export default CreateMeeting
+
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover'
+  },
+  createTaskButton: {
+    width: 252,
+    height: 48,
+    alignSelf: 'center',
+    marginTop: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "3%",
+    marginLeft: "2%",
+    marginBottom: "1%",
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
+  },
+  separator: {
+    height: 0.5,
+    width: '100%',
+    backgroundColor: '#979797',
+    alignSelf: 'center',
+    marginVertical: 20
+  },
+  notes: {
+    color: '#9CAAC4',
+    fontSize: 16,
+    fontWeight: '600',
+    fontFamily: 'Outfit_600SemiBold',
+  },
+  notesContent: {
+    height: 0.5,
+    width: '100%',
+    backgroundColor: '#979797',
+    alignSelf: 'center',
+    marginVertical: 20
+  },
+  learn: {
+    height: 23,
+    width: 51,
+    backgroundColor: '#F8D557',
+    justifyContent: 'center',
+    borderRadius: 5
+  },
+  design: {
+    height: 23,
+    width: 59,
+    backgroundColor: '#62CCFB',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginRight: 7
+  },
+  readBook: {
+    height: 23,
+    width: 83,
+    backgroundColor: '#4CD565',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginRight: 7
+  },
+  title: {
+    height: 25,
+    borderColor: '#5DD976',
+    borderLeftWidth: 1,
+    paddingLeft: 8,
+    fontSize: 19,
+    fontFamily: 'Outfit_400Regular',
+  },
+  taskContainer: {
+    height: 300,
+    width: 327,
+    alignSelf: 'center',
+    borderRadius: 20,
+    shadowColor: '#2E66E7',
+    backgroundColor: '#ffffff',
+    shadowOffset: {
+      width: 3,
+      height: 3
+    },
+    shadowRadius: 20,
+    shadowOpacity: 0.2,
+    elevation: 5,
+    padding: 38,
+  },
+  calenderContainer: {
+    marginTop: 30,
+    marginBottom: 30,
+    width: 350,
+    height: 350,
+    alignSelf: 'center',
+    backgroundColor: "rgba(255,248,246, 0.9)",
+  },
+  newTask: {
+    alignSelf: 'center',
+    fontSize: 20,
+    width: 120,
+    height: 25,
+    textAlign: 'center'
+  },
+  backButton: {
+    flexDirection: 'row',
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "rgba(255,248,246, 0.9)",
+  }
+});

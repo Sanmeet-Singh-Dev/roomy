@@ -1,4 +1,10 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native'
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,6 +18,17 @@ const Livinghabits = () => {
     const [drinking, setDrinking] = useState(''); 
     const [pets, setPets] = useState('');
     const [food, setFood] = useState('');
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
 
     const navigation = useNavigation();
     const currentStep = 3;
@@ -31,7 +48,7 @@ const Livinghabits = () => {
               return;
             }
         
-            const response = await fetch(`http://${ipAdress}:6000/api/users/habits`, {
+            const response = await fetch(`http://roomyapp.ca/api/api/users/habits`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -61,9 +78,21 @@ const Livinghabits = () => {
        
           }
       };
+      const handleBack = () => {
+        navigation.goBack();
+      }
 
   return (
     <View style={styles.container}>
+      <SafeAreaView>
+        <ScrollView>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Your Personal and Living Habits</Text>
+      </TouchableOpacity>
         <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -77,10 +106,8 @@ const Livinghabits = () => {
         </View>
       ))}
     </View>
-        <SafeAreaView>
-        <ScrollView>
 
-        <Text style={{ marginLeft: 20 , marginBottom: 5}}>Smoking</Text>
+        <Text style={{ marginLeft: 20 , marginBottom: 5, fontSize: 16, fontFamily: 'Outfit_600SemiBold',}}>Smoking</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -89,7 +116,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setSmoking('Daily')}
         >
-            <Text style={styles.optionText}>Daily</Text>
+            <Text style={[styles.optionText, smoking === 'Daily' && styles.selectedOptionText]}>Daily</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -98,7 +125,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setSmoking('Occasional')}
         >
-            <Text style={styles.optionText}>Occasional</Text>
+            <Text style={[styles.optionText, smoking === 'Occasional' && styles.selectedOptionText]}>Occasional</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -107,11 +134,11 @@ const Livinghabits = () => {
             ]}
             onPress={() => setSmoking('Never')}
         >
-            <Text style={styles.optionText}>Never</Text>
+            <Text style={[styles.optionText, smoking === 'Never' && styles.selectedOptionText]}>Never</Text>
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Guests</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Guests</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -120,7 +147,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setGuests('Daily')}
         >
-            <Text style={styles.optionText}>Daily</Text>
+            <Text style={[styles.optionText, guests === 'Daily' && styles.selectedOptionText]}>Daily</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -129,7 +156,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setGuests('Occasional')}
         >
-            <Text style={styles.optionText}>Occasional</Text>
+            <Text style={[styles.optionText, guests === 'Occasional' && styles.selectedOptionText]}>Occasional</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -138,11 +165,11 @@ const Livinghabits = () => {
             ]}
             onPress={() => setGuests('Never')}
         >
-            <Text style={styles.optionText}>Never</Text>
+            <Text style={[styles.optionText, guests === 'Never' && styles.selectedOptionText]}>Never</Text>
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Drinking</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Drinking</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -151,7 +178,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setDrinking('Daily')}
         >
-            <Text style={styles.optionText}>Daily</Text>
+            <Text style={[styles.optionText, drinking === 'Daily' && styles.selectedOptionText]}>Daily</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -160,7 +187,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setDrinking('Occasional')}
         >
-            <Text style={styles.optionText}>Occasional</Text>
+            <Text style={[styles.optionText, drinking === 'Occasional' && styles.selectedOptionText]}>Occasional</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -169,11 +196,11 @@ const Livinghabits = () => {
             ]}
             onPress={() => setDrinking('Never')}
         >
-            <Text style={styles.optionText}>Never</Text>
+            <Text style={[styles.optionText, drinking === 'Never' && styles.selectedOptionText]}>Never</Text>
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Pets</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Pets</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -182,7 +209,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setPets('Have')}
         >
-            <Text style={styles.optionText}>Have</Text>
+            <Text style={[styles.optionText, pets === 'Have' && styles.selectedOptionText]}>Have</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -191,7 +218,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setPets('Dont Have')}
         >
-            <Text style={styles.optionText}>Dont Have</Text>
+            <Text style={[styles.optionText, pets === 'Dont Have' && styles.selectedOptionText]}>Dont Have</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -200,11 +227,11 @@ const Livinghabits = () => {
             ]}
             onPress={() => setPets('May Have')}
         >
-            <Text style={styles.optionText}>May Have</Text>
+            <Text style={[styles.optionText, pets === 'May Have' && styles.selectedOptionText]}>May Have</Text>
         </TouchableOpacity>
         </View>
 
-        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30 }}>Food Choice</Text>
+        <Text style={{ marginLeft: 20, marginBottom: 5, marginTop: 30, fontSize: 16, fontFamily: 'Outfit_600SemiBold', }}>Food Choice</Text>
         <View style={{ display:'flex' , flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: 20, marginRight: 20}}>
         <TouchableOpacity
             style={[
@@ -213,7 +240,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setFood('Vegan')}
         >
-            <Text style={styles.optionText}>Vegan</Text>
+            <Text style={[styles.optionText, food === 'Vegan' && styles.selectedOptionText]}>Vegan</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -222,7 +249,7 @@ const Livinghabits = () => {
             ]}
             onPress={() => setFood('Vegetarian')}
         >
-            <Text style={styles.optionText}>Vegetarian</Text>
+            <Text style={[styles.optionText, food === 'Vegetarian' && styles.selectedOptionText]}>Vegetarian</Text>
         </TouchableOpacity>
         <TouchableOpacity
             style={[
@@ -231,14 +258,19 @@ const Livinghabits = () => {
             ]}
             onPress={() => setFood('Non-Vegetarian')}
         >
-            <Text style={styles.optionText}>Non-Vegetarian</Text>
+            <Text style={[styles.optionText, food === 'Non-Vegetarian' && styles.selectedOptionText]}>Non-Vegetarian</Text>
         </TouchableOpacity>
         </View>
 
-        
-        <TouchableOpacity style={styles.button}>  
-          <Text style={styles.buttonText} onPress={handleSaveHabits}>Next </Text>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleSaveHabits}>
+            <Text style={styles.buttonText}>Next</Text>
+            <Image
+            source={require('../assets/Horizontal.png')}
+            style={styles.nextIcon}
+            />
           </TouchableOpacity>
+        </View>
 
         </ScrollView>
         </SafeAreaView>
@@ -249,68 +281,98 @@ const Livinghabits = () => {
 export default Livinghabits
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white'
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 50,
+    marginBottom: 40,
+    width: '27%'
+  },
+    stepContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
-    progressBar: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        marginTop: 50,
-        marginBottom: 40,
-        width: '27%'
-      },
-      stepContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-      dot: {
-        width:15,
-        height: 15,
-        borderRadius: 50,
-        backgroundColor: 'lightgray',
-      },
-      line: {
-        flex: 1,
-        height: 2,
-        backgroundColor: 'lightgray',
-        marginHorizontal: 1,
-      },
-      buttonText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 17,
-        fontWeight: 'bold'
-      },
-      button: {
-        backgroundColor: '#FF8F66',
-        color: '#fff',
-        margin: 10,
-        marginTop: 60,
-        marginLeft: 96,
-        marginRight: 96,
-        paddingLeft: 24,
-        paddingRight: 24,
-        paddingTop: 14,
-        paddingBottom: 14,
-        borderRadius: 8,
-      },
+    dot: {
+      width:15,
+      height: 15,
+      borderRadius: 50,
+      backgroundColor: 'lightgray',
+    },
+    line: {
+      flex: 1,
+      height: 2,
+      backgroundColor: 'lightgray',
+      marginHorizontal: 1,
+    },
+    btnContainer : {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: "13%",
+  },
+  button: {
+      backgroundColor: '#51367B',
+      color: '#fff',
+      marginTop: 30,
+      paddingHorizontal: 60,
+      paddingVertical: 17,
+      borderRadius: 8,
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 6,
+  },
+  buttonText: {
+      color: '#fff',
+      textAlign: 'center',
+      fontSize: 20,
+      fontWeight: "400",
+  },
+  nextIcon: {
+      width: 23,
+      height: 23,
+  },
     option: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      marginVertical: 5,
+      backgroundColor: 'lightgray',
+      paddingHorizontal: 19,
+      paddingVertical: 15,
+      borderRadius: 8,
     },
     selectedOption: {
       backgroundColor: '#FF8F66',
-      color: 'white',
+      color:'#fff'
     },
     optionText: {
-      color: 'black', // Change to your desired text color
+      color: 'black',
       textAlign: 'center',
+      fontSize: 17,
+      fontFamily: 'Outfit_400Regular',
+    },
+    selectedOptionText: {
+      color: '#fff',
+      fontFamily: 'Outfit_400Regular',
+    },
+    backIconContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: "2%",
+      marginLeft: "2%",
+    },
+    sortIcon: {
+      width: 30,
+      height: 30,
+      margin: 5,
+    },
+    sortText: {
+      fontSize: 18,
+      fontFamily: 'Outfit_500Medium',
     },
 });

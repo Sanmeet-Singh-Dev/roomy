@@ -1,6 +1,13 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React, { useState, useContext, useEffect } from 'react';
 import { View, TextInput, Button, Alert, Text, Image, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Modal } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import jwt_decode from "jwt-decode";
@@ -62,6 +69,18 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
     };
     getPermissions();
   }, []);
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
 
   const getCurrentLocation = async () => {
     if (location) {
@@ -134,10 +153,17 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
 
       };
 
-      const response = await fetch(`http://${iPAdress}:6000/api/users/save-list-my-space`, {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+      const response = await fetch(`http://roomyapp.ca/api/api/users/save-list-my-space`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
@@ -225,9 +251,24 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
     )
   }
 
-
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      extraScrollHeight={Platform.OS === 'ios' ? 50 : 0} // Adjust this value based on your UI
+      enableOnAndroid={true}
+    >
+    <View style={styles.mainContainer}>
+    <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Where is your room?</Text>
+      </TouchableOpacity>
     <View style={styles.container}>
       <View style={styles.progressBar}>
         {[...Array(steps).keys()].map((step) => (
@@ -308,7 +349,6 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
                 source={require('../assets/currentlocation.png')}
                 style={styles.buttonImage}
               />
-
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -335,18 +375,19 @@ const ListingOne = ({ onUpload, onTakePhoto }) => {
               onChangeText={setDescription}
               style={styles.textArea}
               multiline
-              numberOfLines={50} // You can adjust the number of lines you want to display
+              numberOfLines={50}
             />
           </View>
         </View>
 
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={handleUpload}>Next {'>'}</Text>
+        <TouchableOpacity style={styles.button} onPress={handleUpload}>
+          <Text style={styles.buttonText}>Next {'>'}</Text>
         </TouchableOpacity>
         </ScrollView>
     </View>
-
+    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -362,18 +403,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontSize: 17,
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily: 'Outfit_500Medium'
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   buttonImage: {
-    width: 40, // Adjust the width according to your image size
-    height: 40, // Adjust the height according to your image size
-    marginRight: 1, // Add spacing between the image and text if needed
+    width: 40,
+    height: 40,
+    marginRight: 1,
   },
   button: {
-    backgroundColor: '#FF8F66',
+    backgroundColor: '#51367B',
     color: '#fff',
     margin: 10,
     padding: 20,
@@ -394,6 +437,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
   },
   label: {
     fontSize: 16,
@@ -435,7 +480,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 8,
     fontWeight: 'bold',
-    color:'#9B9B9B'
+    color:'#9B9B9B',
+    fontFamily: 'Outfit_600SemiBold'
   },
   pictureContainer: {
     borderWidth: 1,
@@ -500,6 +546,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     marginTop: 25,
+    fontFamily: 'Outfit_500Medium'
   },
   adressTextInput: {
     height: 40,
@@ -509,17 +556,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
-    width: 320
+    width: "85%",
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
   },
   titleText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Outfit_500Medium'
   },
   descText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Outfit_500Medium'
   },
   textArea: {
     height: 100,
@@ -529,7 +580,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 26,
     padding: 10,
-  }
+    fontFamily: 'Outfit_400Regular',
+    fontSize: 16
+  },
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "15%",
+    marginLeft: "2%",
+    marginBottom: "1%",
+  },
+  sortText: {
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
+  },
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingBottom: "15%",
+  },
 
 
 

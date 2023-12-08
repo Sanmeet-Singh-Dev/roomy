@@ -6,6 +6,8 @@ import UserChat from '../components/UserChat';
 import { Entypo } from '@expo/vector-icons';
 import { IPADDRESS } from "@env"
 import { ImageBackground } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const ChatsScreen = () => {
 
@@ -19,7 +21,18 @@ const ChatsScreen = () => {
     useEffect(()=> {
         const acceptedFriendsList = async () => {
             try{
-                const response = await fetch(`http://${ipAdress}:6000/api/users/accepted-friends/${userId}`);
+                const token = await AsyncStorage.getItem('jwt');
+                if (!token) {
+                  console.error('No authentication token available.');
+                  return;
+                }
+                const response = await fetch(`http://roomyapp.ca/api/api/users/accepted-friends/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`,
+                    }
+                  });
                 const data = await response.json();
                 if(response.ok){
                     setAcceptedFriends(data);
@@ -34,24 +47,24 @@ const ChatsScreen = () => {
     },[])
 
   return (
-    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
-    <View>
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <Pressable style={{margin:10, borderRadius: 20, marginLeft: 20, marginRight: 20}}>
-            {acceptedFriends.map((item,index)=> (
-                <UserChat key={index} item={item}/>
-            ))}
+    <ImageBackground source={require('../assets/chats.jpg')} style={styles.background}>
+        <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <Pressable style={{margin:10, borderRadius: 20, marginLeft: 20, marginRight: 20}}>
+                {acceptedFriends.map((item,index)=> (
+                    <UserChat key={index} item={item}/>
+                ))}
+            </Pressable>
+        </ScrollView>
+        <Pressable
+        onPress={() => navigation.navigate("newChat")} 
+            style={{ position:"absolute" , right:-40 ,top:500, padding:50, marginBottom:"20%" }}>
+            <Image
+            source={require('../assets/newmessage-icon.png')}
+            style={styles.icon}
+            />
         </Pressable>
-    </ScrollView>
-    <Pressable
-    onPress={() => navigation.navigate("newChat")} 
-        style={{ position:"absolute" , right:-40 ,top:500, padding:50, marginBottom:"20%" }}>
-        <Image
-          source={require('../assets/newmessage-icon.png')}
-          style={styles.icon}
-        />
-    </Pressable>
-    </View>
+        </View>
     </ImageBackground>
   )
 }
@@ -62,10 +75,15 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         resizeMode: 'cover',
-      },
-      icon: {
+    },
+    icon: {
         width: 90, 
         height: 90, 
         marginBottom: 20,
-      },
+    },
+    container: {
+        backgroundColor: 'transparent',
+        marginTop: "20%",
+        height: "100%",
+    }
 })

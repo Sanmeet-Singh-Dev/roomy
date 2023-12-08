@@ -1,4 +1,10 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native'
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IPADDRESS } from '@env'
@@ -10,6 +16,17 @@ const Interests = () => {
   const navigation = useNavigation();
   const currentStep = 4;
     const steps = 6;
+
+    let [fontsLoaded] = useFonts({
+      Outfit_400Regular,
+      Outfit_500Medium,
+      Outfit_600SemiBold,
+      Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
 
   const availableInterests = [
     'music', 'dance', 'travel', 'art',
@@ -49,7 +66,7 @@ const Interests = () => {
         return;
       }
   
-      const response = await fetch(`http://${ipAddress}:6000/api/users/interests`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/interests`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -75,10 +92,23 @@ const Interests = () => {
 
     }
   };
+
+  const handleBack = () => {
+    navigation.goBack();
+  }
   
 
   return (
     <View style={styles.containerMain}>
+      <SafeAreaView>
+       <ScrollView>
+      <TouchableOpacity style={styles.backIconContainer} onPress={handleBack}>
+        <Image
+          source={require('../assets/back.png')}
+          style={styles.sortIcon}
+        />
+        <Text style={styles.sortText}>Your Interests</Text>
+      </TouchableOpacity>
        <View style={styles.progressBar}>
       {[...Array(steps).keys()].map((step) => (
         <View key={step} style={styles.stepContainer}>
@@ -92,7 +122,7 @@ const Interests = () => {
         </View>
       ))}
     </View>
-      <ScrollView>
+     
       <Text style={styles.text}>Select Your Interests:</Text>
       
       <View style={styles.container}>
@@ -110,13 +140,18 @@ const Interests = () => {
         ))}
 
       </View>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleSaveInterests}>
+              <Text style={styles.buttonText}>Next</Text>
+              <Image
+              source={require('../assets/Horizontal.png')}
+              style={styles.nextIcon}
+              />
+            </TouchableOpacity>
+          </View>
 
-      <TouchableOpacity style={styles.button}>  
-          <Text style={styles.buttonText} onPress={handleSaveInterests}>Next </Text>
-          </TouchableOpacity>
-
-    </ScrollView>
-
+  </ScrollView>
+  </SafeAreaView>
     </View>
   )
 }
@@ -161,11 +196,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
   },
   option: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#EEEEEE',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    backgroundColor: 'lightgray',
+    paddingVertical: 12,
+    paddingHorizontal: 19,
     borderRadius: 5,
     margin: 5,
   },
@@ -176,30 +209,60 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black',
     textAlign: 'center',
+    fontSize: 17,
+    fontFamily: 'Outfit_400Regular',
   },
   text: {
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 20,
     marginRight: 20,
+    fontSize: 16,
+    fontFamily: 'Outfit_600SemiBold',
   },
-  buttonText: {
+  btnContainer : {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "8%",
+},
+button: {
+    backgroundColor: '#51367B',
+    color: '#fff',
+    marginTop: 30,
+    paddingHorizontal: 60,
+    paddingVertical: 17,
+    borderRadius: 8,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+},
+buttonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold'
+    fontSize: 20,
+    fontWeight: "400",
+},
+nextIcon: {
+    width: 23,
+    height: 23,
+},
+  backIconContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: "2%",
+    marginLeft: "2%",
   },
-  button: {
-    backgroundColor: '#FF8F66',
-    color: '#fff',
-    margin: 10,
-    marginTop: 60,
-    marginLeft: 96,
-    marginRight: 96,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 14,
-    paddingBottom: 14,
-    borderRadius: 8,
+  sortIcon: {
+    width: 30,
+    height: 30,
+    margin: 5,
+  },
+  sortText: {
+    fontSize: 18,
+    fontFamily: 'Outfit_500Medium',
   },
 });

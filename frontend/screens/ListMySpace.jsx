@@ -1,3 +1,9 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import React ,{ useState, useContext, useEffect }  from 'react';
 import { View, Text, TouchableOpacity, StyleSheet,ScrollView,SafeAreaView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -34,7 +40,13 @@ const ListMySpace = () => {
         const token = await AsyncStorage.getItem("jwt");
         const decodedToken = jwt_decode(token);
         const userId = decodedToken.userId;
-        const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
+        const response = await fetch(`http://roomyapp.ca/api/api/users/users/${userId}/spaces`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch');
         }
@@ -49,6 +61,18 @@ const ListMySpace = () => {
 
     fetchUserSpaces();
   }, [spaces]);
+
+  let [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+    return null;
+}
+
   const handleListMySpace = () => {
     navigation.navigate('listingOne');
   };
@@ -58,7 +82,14 @@ const ListMySpace = () => {
       const token = await AsyncStorage.getItem("jwt");
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
-      const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`);
+    
+      const response = await fetch(`http://roomyapp.ca/api/api/users/users/${userId}/spaces`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch');
       }
@@ -76,11 +107,11 @@ const ListMySpace = () => {
     <SafeAreaView style={styles.safeAreaView}>
     <ScrollView>
     <View style={styles.container}>
-      <Text style={styles.listingText}>I want to List My Space</Text>
+      <Text style={styles.listingText}>I Want to List My Space</Text>
       <TouchableOpacity style={styles.button} onPress={handleListMySpace}>
         <Text style={styles.buttonText}>List My Space</Text>
       </TouchableOpacity>
-      <Text style={styles.listingText}>My Listing</Text>
+      <Text style={styles.listingText}>My Listings</Text>
         {/* {spaces && <SpaceCard space={spaces} />} */}
         {spaces && Object.keys(spaces).length > 4 && spaces.title && <SpaceCard space={spaces} showOptions={true} onReload={() => fetchUserSpaces()}/>}
     </View>
@@ -110,23 +141,24 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#FF8F66',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 8,
     width:"100%",
     height:60,
     marginBottom:20,
   },
   buttonText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontSize: 20,
     textAlign:'center',
     alignContent:'center',
-    paddingTop:8
+    paddingTop:8,
+    fontFamily: 'Outfit_500Medium',
   },
   listingText: {
     alignSelf: 'flex-start',
     marginTop: 25,
     fontSize: 20,
-    fontWeight: 'semibold',
+    fontFamily: 'Outfit_500Medium',
     marginBottom: 15,
   }
 });

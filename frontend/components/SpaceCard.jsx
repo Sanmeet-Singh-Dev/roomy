@@ -1,9 +1,17 @@
+import {  useFonts, 
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  } from '@expo-google-fonts/outfit';
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal,Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { IPADDRESS } from '@env'
 import { UserType } from '../UserContext';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SpaceCard = ({ space,showOptions, onReload }) => {
     const navigation = useNavigation();
@@ -29,7 +37,7 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
     
     const handleEdit = () => {
         setModalVisible(false);
-        navigation.navigate('edit-listing');
+        navigation.navigate('listingOne');
     };
     const handleDelete = () => {
         setModalVisible(false);
@@ -43,11 +51,17 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
               text: 'Delete',
               onPress: async () => {
                 try {
-                  const response = await fetch(`http://${iPAdress}:6000/api/users/listings/${userId}/${space.id}`, {
+                    const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+                  const response = await fetch(`http://roomyapp.ca/api/api/users/listings/${userId}/${space.id}`, {
                     method: 'DELETE',
                     headers: {
                       'Content-Type': 'application/json',
-
+                      'Authorization': `Bearer ${token}`,
                     },
                   });
       
@@ -73,6 +87,17 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
           { cancelable: true }
         );
       };
+
+      let [fontsLoaded] = useFonts({
+        Outfit_400Regular,
+        Outfit_500Medium,
+        Outfit_600SemiBold,
+        Outfit_700Bold,
+    });
+    
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <View style={styles.card}>
@@ -116,7 +141,7 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
             </View>
             <View style={styles.detailsContainer}>
                 <Text style={styles.title}>{title}</Text>
-                <Text>{numOfBedrooms} Bedroom{numOfBedrooms !== 1 ? 's' : ''}</Text>
+                <Text style={styles.numBedrooms}>{numOfBedrooms} Bedroom{numOfBedrooms !== 1 ? 's' : ''}</Text>
                 <View style={styles.attributesContainer}>
                     {displayedAttributes.map((attribute, index) => (
                         <Text key={index} style={styles.attributeOptions}>{attribute}</Text>
@@ -132,7 +157,7 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
                     </View>
                     <View>
                         <Text style={styles.availability}>Available</Text>
-                        <Text style={styles.availability}>{availability}</Text>
+                        <Text style={styles.availabilityDate}>{availability}</Text>
                     </View>
                 </View>
             </View>
@@ -144,6 +169,7 @@ const styles = StyleSheet.create({
     card: {
         flexDirection: 'column',
         borderRadius: 8,
+        paddingBottom: "6%",
         width: '100%',
         height: 350,
         backgroundColor:'#FFF',
@@ -174,7 +200,8 @@ const styles = StyleSheet.create({
     optionsText: {
         fontSize: 65,
         color: '#FFF',
-        marginVertical: -30
+        marginVertical: -30,
+        fontFamily: 'Outfit_400Regular',
     },
     imageContainer: {
         flex: 6,
@@ -191,8 +218,8 @@ const styles = StyleSheet.create({
         padding:10,
     },
     title: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 18,
+        fontFamily: 'Outfit_400Regular',
     },
     attributesContainer: {
         flexDirection: 'row',
@@ -217,6 +244,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 10,
+        marginBottom: 10,
     },
     budget: {
         fontWeight: 'bold',
@@ -234,7 +262,33 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         alignItems:'center'
-    }
+    },
+    budgetLabel: {
+        borderWidth: 0,
+        color: "darkgray",
+        fontSize: 17,
+    },
+    budgetData: {
+        borderWidth: 0,
+        marginBottom: "2%",
+        fontFamily: 'Outfit_500Medium',
+    },
+    availability: {
+        borderWidth: 0,
+        color: "darkgray",
+        fontSize: 17,
+    },
+    availabilityDate: {
+        borderWidth: 0,
+        color: "#333333",
+        fontFamily: 'Outfit_500Medium',
+        fontSize: 17,
+    },
+    numBedrooms: {
+        borderWidth: 0,
+        marginTop: "2%",
+        marginBottom: "2%",
+    },
 });
 
 export default SpaceCard;

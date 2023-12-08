@@ -1,8 +1,14 @@
+import {  useFonts, 
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from '@expo-google-fonts/outfit';
 import { Button, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Platform, Image} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import jwt_decode from "jwt-decode";
 import { Ionicons } from '@expo/vector-icons';
 import { UserType } from '../UserContext';
@@ -41,6 +47,7 @@ const Home = () => {
     const [sortingBudget, setSortingBudget] = useState([0, 10000]);
     const [sortingWork, setSortingWork] = useState('Student');
     const [sortingPets, setSortingPets] = useState('Yes');
+    const isFocused = useIsFocused(); 
 
     const onApplySorting = (sortingGender, sortingBudget, sortingWork, sortingPets) => {
       // Create a copy of the original data to avoid mutating it
@@ -77,6 +84,8 @@ const Home = () => {
       registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
     }, []);
 
+   
+
     async function registerForPushNotificationsAsync() {
       let token;
       if (Platform.OS === 'android') {
@@ -112,7 +121,7 @@ const Home = () => {
 
     useEffect(() => {
      handleCompatibility();
-    }, [reloadPage]);
+    }, [reloadPage,isFocused]);
 
   const handleCompatibility = () => {
     const fetchUsers = async () => {
@@ -135,7 +144,7 @@ const Home = () => {
       }
   
       //sending request to API to get all users
-      const response = await fetch(`http://${ipAdress}:6000/api/users/compatibility`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/compatibility`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -164,7 +173,19 @@ const Home = () => {
 
   const fetchNotifications = async (userId) => {
     try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/notification/${userId}`)
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/notification/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token
+          }
+        })
         const data = await response.json();
         if (response.ok) {
             setNotifications(data);
@@ -188,6 +209,17 @@ notifications.map((notification) => {
   })
 }
 
+let [fontsLoaded] = useFonts({
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+});
+
+if (!fontsLoaded) {
+  return null;
+}
+
 async function schedulePushNotification(notification) {
   if(notification.isNotified === false){
     deleteNotification(notification._id);
@@ -203,10 +235,17 @@ async function schedulePushNotification(notification) {
 
   const deleteNotification = async (id) => {
     try {
-        const response = await fetch(`http://${ipAdress}:6000/api/users/deleteNotification`, {
+      const token = await AsyncStorage.getItem('jwt');
+          if (!token) {
+            // Handle the case where the token is not available
+            console.error('No authentication token available.');
+            return;
+          }
+        const response = await fetch(`http://roomyapp.ca/api/api/users/deleteNotification`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ id : id })
         });
@@ -247,15 +286,27 @@ async function schedulePushNotification(notification) {
     }
 
   return (
-    <ImageBackground source={require('../assets/Account.jpg')} style={styles.background}>
+    <ImageBackground source={require('../assets/spaces.jpg')} style={styles.background}>
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
 
-          <Ionicons 
-            onPress={() => navigation.navigate("Notifications")}
-            name="notifications" size={24} color="black" style={styles.notificationIcon}
-          />
+          <View style={styles.locationandNotication}>
+            <View style={styles.locationContainer}>
+              <Image
+                  source={require('../assets/currentlocation.png')}
+                  style={styles.locationIcon}
+                />
+                <Text style={styles.locationText}>Downtown, Vancouvcer</Text>
+            </View>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
+                <Image
+                  source={require('../assets/notificationIcon.png')}
+                  style={styles.notificationIcon}
+                />
+          </TouchableOpacity>
+          </View>
 
           <View style={styles.header}>
            <UserInfo userId={userId}/>
@@ -285,10 +336,10 @@ async function schedulePushNotification(notification) {
                 />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleReset} style={styles.iconContainer}>
+            <TouchableOpacity onPress={handleReset} style={styles.resetIconContainer}>
                 <Image
-                  source={require('../assets/filter-add.png')}
-                  style={styles.sortIcon}
+                  source={require('../assets/clear.png')}
+                  style={styles.resetIcon}
                 />
             </TouchableOpacity>
           </View>
@@ -318,12 +369,34 @@ export default Home
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // or 'contain', based on your preference
-    // Other image background styles
+    resizeMode: 'cover',
   },
   container: {
     flex: 1,
     padding: 15,
+  },
+  locationandNotication: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  locationContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    justifyContent: "flex-start",
+  },
+  locationIcon: {
+    width: 25,
+    height: 25,
+  },
+  locationText: {
+    fontSize: 19,
+    fontFamily: 'Outfit_400Regular',
   },
   buttonText: {
     color: '#fff',
@@ -332,8 +405,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   notificationIcon: {
-    alignSelf: "flex-end",
     marginRight: 10,
+    width: 30,
+    height: 30,
   },
   button: {
     backgroundColor: '#007AFF',
@@ -394,17 +468,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     paddingHorizontal: 0,
+    paddingVertical: 0,
     backgroundColor: '#FFFFFF',
-    width: '60%',
+    width: '65%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    height: "80%",
+    // elevation: 1,
   },
   input: {
     flex: 1,
-    paddingVertical: 2,
+    paddingVertical: 0,
     backgroundColor: 'transparent',
+    fontFamily: 'Outfit_400Regular',
   },
   searchIcon: {
-    width: 30,
-    height: 30,
+    width: 27,
+    height: 27,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -417,21 +499,47 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
   },
+  resetIconContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    marginLeft: 5,
+    marginRight: 5,
+    paddingHorizontal: 13,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   sortIcon: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
+  },
+  resetIcon: {
+    width: 18,
+    height: 18,
+  },
+  resetText: {
+    fontSize: 12,
+    marginTop: 2,
+    color: '#51367B',
+    fontWeight: '500',
   },
   iconContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
     marginLeft: 5,
     marginRight: 5,
-    padding: 13,
+    paddingHorizontal: 11,
+    paddingVertical: 9.5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 4, // Android shadow
+    elevation: 4,
   },
   cardsContainer: {
     display: 'flex',
