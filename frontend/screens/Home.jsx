@@ -144,7 +144,7 @@ const Home = () => {
       }
   
       //sending request to API to get all users
-      const response = await fetch(`http://${ipAdress}:6000/api/users/compatibility`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/compatibility`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ const Home = () => {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://${ipAdress}:6000/api/users/notification/${userId}`, {
+        const response = await fetch(`http://roomyapp.ca/api/api/users/notification/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -241,7 +241,7 @@ async function schedulePushNotification(notification) {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://${ipAdress}:6000/api/users/deleteNotification`, {
+        const response = await fetch(`http://roomyapp.ca/api/api/users/deleteNotification`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

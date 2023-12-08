@@ -66,7 +66,7 @@ const Interests = () => {
         return;
       }
   
-      const response = await fetch(`http://${ipAddress}:6000/api/users/interests`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/interests`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

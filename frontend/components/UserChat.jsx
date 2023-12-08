@@ -27,7 +27,7 @@ const UserChat = ({ item }) => {
             console.error('No authentication token available.');
             return;
           }
-            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${item._id}`, {
+            const response = await fetch(`http://roomyapp.ca/api/api/users/messages/${userId}/${item._id}`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',

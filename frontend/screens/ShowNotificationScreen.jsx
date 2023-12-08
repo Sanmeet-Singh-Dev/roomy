@@ -33,7 +33,7 @@ const ShowNotificationScreen = () => {
               console.error('No authentication token available.');
               return;
             }
-            const response = await axios.get(`http://${ipAddress}:6000/api/users/friend-request/${userId}`, {
+            const response = await axios.get(`http://roomyapp.ca/api/api/users/friend-request/${userId}`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const ShowNotificationScreen = () => {
             console.error('No authentication token available.');
             return;
           }
-            const response = await axios.get(`http://${ipAddress}:6000/api/users/notifications/${userId}`, {
+            const response = await axios.get(`http://roomyapp.ca/api/api/users/notifications/${userId}`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',

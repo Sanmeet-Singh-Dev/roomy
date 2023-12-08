@@ -40,7 +40,7 @@ const ListMySpace = () => {
         const token = await AsyncStorage.getItem("jwt");
         const decodedToken = jwt_decode(token);
         const userId = decodedToken.userId;
-        const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`, {
+        const response = await fetch(`http://roomyapp.ca/api/api/users/users/${userId}/spaces`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ if (!fontsLoaded) {
       const decodedToken = jwt_decode(token);
       const userId = decodedToken.userId;
     
-      const response = await fetch(`http://${iPAdress}:6000/api/users/users/${userId}/spaces`, {
+      const response = await fetch(`http://roomyapp.ca/api/api/users/users/${userId}/spaces`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

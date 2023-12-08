@@ -57,7 +57,7 @@ const ChatMessagesScreen = () => {
               console.error('No authentication token available.');
               return;
             }
-            const response = await fetch(`http://${ipAdress}:6000/api/users/messages/${userId}/${recepientId}`, {
+            const response = await fetch(`http://roomyapp.ca/api/api/users/messages/${userId}/${recepientId}`, {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const ChatMessagesScreen = () => {
                   console.error('No authentication token available.');
                   return;
                 }
-                const response = await fetch(`http://${ipAdress}:6000/api/users/user/${recepientId}`, {
+                const response = await fetch(`http://roomyapp.ca/api/api/users/user/${recepientId}`, {
                     method: 'GET',
                     headers: {
                       'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ const ChatMessagesScreen = () => {
                 console.error('No authentication token available.');
                 return;
               }
-            const response = await fetch(`http://${ipAdress}:6000/api/users/messages`, {
+            const response = await fetch(`http://roomyapp.ca/api/api/users/messages`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -229,7 +229,7 @@ const ChatMessagesScreen = () => {
               console.error('No authentication token available.');
               return;
             }
-            const response = await fetch(`http://${ipAdress}:6000/api/users/deleteMessages`, {
+            const response = await fetch(`http://roomyapp.ca/api/api/users/deleteMessages`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

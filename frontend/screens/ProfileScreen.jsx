@@ -39,7 +39,7 @@ const ProfileScreen = () => {
             console.error('No authentication token available.');
             return;
           }
-          const response = await fetch(`http://${ipAdress}:6000/api/users/users/${userId}`, {
+          const response = await fetch(`http://roomyapp.ca/api/api/users/users/${userId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const ProfileScreen = () => {
     const handleLogout = async () => {
         // Send a request to the logout endpoint on your server
         try {
-          const response = await fetch(`http://${ipAdress}:6000/api/users/logout`, {
+          const response = await fetch(`http://roomyapp.ca/api/api/users/logout`, {
             method: 'POST', // Use the appropriate HTTP method
             headers: {
               'Content-Type': 'application/json',

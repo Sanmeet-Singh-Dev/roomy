@@ -66,7 +66,7 @@ const RoomAttributes = () => {
 
           console.log(parseInt(numBedrooms), parseInt(numBathrooms))
       
-          const response = await fetch(`http://${ipAddress}:6000/api/users/update-room-attributes`, {
+          const response = await fetch(`http://roomyapp.ca/api/api/users/update-room-attributes`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
