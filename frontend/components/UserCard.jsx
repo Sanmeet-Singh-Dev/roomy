@@ -26,7 +26,7 @@ const UserCard = ({ userData }) => {
             console.error('No authentication token available.');
             return;
           }
-            const response = await fetch(`http://roomyapp.ca/api/api/users/friends/${userId}`, {
+            const response = await fetch(`https://roomyapp.ca/api/api/users/friends/${userId}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',

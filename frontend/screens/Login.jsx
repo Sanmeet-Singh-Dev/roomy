@@ -18,7 +18,7 @@ const Login = () => {
     try {
         console.log('handleLogin');
         console.log(ipAdress)
-        const response = await fetch(`http://roomyapp.ca/api/api/users/auth` , {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/auth` , {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

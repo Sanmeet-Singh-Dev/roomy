@@ -109,7 +109,7 @@ const CreateMeeting = ({ route }) => {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/meetings`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/meetings`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ const handleSendNotification = async (currentUserId, selectedUserId, message) =>
             console.error('No authentication token available.');
             return;
           }
-      const response = await fetch(`http://roomyapp.ca/api/api/users/request-notification`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/request-notification`, {
           method: "POST",
           headers: {
               'Content-Type': 'application/json',

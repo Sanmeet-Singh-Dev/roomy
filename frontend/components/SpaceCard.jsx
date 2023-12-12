@@ -57,7 +57,7 @@ const SpaceCard = ({ space,showOptions, onReload }) => {
             console.error('No authentication token available.');
             return;
           }
-                  const response = await fetch(`http://roomyapp.ca/api/api/users/listings/${userId}/${space.id}`, {
+                  const response = await fetch(`https://roomyapp.ca/api/api/users/listings/${userId}/${space.id}`, {
                     method: 'DELETE',
                     headers: {
                       'Content-Type': 'application/json',

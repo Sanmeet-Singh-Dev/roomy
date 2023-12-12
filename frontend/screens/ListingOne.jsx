@@ -159,7 +159,7 @@ if (!fontsLoaded) {
             console.error('No authentication token available.');
             return;
           }
-      const response = await fetch(`http://roomyapp.ca/api/api/users/save-list-my-space`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/save-list-my-space`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
