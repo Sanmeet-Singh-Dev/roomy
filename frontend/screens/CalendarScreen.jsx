@@ -66,7 +66,7 @@ const CalendarScreen = () => {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/meetings/${userId}/${recepientId}`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/meetings/${userId}/${recepientId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ useEffect(() => {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/updateMeetings`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/updateMeetings`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -140,7 +140,7 @@ useEffect(() => {
         console.error('No authentication token available.');
         return;
       }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/deleteMeetings`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/deleteMeetings`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

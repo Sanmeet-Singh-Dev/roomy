@@ -48,7 +48,7 @@ const Livinghabits = () => {
               return;
             }
         
-            const response = await fetch(`http://roomyapp.ca/api/api/users/habits`, {
+            const response = await fetch(`https://roomyapp.ca/api/api/users/habits`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',

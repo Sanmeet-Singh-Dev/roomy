@@ -42,7 +42,7 @@ if (!fontsLoaded) {
         return;
       }
 
-      const response = await fetch(`http://roomyapp.ca/api/api/users/update-room-details`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/update-room-details`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

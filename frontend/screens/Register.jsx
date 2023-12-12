@@ -33,7 +33,7 @@ const Register = () => {
 
     const handleRegister = async () => {
         try {
-            const response = await fetch(`http://roomyapp.ca/api/api/users`, {
+            const response = await fetch(`https://roomyapp.ca/api/api/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
