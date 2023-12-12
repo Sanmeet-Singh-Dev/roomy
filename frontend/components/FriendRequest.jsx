@@ -19,7 +19,7 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
             console.error('No authentication token available.');
             return;
           }
-            const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request/accept`, {
+            const response = await fetch(`https://roomyapp.ca/api/api/users/friend-request/accept`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -52,7 +52,7 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
             console.error('No authentication token available.');
             return;
           }
-            const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request/decline`, {
+            const response = await fetch(`https://roomyapp.ca/api/api/users/friend-request/decline`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -88,7 +88,7 @@ const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
             console.error('No authentication token available.');
             return;
           }
-          const response = await fetch(`http://roomyapp.ca/api/api/users/request-notification`, {
+          const response = await fetch(`https://roomyapp.ca/api/api/users/request-notification`, {
             method: "POST",
             headers: {
               'Content-Type': 'application/json',

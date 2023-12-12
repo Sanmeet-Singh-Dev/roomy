@@ -30,7 +30,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
           console.error('No authentication token available.');
           return;
         }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/friend-requests/sent/${userId}`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/friend-requests/sent/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
           console.error('No authentication token available.');
           return;
         }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/friend-requests/recieved/${userId}`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/friend-requests/recieved/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/friends/${userId}`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/friends/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
             console.error('No authentication token available.');
             return;
           }
-      const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/friend-request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -179,7 +179,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
             console.error('No authentication token available.');
             return;
           }
-      const response = await fetch(`http://roomyapp.ca/api/api/users/request-notification`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/request-notification`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
         console.error('No authentication token available.');
         return;
       }
-      const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request/accept`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/friend-request/accept`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -237,7 +237,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
             console.error('No authentication token available.');
             return;
           }
-        const response = await fetch(`http://roomyapp.ca/api/api/users/friend-request/decline`, {
+        const response = await fetch(`https://roomyapp.ca/api/api/users/friend-request/decline`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -268,7 +268,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
             console.error('No authentication token available.');
             return;
           }
-      const response = await fetch(`http://roomyapp.ca/api/api/users/block-user`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/block-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -299,7 +299,7 @@ const UserSingleScreen = ({ route, onUnblockUser }) => {
         console.error('No authentication token available.');
         return;
       }
-      const response = await fetch(`http://roomyapp.ca/api/api/users/unfriend-user`, {
+      const response = await fetch(`https://roomyapp.ca/api/api/users/unfriend-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

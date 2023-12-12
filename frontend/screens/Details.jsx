@@ -65,7 +65,7 @@ const Details = () => {
             return;
           }
           
-          const response = await fetch(`http://roomyapp.ca/api/api/users/profile`, {
+          const response = await fetch(`https://roomyapp.ca/api/api/users/profile`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
